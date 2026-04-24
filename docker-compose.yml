@@ -1,0 +1,102 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - erw
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - erw
+
+  backend:
+    build:
+      context: .
+      dockerfile: apps/backend/Dockerfile
+      args:
+        MEDUSA_BACKEND_URL: ${MEDUSA_BACKEND_URL}
+        STORE_CORS: ${STORE_CORS}
+        ADMIN_CORS: ${ADMIN_CORS}
+        AUTH_CORS: ${AUTH_CORS}
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    env_file:
+      - .env
+    environment:
+      MEDUSA_WORKER_MODE: server
+      DISABLE_MEDUSA_ADMIN: "false"
+      NODE_ENV: production
+      PORT: 9000
+    ports:
+      - "127.0.0.1:9000:9000"
+    command: sh -c "pnpm predeploy && pnpm start"
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "node -e \"fetch('http://127.0.0.1:9000/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))\""
+        ]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+    networks:
+      - erw
+
+  worker:
+    build:
+      context: .
+      dockerfile: apps/backend/Dockerfile
+      args:
+        MEDUSA_BACKEND_URL: ${MEDUSA_BACKEND_URL}
+        STORE_CORS: ${STORE_CORS}
+        ADMIN_CORS: ${ADMIN_CORS}
+        AUTH_CORS: ${AUTH_CORS}
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    env_file:
+      - .env
+    environment:
+      MEDUSA_WORKER_MODE: worker
+      DISABLE_MEDUSA_ADMIN: "true"
+      NODE_ENV: production
+      PORT: 9000
+    command: pnpm start
+    networks:
+      - erw
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  erw:
+    driver: bridge
