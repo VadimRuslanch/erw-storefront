@@ -1,6 +1,6 @@
-import { loadEnv, defineConfig } from "@medusajs/framework/utils"
+import { loadEnv, defineConfig } from "@medusajs/framework/utils";
 
-loadEnv(process.env.NODE_ENV || "development", process.cwd())
+loadEnv(process.env.NODE_ENV || "development", process.cwd());
 
 module.exports = defineConfig({
   projectConfig: {
@@ -14,9 +14,9 @@ module.exports = defineConfig({
     redisUrl: process.env.REDIS_URL,
 
     workerMode: process.env.MEDUSA_WORKER_MODE as
-        | "shared"
-        | "server"
-        | "worker",
+      | "shared"
+      | "worker"
+      | "server",
 
     http: {
       storeCors: process.env.STORE_CORS!,
@@ -29,6 +29,11 @@ module.exports = defineConfig({
 
   admin: {
     disable: process.env.DISABLE_MEDUSA_ADMIN === "true",
+
+    // URL самого Medusa backend/Admin
     backendUrl: process.env.MEDUSA_BACKEND_URL,
+
+    // URL storefront. Используется в ссылках из Admin на витрину
+    storefrontUrl: process.env.MEDUSA_STOREFRONT_URL,
   },
-})
+});

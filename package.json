@@ -13,6 +13,9 @@
     "test": "turbo test",
     "backend:seed": "turbo seed --filter=@dtc/backend",
     "backend:dev": "turbo dev --filter=@dtc/backend",
+    "frontend:dev": "turbo dev --filter=@dtc/frontend",
+    "frontend:build": "turbo build --filter=@dtc/frontend",
+    "frontend:type-check": "pnpm --filter @dtc/frontend type-check",
     "storefront:dev": "turbo dev --filter=@dtc/storefront"
   },
   "pnpm": {
