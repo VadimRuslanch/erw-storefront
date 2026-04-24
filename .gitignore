@@ -17,7 +17,7 @@ node_modules
 coverage
 
 # Next.js
-/apps/storefront
+**/apps/storefront/
 **/.next/
 **/out/
 
