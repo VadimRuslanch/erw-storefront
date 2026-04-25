@@ -325,12 +325,21 @@ watch(searchInput, (value) => {
             @keydown="onSortTriggerKeydown"
           >
             <span class="store-sort__value">{{ currentSortLabel }}</span>
-            <span class="store-sort__icon" :class="{ 'store-sort__icon--open': isSortMenuOpen }" aria-hidden="true">
+            <span
+              class="store-sort__icon"
+              :class="{ 'store-sort__icon--open': isSortMenuOpen }"
+              aria-hidden="true"
+            >
               <span />
             </span>
           </button>
 
-          <div v-if="isSortMenuOpen" class="store-sort__menu" role="listbox" aria-label="Сортировка товаров">
+          <div
+            v-if="isSortMenuOpen"
+            class="store-sort__menu"
+            role="listbox"
+            aria-label="Сортировка товаров"
+          >
             <button
               v-for="option in sortOptions"
               :key="option.value"
@@ -342,7 +351,11 @@ watch(searchInput, (value) => {
               @click="selectSort(option.value)"
             >
               <span>{{ option.label }}</span>
-              <span v-if="option.value === currentSort" class="store-sort__option-mark" aria-hidden="true" />
+              <span
+                v-if="option.value === currentSort"
+                class="store-sort__option-mark"
+                aria-hidden="true"
+              />
             </button>
           </div>
         </div>
@@ -740,9 +753,43 @@ watch(searchInput, (value) => {
   }
 }
 
+@media (max-width: 899px) {
+  .store-toolbar {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 14px 16px;
+  }
+
+  .store-toolbar > .text-small-regular {
+    grid-column: 1;
+    grid-row: 1;
+    margin: 0;
+  }
+
+  .store-search {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .store-toolbar__actions {
+    grid-column: 2;
+    grid-row: 1;
+    align-items: center;
+    justify-content: flex-end;
+    min-width: 0;
+  }
+
+  .store-sort {
+    min-width: min(220px, 52vw);
+  }
+
+  .store-sort__trigger {
+    min-width: 0;
+  }
+}
+
 @media (min-width: 900px) {
   .store-toolbar {
-    grid-template-columns: auto minmax(260px, 360px) auto;
+    grid-template-columns: auto 1fr auto;
   }
 }
 </style>

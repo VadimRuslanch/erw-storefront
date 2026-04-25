@@ -3,6 +3,8 @@ import type { HttpTypes } from '@medusajs/types'
 import { computed, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
+import BaseModal from '@/components/BaseModal.vue'
+import CatalogFilter from '@/components/CatalogFilter.vue'
 import { useCatalogStore } from '@stores/catalog'
 import { useRegionStore } from '@stores/region'
 
@@ -25,6 +27,7 @@ const { categories, isCategoriesLoading } = storeToRefs(catalogStore)
 const { countryCode } = storeToRefs(regionStore)
 
 const selectedCategoryIds = ref<string[]>([])
+const isFilterModalOpen = ref(false)
 
 const selectedCount = computed(() => selectedCategoryIds.value.length)
 
@@ -127,11 +130,20 @@ function applyCategories() {
         }
       : undefined,
   })
+  closeFilterModal()
 }
 
 function resetCategories() {
   selectedCategoryIds.value = []
   void router.replace({ query: {} })
+}
+
+function openFilterModal() {
+  isFilterModalOpen.value = true
+}
+
+function closeFilterModal() {
+  isFilterModalOpen.value = false
 }
 
 function categoryLink(category: CategoryCard) {
@@ -167,18 +179,18 @@ watch(
   <section class="catalog-hero">
     <div class="content-container">
       <div class="catalog-hero__panel">
-<!--        <div class="catalog-hero__eyebrow">-->
-<!--          <span class="catalog-hero__eyebrow-line" aria-hidden="true" />-->
-<!--          <p class="catalog-hero__kicker">Навигатор по коллекциям</p>-->
-<!--        </div>-->
+        <!--        <div class="catalog-hero__eyebrow">-->
+        <!--          <span class="catalog-hero__eyebrow-line" aria-hidden="true" />-->
+        <!--          <p class="catalog-hero__kicker">Навигатор по коллекциям</p>-->
+        <!--        </div>-->
 
         <div class="catalog-hero__content">
           <div>
             <p class="catalog-hero__label">Категории</p>
             <h1 class="catalog-hero__title">Категории</h1>
-<!--            <p class="catalog-hero__description">-->
-<!--              Выберите одно или несколько направлений и перейдите к ассортименту.-->
-<!--            </p>-->
+            <!--            <p class="catalog-hero__description">-->
+            <!--              Выберите одно или несколько направлений и перейдите к ассортименту.-->
+            <!--            </p>-->
           </div>
         </div>
       </div>
@@ -187,71 +199,30 @@ watch(
 
   <section class="catalog-layout content-container">
     <aside class="catalog-sidebar lg:sticky lg:top-24 lg:self-start">
-      <div class="catalog-filter">
-        <div class="catalog-filter__header">
-          <div>
-            <h2 class="catalog-filter__title">Фильтр</h2>
-            <p class="catalog-filter__meta">Выбрано: {{ selectedCount }}</p>
-          </div>
-          <button
-            type="button"
-            class="catalog-filter__reset"
-            :disabled="selectedCount === 0"
-            @click="resetCategories"
-          >
-            Сбросить
-          </button>
-        </div>
-
-        <div v-if="isCategoriesLoading && categoryCards.length === 0" class="space-y-3 py-5">
-          <div
-            v-for="index in 6"
-            :key="index"
-            class="h-5 animate-pulse rounded-full bg-[rgb(var(--brand-dark-rgb)/0.08)]"
-          />
-        </div>
-
-        <fieldset v-else class="catalog-filter__options">
-          <legend class="sr-only">Фильтр категорий</legend>
-          <label
-            v-for="category in categoryCards"
-            :key="category.id"
-            class="catalog-filter__option"
-            :style="{ '--category-depth': `${category.depth}` }"
-          >
-            <input
-              v-model="selectedCategoryIds"
-              type="checkbox"
-              class="catalog-filter__checkbox"
-              :value="category.id"
-            />
-            <span class="catalog-filter__option-label">{{ category.name }}</span>
-          </label>
-        </fieldset>
-
-        <button
-          type="button"
-          class="catalog-filter__submit"
-          :disabled="isCategoriesLoading || categoryCards.length === 0"
-          @click="applyCategories"
-        >
-          Применить
-        </button>
-      </div>
+      <CatalogFilter
+        v-model:selected-ids="selectedCategoryIds"
+        :categories="categoryCards"
+        :selected-count="selectedCount"
+        :is-loading="isCategoriesLoading"
+        @apply="applyCategories"
+        @reset="resetCategories"
+      />
     </aside>
 
     <div class="catalog-results">
       <div class="catalog-results__header">
         <div>
           <p class="catalog-results__label">Коллекции магазина</p>
-          <p class="catalog-results__count">
-            <span>{{ categoryCards.length }}</span> категорий
-          </p>
         </div>
         <p v-if="selectedCategoryNames.length" class="catalog-results__selected">
           Выбрано: {{ selectedCategoryNames.join(', ') }}
         </p>
       </div>
+
+      <button type="button" class="catalog-filter-toggle" @click="openFilterModal">
+        <span>Фильтр</span>
+        <strong>{{ selectedCount }}</strong>
+      </button>
 
       <div v-if="isCategoriesLoading && categoryCards.length === 0" class="catalog-grid">
         <article v-for="index in 6" :key="index" class="catalog-card catalog-card--skeleton">
@@ -260,9 +231,7 @@ watch(
           <div
             class="mt-5 h-8 w-3/4 animate-pulse rounded-full bg-[rgb(var(--brand-dark-rgb)/0.08)]"
           />
-          <div
-            class="mt-4 h-16 animate-pulse rounded-2xl bg-[rgb(var(--brand-dark-rgb)/0.08)]"
-          />
+          <div class="mt-4 h-16 animate-pulse rounded-2xl bg-[rgb(var(--brand-dark-rgb)/0.08)]" />
         </article>
       </div>
 
@@ -292,6 +261,22 @@ watch(
       </div>
     </div>
   </section>
+
+  <BaseModal
+    :is-open="isFilterModalOpen"
+    title-id="catalog-filter-modal-title"
+    @close="closeFilterModal"
+  >
+    <CatalogFilter
+      v-model:selected-ids="selectedCategoryIds"
+      :categories="categoryCards"
+      :selected-count="selectedCount"
+      :is-loading="isCategoriesLoading"
+      title-id="catalog-filter-modal-title"
+      @apply="applyCategories"
+      @reset="resetCategories"
+    />
+  </BaseModal>
 </template>
 
 <style scoped>
@@ -310,8 +295,12 @@ watch(
   padding: 36px clamp(24px, 4vw, 44px);
   border: 1px solid var(--border-soft);
   border-radius: 8px;
-  background:
-    linear-gradient(145deg, var(--brand-dark) 0%, var(--brand-olive) 58%, var(--brand-dark) 100%);
+  background: linear-gradient(
+    145deg,
+    var(--brand-dark) 0%,
+    var(--brand-olive) 58%,
+    var(--brand-dark) 100%
+  );
   box-shadow: var(--shadow-soft);
 }
 
@@ -345,8 +334,7 @@ watch(
 .catalog-results__label,
 .catalog-card__kicker,
 .catalog-card__cta,
-.catalog-filter__reset,
-.catalog-filter__submit {
+.catalog-filter-toggle {
   margin: 0;
   font-size: 11px;
   font-weight: 700;
@@ -424,133 +412,47 @@ watch(
 }
 
 .catalog-sidebar {
+  display: none;
   align-self: start;
-}
-
-.catalog-filter {
-  overflow: hidden;
-  border: 1px solid var(--border-soft);
-  border-radius: 8px;
-  background:
-    linear-gradient(180deg, rgb(var(--cream-rgb) / 0.72), rgb(var(--white-rgb) / 0.98)),
-    linear-gradient(180deg, rgb(var(--brand-lime-light-rgb) / 0.06), transparent);
-  box-shadow: 0 18px 38px rgb(var(--brand-dark-rgb) / 0.08);
-}
-
-.catalog-filter__header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 22px 22px 18px;
-  border-bottom: 1px solid var(--border-soft);
-}
-
-.catalog-filter__title {
-  margin: 0;
-  color: var(--brand-dark);
-  font-family: var(--font-serif);
-  font-size: 28px;
-  font-weight: 500;
-  line-height: 1.05;
-  letter-spacing: 0.02em;
-}
-
-.catalog-filter__meta {
-  margin: 8px 0 0;
-  color: var(--text-muted);
-  font-size: 12px;
-}
-
-.catalog-filter__reset {
-  padding: 0;
-  border: 0;
-  color: var(--brand-olive);
-  background: transparent;
-  transition: color 180ms ease;
-}
-
-.catalog-filter__reset:hover:not(:disabled),
-.catalog-filter__reset:focus-visible {
-  color: var(--brand-dark);
-}
-
-.catalog-filter__reset:disabled {
-  cursor: not-allowed;
-  opacity: 0.42;
-}
-
-.catalog-filter__options {
-  max-height: 52vh;
-  margin: 0;
-  padding: 14px 14px 10px;
-  overflow-y: auto;
-}
-
-.catalog-filter__option {
-  --indent: calc(12px + (var(--category-depth, 0) * 18px));
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin: 0;
-  padding: 10px 12px 10px var(--indent);
-  border-radius: 8px;
-  color: var(--text-dark);
-  font-size: 14px;
-  line-height: 1.45;
-  transition:
-    background-color 180ms ease,
-    color 180ms ease;
-}
-
-.catalog-filter__option:hover {
-  background: rgb(var(--brand-lime-light-rgb) / 0.1);
-  color: var(--brand-dark);
-}
-
-.catalog-filter__checkbox {
-  width: 16px;
-  height: 16px;
-  margin: 0;
-  accent-color: var(--brand-olive);
-}
-
-.catalog-filter__option-label {
-  flex: 1;
-}
-
-.catalog-filter__submit {
-  width: calc(100% - 28px);
-  margin: 8px 14px 14px;
-  padding: 13px 18px;
-  border: 0;
-  border-radius: 999px;
-  color: var(--white);
-  background: linear-gradient(
-    135deg,
-    var(--brand-dark) 0%,
-    var(--brand-olive) 72%,
-    var(--brand-lime) 100%
-  );
-  transition:
-    transform 180ms ease,
-    box-shadow 180ms ease,
-    opacity 180ms ease;
-}
-
-.catalog-filter__submit:hover:not(:disabled),
-.catalog-filter__submit:focus-visible {
-  transform: translateY(-1px);
-  box-shadow: 0 16px 28px rgb(var(--brand-dark-rgb) / 0.16);
-}
-
-.catalog-filter__submit:disabled {
-  cursor: not-allowed;
-  opacity: 0.42;
 }
 
 .catalog-results {
   min-width: 0;
+}
+
+.catalog-filter-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  min-height: 44px;
+  margin-bottom: 18px;
+  padding: 0 16px;
+  border: 1px solid var(--border-soft);
+  border-radius: 999px;
+  color: var(--brand-dark);
+  background: linear-gradient(180deg, rgb(var(--cream-rgb) / 0.72), rgb(var(--white-rgb) / 0.98));
+  box-shadow: 0 12px 24px rgb(var(--brand-dark-rgb) / 0.06);
+}
+
+.catalog-filter-toggle strong {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 7px;
+  border-radius: 999px;
+  color: var(--white);
+  background: var(--brand-olive);
+  font-size: 12px;
+  line-height: 1;
+}
+
+.catalog-filter-toggle:hover,
+.catalog-filter-toggle:focus-visible {
+  border-color: rgb(var(--brand-lime-rgb) / 0.36);
+  box-shadow: 0 0 0 3px rgb(var(--brand-lime-light-rgb) / 0.18);
 }
 
 .catalog-results__header {
@@ -566,17 +468,6 @@ watch(
 
 .catalog-results__label {
   color: var(--brand-olive);
-}
-
-.catalog-results__count {
-  margin: 8px 0 0;
-  color: var(--text-muted);
-  font-size: 15px;
-}
-
-.catalog-results__count span {
-  color: var(--brand-dark);
-  font-weight: 700;
 }
 
 .catalog-results__selected {
@@ -733,6 +624,14 @@ watch(
   .catalog-layout {
     grid-template-columns: 280px minmax(0, 1fr);
   }
+
+  .catalog-sidebar {
+    display: block;
+  }
+
+  .catalog-filter-toggle {
+    display: none;
+  }
 }
 
 @media (min-width: 1280px) {
@@ -766,11 +665,6 @@ watch(
     min-width: calc(50% - 7px);
   }
 
-  .catalog-filter__header {
-    padding: 18px 18px 16px;
-  }
-
-  .catalog-filter__submit,
   .catalog-card__link,
   .catalog-card--skeleton {
     padding-left: 18px;

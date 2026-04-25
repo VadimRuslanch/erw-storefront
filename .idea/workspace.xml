@@ -6,9 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="5af0ba0c-d1cb-47ad-aeb9-b711a2d526ff" name="Changes" comment="finish storefront">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/frontend/src/components/CatalogCover.vue" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/components/CatalogCover.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/frontend/src/layouts/CheckoutLayout.vue" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/layouts/CheckoutLayout.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/frontend/src/views/CheckoutView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/views/CheckoutView.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/frontend/src/assets/styles/globals.scss" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/assets/styles/globals.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/frontend/src/layouts/MainLayout.vue" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/layouts/MainLayout.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/frontend/src/views/CatalogView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/views/CatalogView.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/frontend/src/views/StoreView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/views/StoreView.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,7 +97,7 @@
       <recent name="$PROJECT_DIR$/apps/frontend" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.frontend &gt; lint">
+  <component name="RunManager" selected="npm.frontend &gt; dev">
     <configuration name="build" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -156,8 +157,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.frontend &gt; lint" />
         <item itemvalue="npm.frontend &gt; dev" />
+        <item itemvalue="npm.frontend &gt; lint" />
         <item itemvalue="npm.storefront &gt; dev" />
         <item itemvalue="npm.dev" />
         <item itemvalue="npm.build" />
@@ -181,7 +182,7 @@
       <workItem from="1777009588484" duration="8698000" />
       <workItem from="1777093891269" duration="78000" />
       <workItem from="1777093975411" duration="3988000" />
-      <workItem from="1777099781814" duration="32860000" />
+      <workItem from="1777099781814" duration="36448000" />
     </task>
     <task id="LOCAL-00001" summary="prod build">
       <option name="closed" value="true" />
@@ -255,7 +256,15 @@
       <option name="project" value="LOCAL" />
       <updated>1777151498900</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="finish storefront">
+      <option name="closed" value="true" />
+      <created>1777152151072</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1777152151072</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
