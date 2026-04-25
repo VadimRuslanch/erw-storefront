@@ -26,6 +26,12 @@ const router = createRouter({
           meta: { title: 'Store' },
         },
         {
+          path: 'categories',
+          name: 'catalog',
+          component: () => import('@/views/CatalogView.vue'),
+          meta: { title: 'Catalog' },
+        },
+        {
           path: 'products/:handle',
           name: 'product',
           component: () => import('@/views/ProductView.vue'),
@@ -36,6 +42,18 @@ const router = createRouter({
           name: 'category',
           component: () => import('@/views/CategoryView.vue'),
           meta: { title: 'Category' },
+        },
+        {
+          path: 'login',
+          name: 'login',
+          component: () => import('@/views/LoginView.vue'),
+          meta: { title: 'Sign in' },
+        },
+        {
+          path: 'register',
+          name: 'register',
+          component: () => import('@/views/RegisterView.vue'),
+          meta: { title: 'Register' },
         },
         {
           path: 'collections/:handle',

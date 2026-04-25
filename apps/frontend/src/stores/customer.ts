@@ -24,18 +24,48 @@ export const useCustomerStore = defineStore('customer', () => {
   }
 
   async function login(input: customerApi.LoginInput) {
-    customer.value = await customerApi.login(input)
-    return customer.value
+    isLoading.value = true
+    error.value = null
+
+    try {
+      customer.value = await customerApi.login(input)
+      return customer.value
+    } catch (err) {
+      error.value = err instanceof Error ? err.message : String(err)
+      throw err
+    } finally {
+      isLoading.value = false
+    }
   }
 
   async function signup(input: customerApi.SignupInput) {
-    customer.value = await customerApi.signup(input)
-    return customer.value
+    isLoading.value = true
+    error.value = null
+
+    try {
+      customer.value = await customerApi.signup(input)
+      return customer.value
+    } catch (err) {
+      error.value = err instanceof Error ? err.message : String(err)
+      throw err
+    } finally {
+      isLoading.value = false
+    }
   }
 
   async function signout() {
-    await customerApi.signout()
-    customer.value = null
+    isLoading.value = true
+    error.value = null
+
+    try {
+      await customerApi.signout()
+      customer.value = null
+    } catch (err) {
+      error.value = err instanceof Error ? err.message : String(err)
+      throw err
+    } finally {
+      isLoading.value = false
+    }
   }
 
   return {

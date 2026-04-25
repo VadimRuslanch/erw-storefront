@@ -12,6 +12,7 @@ export const useCatalogStore = defineStore('catalog', () => {
   const categories = ref<HttpTypes.StoreProductCategory[]>([])
   const collections = ref<HttpTypes.StoreCollection[]>([])
   const isLoading = ref(false)
+  const isCategoriesLoading = ref(false)
 
   async function loadProducts(options: {
     countryCode: string
@@ -32,9 +33,15 @@ export const useCatalogStore = defineStore('catalog', () => {
     }
   }
 
-  async function loadCategories() {
-    categories.value = await listCategories()
-    return categories.value
+  async function loadCategories(query?: Parameters<typeof listCategories>[0]) {
+    isCategoriesLoading.value = true
+
+    try {
+      categories.value = await listCategories(query)
+      return categories.value
+    } finally {
+      isCategoriesLoading.value = false
+    }
   }
 
   async function loadCollections() {
@@ -50,6 +57,7 @@ export const useCatalogStore = defineStore('catalog', () => {
     categories,
     collections,
     isLoading,
+    isCategoriesLoading,
     loadProducts,
     loadCategories,
     loadCollections,

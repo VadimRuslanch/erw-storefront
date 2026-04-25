@@ -60,6 +60,13 @@ const pageWindow = computed(() => {
 
 const hasProducts = computed(() => products.value.length > 0)
 
+const activeCategoryIds = computed(() => {
+  const rawValue = route.query.category_id
+  const values = Array.isArray(rawValue) ? rawValue : rawValue ? [rawValue] : []
+
+  return values.filter((value): value is string => typeof value === 'string' && value.length > 0)
+})
+
 const productCards = computed(() => {
   return products.value.map((product) => {
     const prices = getProductPrice({ product })
@@ -88,6 +95,7 @@ async function loadProducts() {
     page: currentPage.value,
     sortBy: currentSort.value,
     queryParams: {
+      category_id: activeCategoryIds.value.length ? activeCategoryIds.value : undefined,
       limit: PAGE_SIZE,
     },
   })
@@ -118,8 +126,16 @@ function productLink(product: Pick<HttpTypes.StoreProduct, 'handle'> | { handle?
   return `/${countryCode.value}/products/${product.handle}`
 }
 
+function clearCategoryFilter() {
+  const { category_id: _categoryId, page: _page, ...nextQuery } = route.query
+
+  void router.replace({
+    query: nextQuery,
+  })
+}
+
 watch(
-  () => [countryCode.value, currentPage.value, currentSort.value],
+  () => [countryCode.value, currentPage.value, currentSort.value, activeCategoryIds.value.join('|')],
   () => {
     void loadProducts()
   },
@@ -137,8 +153,8 @@ watch(
             All products
           </h1>
           <p class="mt-5 max-w-2xl text-base-regular text-grey-60">
-            Full client-rendered assortment for the active region. Sorting and pagination run in the
-            Vue SPA layer.
+            Full client-rendered assortment for the active region. Use the catalog page to select
+            one or more categories.
           </p>
         </div>
 
@@ -167,7 +183,17 @@ watch(
       <p class="text-small-regular text-grey-60">
         <span class="font-semibold text-grey-90">{{ productCount }}</span> products
       </p>
-      <p class="text-small-regular text-grey-50">Page {{ currentPage }} of {{ totalPages }}</p>
+      <div class="flex flex-wrap items-center justify-end gap-3">
+        <button
+          v-if="activeCategoryIds.length"
+          type="button"
+          class="rounded-circle border border-grey-20 px-4 py-2 text-small-semi text-grey-90 transition hover:border-grey-40"
+          @click="clearCategoryFilter"
+        >
+          Clear categories
+        </button>
+        <p class="text-small-regular text-grey-50">Page {{ currentPage }} of {{ totalPages }}</p>
+      </div>
     </div>
 
     <div

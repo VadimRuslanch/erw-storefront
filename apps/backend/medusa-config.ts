@@ -2,6 +2,13 @@ import { loadEnv, defineConfig } from "@medusajs/framework/utils";
 
 loadEnv(process.env.NODE_ENV || "development", process.cwd());
 
+const trimTrailingSlash = (url?: string) => url?.trim().replace(/\/+$/, "");
+
+const backendUrl = trimTrailingSlash(process.env.MEDUSA_BACKEND_URL);
+const fileBackendUrl =
+  trimTrailingSlash(process.env.MEDUSA_FILE_BACKEND_URL) ||
+  (backendUrl ? `${backendUrl}/static` : undefined);
+
 module.exports = defineConfig({
   projectConfig: {
     databaseUrl: process.env.DATABASE_URL,
@@ -31,9 +38,26 @@ module.exports = defineConfig({
     disable: process.env.DISABLE_MEDUSA_ADMIN === "true",
 
     // URL самого Medusa backend/Admin
-    backendUrl: process.env.MEDUSA_BACKEND_URL,
+    backendUrl,
 
     // URL storefront. Используется в ссылках из Admin на витрину
     storefrontUrl: process.env.MEDUSA_STOREFRONT_URL,
   },
+
+  modules: [
+    {
+      resolve: "@medusajs/medusa/file",
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/medusa/file-local",
+            id: "local",
+            options: {
+              backend_url: fileBackendUrl,
+            },
+          },
+        ],
+      },
+    },
+  ],
 });

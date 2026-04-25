@@ -8,7 +8,7 @@ export async function retrieveCart(cartId?: string, fields?: string) {
   const id = cartId || getCartId()
   const queryFields =
     fields ??
-    '*items, *region, *items.product, *items.variant, *items.thumbnail, *items.metadata, +items.total, *promotions, +shipping_methods.name'
+    '*items, *region, *shipping_address, *billing_address, *items.product, *items.variant, *items.variant.options, *items.thumbnail, *items.metadata, +items.unit_price, +items.total, +items.subtotal, +items.tax_total, +items.discount_total, *promotions, *shipping_methods, +shipping_methods.name, +shipping_methods.total, *payment_collection, *payment_collection.payment_sessions'
 
   if (!id) {
     return null

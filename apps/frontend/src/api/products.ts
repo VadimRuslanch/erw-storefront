@@ -103,3 +103,25 @@ export const listProductsWithSort = async ({
     queryParams,
   }
 }
+
+export const getProductByHandle = async ({
+  handle,
+  countryCode,
+}: {
+  handle: string
+  countryCode: string
+}) => {
+  const {
+    response: { products },
+  } = await listProducts({
+    countryCode,
+    queryParams: {
+      handle,
+      limit: 1,
+      fields:
+        '*variants.calculated_price,+variants.inventory_quantity,*variants.options,*variants.images,*images,*options,*options.values,*categories,*collection,*type,+metadata,+tags',
+    },
+  })
+
+  return products[0] ?? null
+}
