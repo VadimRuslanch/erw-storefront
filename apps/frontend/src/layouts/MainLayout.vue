@@ -38,8 +38,8 @@ onMounted(() => {
             <img :src="iconCart" alt="" class="cart-icon" />
             <span v-if="cartItemCount > 0" class="cart-badge">{{ cartItemCount }}</span>
           </RouterLink>
-          <RouterLink v-if="customer" :to="`/${countryCode || ''}/account`"> Аккаунт </RouterLink>
-          <RouterLink v-else :to="`/${countryCode || ''}/login`"> Войти </RouterLink>
+<!--          <RouterLink v-if="customer" :to="`/${countryCode || ''}/account`"> Аккаунт </RouterLink>-->
+<!--          <RouterLink v-else :to="`/${countryCode || ''}/login`"> Войти </RouterLink>-->
         </div>
       </nav>
     </header>

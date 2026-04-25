@@ -1,0 +1,56 @@
+diff --git a/dist/app.js b/dist/app.js
+index a146fa4b63a62501c8631622b08b3bd4f0e1a16f..5342b6503554626f0603ee485ac2596cdbd43031 100644
+--- a/dist/app.js
++++ b/dist/app.js
+@@ -177015,7 +177015,7 @@ var init_add_currencies_form = __esm({
+     import_jsx_runtime502 = require("react/jsx-runtime");
+     AddCurrenciesSchema = zod36.object({
+       currencies: zod36.array(zod36.string()).min(1),
+-      pricePreferences: zod36.record(zod36.boolean())
++      pricePreferences: zod36.record(zod36.string(), zod36.boolean())
+     });
+     PAGE_SIZE46 = 50;
+     PREFIX21 = "ac";
+@@ -199446,10 +199446,10 @@ var init_translations_edit_form = __esm({
+     import_jsx_runtime696 = require("react/jsx-runtime");
+     EntityTranslationsSchema = import_zod168.z.object({
+       id: import_zod168.z.string().nullish(),
+-      fields: import_zod168.z.record(import_zod168.z.string().optional())
++      fields: import_zod168.z.record(import_zod168.z.string(), import_zod168.z.string().optional())
+     });
+     TranslationsFormSchema = import_zod168.z.object({
+-      entities: import_zod168.z.record(EntityTranslationsSchema)
++      entities: import_zod168.z.record(import_zod168.z.string(), EntityTranslationsSchema)
+     });
+     columnHelper93 = createDataGridHelper();
+     FIELD_COLUMN_WIDTH = 350;
+diff --git a/dist/store-add-currencies-HPYCED2L.mjs b/dist/store-add-currencies-HPYCED2L.mjs
+index aa2b6697b1b96e4b1a5df1327140011e6f378c95..7d96fbbff642ebf6fede605b3d724f1d52490bc5 100644
+--- a/dist/store-add-currencies-HPYCED2L.mjs
++++ b/dist/store-add-currencies-HPYCED2L.mjs
+@@ -60,7 +60,7 @@ import { useForm } from "react-hook-form";
+ import { jsx, jsxs } from "react/jsx-runtime";
+ var AddCurrenciesSchema = zod.object({
+   currencies: zod.array(zod.string()).min(1),
+-  pricePreferences: zod.record(zod.boolean())
++  pricePreferences: zod.record(zod.string(), zod.boolean())
+ });
+ var PAGE_SIZE = 50;
+ var PREFIX = "ac";
+diff --git a/dist/translations-edit-BV7IBHXC.mjs b/dist/translations-edit-BV7IBHXC.mjs
+index 2258ddbdbd42e36625f7251b84d5ae1b25f64abd..73619407fe3f068155bc16cf45cc30153b8d6eec 100644
+--- a/dist/translations-edit-BV7IBHXC.mjs
++++ b/dist/translations-edit-BV7IBHXC.mjs
+@@ -74,10 +74,10 @@ import { z } from "zod";
+ import { jsx, jsxs } from "react/jsx-runtime";
+ var EntityTranslationsSchema = z.object({
+   id: z.string().nullish(),
+-  fields: z.record(z.string().optional())
++  fields: z.record(z.string(), z.string().optional())
+ });
+ var TranslationsFormSchema = z.object({
+-  entities: z.record(EntityTranslationsSchema)
++  entities: z.record(z.string(), EntityTranslationsSchema)
+ });
+ function isEntityRow(row) {
+   return row._type === "entity";
