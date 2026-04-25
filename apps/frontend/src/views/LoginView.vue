@@ -53,21 +53,21 @@ async function submitLogin() {
 </script>
 
 <template>
-  <section class="content-container grid min-h-[calc(100vh-8rem)] gap-10 py-12 lg:grid-cols-[minmax(0,1fr)_420px] lg:items-center">
+  <section
+    class="content-container grid min-h-[calc(100vh-8rem)] gap-10 py-12 lg:grid-cols-[minmax(0,1fr)_420px] lg:items-center"
+  >
     <div class="max-w-2xl">
-      <p class="text-small-semi uppercase tracking-[0.18em] text-grey-50">Account</p>
+      <p class="text-small-semi uppercase tracking-[0.18em] text-grey-50">Аккаунт</p>
       <h1 class="mt-4 text-[clamp(2.5rem,5vw,4.5rem)] font-semibold leading-none text-grey-90">
-        Sign in
+        Вход
       </h1>
       <p class="mt-5 text-base-regular text-grey-60">
-        Use your customer account to continue shopping, transfer your cart, and view account details.
+        Используйте аккаунт покупателя, чтобы продолжить покупки, перенести корзину и просматривать
+        данные аккаунта.
       </p>
     </div>
 
-    <form
-      class="rounded-rounded border border-grey-20 bg-white p-6"
-      @submit.prevent="submitLogin"
-    >
+    <form class="rounded-rounded border border-grey-20 bg-white p-6" @submit.prevent="submitLogin">
       <div class="space-y-5">
         <label class="block">
           <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Email</span>
@@ -81,7 +81,7 @@ async function submitLogin() {
         </label>
 
         <label class="block">
-          <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Password</span>
+          <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Пароль</span>
           <input
             v-model="form.password"
             type="password"
@@ -104,17 +104,12 @@ async function submitLogin() {
         class="mt-6 h-12 w-full rounded-base bg-black px-5 text-small-semi text-white transition hover:bg-grey-80 disabled:cursor-not-allowed disabled:opacity-40"
         :disabled="isLoading"
       >
-        {{ isLoading ? 'Signing in...' : 'Sign in' }}
+        {{ isLoading ? 'Входим...' : 'Войти' }}
       </button>
 
       <p class="mt-5 text-center text-small-regular text-grey-60">
-        No account yet?
-        <RouterLink
-          :to="registerLink"
-          class="font-semibold text-grey-90"
-        >
-          Create one
-        </RouterLink>
+        Ещё нет аккаунта?
+        <RouterLink :to="registerLink" class="font-semibold text-grey-90"> Создать </RouterLink>
       </p>
     </form>
   </section>

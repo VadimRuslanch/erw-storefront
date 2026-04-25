@@ -82,7 +82,7 @@ const categoryCards = computed<CategoryCard[]>(() => {
     cards.push({
       id: category.id,
       name: category.name,
-      description: category.description || 'Products grouped in this category.',
+      description: category.description || 'Товары, объединённые в этой категории.',
       handle: category.handle,
       depth,
       productCount: category.products?.length ?? 0,
@@ -159,14 +159,17 @@ watch(
 </script>
 
 <template>
-  <section class="border-b border-grey-20 bg-[linear-gradient(180deg,#f7f4ec_0%,#fffdf7_52%,#ffffff_100%)]">
+  <section
+    class="border-b border-grey-20 bg-[linear-gradient(180deg,#f7f4ec_0%,#fffdf7_52%,#ffffff_100%)]"
+  >
     <div class="content-container py-12">
-      <p class="text-small-semi uppercase tracking-[0.18em] text-grey-50">Catalog</p>
+      <p class="text-small-semi uppercase tracking-[0.18em] text-grey-50">Категории</p>
       <h1 class="mt-4 text-[clamp(2.5rem,5vw,4.5rem)] font-semibold leading-none text-grey-90">
-        Categories
+        Категории
       </h1>
       <p class="mt-5 max-w-2xl text-base-regular text-grey-60">
-        Select one or more categories, apply the filter, and continue to the matching product list.
+        Выберите одну или несколько категорий, примените фильтр и перейдите к подходящему списку
+        товаров.
       </p>
     </div>
   </section>
@@ -176,8 +179,8 @@ watch(
       <div class="rounded-rounded border border-grey-20 bg-white p-5">
         <div class="flex items-center justify-between gap-4 border-b border-grey-20 pb-4">
           <div>
-            <h2 class="text-large-semi text-grey-90">Categories</h2>
-            <p class="text-small-regular text-grey-50">{{ selectedCount }} selected</p>
+            <h2 class="text-large-semi text-grey-90">Категории</h2>
+            <p class="text-small-regular text-grey-50">Выбрано: {{ selectedCount }}</p>
           </div>
           <button
             type="button"
@@ -185,25 +188,15 @@ watch(
             :disabled="selectedCount === 0"
             @click="resetCategories"
           >
-            Reset
+            Сбросить
           </button>
         </div>
 
-        <div
-          v-if="isCategoriesLoading && categoryCards.length === 0"
-          class="space-y-3 py-5"
-        >
-          <div
-            v-for="index in 6"
-            :key="index"
-            class="h-5 animate-pulse rounded bg-grey-10"
-          />
+        <div v-if="isCategoriesLoading && categoryCards.length === 0" class="space-y-3 py-5">
+          <div v-for="index in 6" :key="index" class="h-5 animate-pulse rounded bg-grey-10" />
         </div>
 
-        <fieldset
-          v-else
-          class="max-h-[52vh] space-y-1 overflow-y-auto py-5 pr-1"
-        >
+        <fieldset v-else class="max-h-[52vh] space-y-1 overflow-y-auto py-5 pr-1">
           <legend class="sr-only">Category filter</legend>
           <label
             v-for="category in categoryCards"
@@ -227,21 +220,20 @@ watch(
           :disabled="isCategoriesLoading || categoryCards.length === 0"
           @click="applyCategories"
         >
-          Apply
+          Применить
         </button>
       </div>
     </aside>
 
     <div>
-      <div class="mb-6 flex flex-wrap items-center justify-between gap-4 border-b border-grey-20 pb-5">
+      <div
+        class="mb-6 flex flex-wrap items-center justify-between gap-4 border-b border-grey-20 pb-5"
+      >
         <p class="text-small-regular text-grey-60">
-          <span class="font-semibold text-grey-90">{{ categoryCards.length }}</span> categories
+          <span class="font-semibold text-grey-90">{{ categoryCards.length }}</span> категорий
         </p>
-        <p
-          v-if="selectedCategoryNames.length"
-          class="max-w-xl text-small-regular text-grey-50"
-        >
-          Selected: {{ selectedCategoryNames.join(', ') }}
+        <p v-if="selectedCategoryNames.length" class="max-w-xl text-small-regular text-grey-50">
+          Выбрано: {{ selectedCategoryNames.join(', ') }}
         </p>
       </div>
 
@@ -260,28 +252,22 @@ watch(
         </article>
       </div>
 
-      <div
-        v-else-if="categoryCards.length"
-        class="grid gap-5 sm:grid-cols-2 xl:grid-cols-3"
-      >
+      <div v-else-if="categoryCards.length" class="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
         <article
           v-for="category in categoryCards"
           :key="category.id"
           class="rounded-rounded border border-grey-20 bg-white p-5 transition duration-300 hover:-translate-y-1 hover:border-grey-40 hover:shadow-[0_24px_70px_-32px_rgba(17,24,39,0.28)]"
         >
-          <RouterLink
-            :to="categoryLink(category)"
-            class="block"
-          >
+          <RouterLink :to="categoryLink(category)" class="block">
             <p class="text-small-semi uppercase tracking-[0.14em] text-grey-50">
-              {{ category.productCount }} products
+              {{ category.productCount }} товаров
             </p>
             <h2 class="mt-3 text-xl-semi text-grey-90">{{ category.name }}</h2>
             <p class="mt-3 line-clamp-3 text-base-regular text-grey-60">
               {{ category.description }}
             </p>
             <p class="mt-5 text-small-semi uppercase tracking-[0.12em] text-grey-50">
-              View category
+              Открыть категорию
             </p>
           </RouterLink>
         </article>
@@ -291,9 +277,9 @@ watch(
         v-else
         class="rounded-rounded border border-dashed border-grey-30 bg-grey-5 px-6 py-14 text-center"
       >
-        <h2 class="text-xl-semi text-grey-90">No categories found</h2>
+        <h2 class="text-xl-semi text-grey-90">Категории не найдены</h2>
         <p class="mt-3 text-base-regular text-grey-60">
-          Categories will appear here once they are available in the store.
+          Категории появятся здесь, как только станут доступны в магазине.
         </p>
       </div>
     </div>

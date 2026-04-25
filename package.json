@@ -21,8 +21,7 @@
   "pnpm": {
     "overrides": {
       "@types/react": "19.0.5",
-      "@types/react-dom": "19.0.5",
-      "zod": "3.25.76"
+      "@types/react-dom": "19.0.5"
     },
     "onlyBuiltDependencies": [
       "@medusajs/telemetry",

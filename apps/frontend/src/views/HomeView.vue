@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useCatalogStore } from '@stores/catalog'
+import CatalogCover from '@/components/CatalogCover.vue'
 
 const catalogStore = useCatalogStore()
 
@@ -10,10 +11,22 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="content-container py-12">
-    <h1 class="text-3xl-semi">Home</h1>
-    <p class="mt-3 text-base-regular text-grey-60">
-      Vue SPA shell is ready for the home module migration.
-    </p>
+  <section class="catalog-page" aria-label="Обложка каталога ERAWADEE 2026">
+    <CatalogCover />
   </section>
 </template>
+
+<style scoped>
+.catalog-page {
+  min-height: calc(100vh - 64px);
+  background:
+    linear-gradient(180deg, rgb(var(--cream-rgb) / 0.86), rgb(var(--white-rgb) / 0.96)),
+    var(--cream);
+}
+
+@media (max-width: 640px) {
+  .catalog-page {
+    padding: 0;
+  }
+}
+</style>

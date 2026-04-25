@@ -151,7 +151,7 @@ async function applyPromotion() {
   try {
     await cartStore.applyPromotions(nextCodes)
     promoCode.value = ''
-    actionMessage.value = 'Promotion applied.'
+    actionMessage.value = 'Промокод применён.'
   } catch (err) {
     actionError.value = err instanceof Error ? err.message : String(err)
   } finally {
@@ -164,9 +164,12 @@ async function removePromotion(code?: string) {
     return
   }
 
-  const nextCodes = cart.value?.promotions
-    ?.map((promotion) => promotion.code)
-    .filter((promotionCode): promotionCode is string => Boolean(promotionCode && promotionCode !== code)) ?? []
+  const nextCodes =
+    cart.value?.promotions
+      ?.map((promotion) => promotion.code)
+      .filter((promotionCode): promotionCode is string =>
+        Boolean(promotionCode && promotionCode !== code),
+      ) ?? []
 
   actionError.value = null
   actionMessage.value = null
@@ -174,7 +177,7 @@ async function removePromotion(code?: string) {
 
   try {
     await cartStore.applyPromotions(nextCodes)
-    actionMessage.value = 'Promotion removed.'
+    actionMessage.value = 'Промокод удалён.'
   } catch (err) {
     actionError.value = err instanceof Error ? err.message : String(err)
   } finally {
@@ -188,23 +191,22 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="border-b border-grey-20 bg-[linear-gradient(180deg,#f7f4ec_0%,#fffdf7_52%,#ffffff_100%)]">
+  <section
+    class="border-b border-grey-20 bg-[linear-gradient(180deg,#f7f4ec_0%,#fffdf7_52%,#ffffff_100%)]"
+  >
     <div class="content-container py-12">
-      <p class="text-small-semi uppercase tracking-[0.18em] text-grey-50">Cart</p>
+      <p class="text-small-semi uppercase tracking-[0.18em] text-grey-50">Корзина</p>
       <h1 class="mt-4 text-[clamp(2.5rem,5vw,4.5rem)] font-semibold leading-none text-grey-90">
-        Shopping cart
+        Корзина покупок
       </h1>
       <p class="mt-5 max-w-2xl text-base-regular text-grey-60">
-        Review products, adjust quantities, and continue to checkout when everything looks right.
+        Проверьте товары, измените количество и переходите к оформлению, когда всё будет готово.
       </p>
     </div>
   </section>
 
   <section class="content-container py-10">
-    <div
-      v-if="isLoading && !cart"
-      class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_360px]"
-    >
+    <div v-if="isLoading && !cart" class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_360px]">
       <div class="space-y-4">
         <div
           v-for="index in 3"
@@ -219,7 +221,7 @@ onMounted(() => {
       v-else-if="error"
       class="rounded-rounded border border-dashed border-grey-30 bg-grey-5 px-6 py-14 text-center"
     >
-      <h2 class="text-xl-semi text-grey-90">Cart unavailable</h2>
+      <h2 class="text-xl-semi text-grey-90">Корзина недоступна</h2>
       <p class="mt-3 text-base-regular text-grey-60">{{ error }}</p>
     </div>
 
@@ -227,32 +229,26 @@ onMounted(() => {
       v-else-if="!hasItems"
       class="rounded-rounded border border-dashed border-grey-30 bg-grey-5 px-6 py-14 text-center"
     >
-      <h2 class="text-xl-semi text-grey-90">Your cart is empty</h2>
+      <h2 class="text-xl-semi text-grey-90">Ваша корзина пуста</h2>
       <p class="mt-3 text-base-regular text-grey-60">
-        Add a product to your cart and it will appear here.
+        Добавьте товар в корзину, и он появится здесь.
       </p>
       <RouterLink
         :to="storeLink"
         class="mt-6 inline-flex h-11 items-center rounded-base bg-black px-5 text-small-semi text-white hover:bg-grey-80 hover:text-white"
       >
-        Continue shopping
+        Перейти к покупкам
       </RouterLink>
     </div>
 
-    <div
-      v-else
-      class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start"
-    >
+    <div v-else class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start">
       <div>
         <div class="mb-5 flex items-center justify-between gap-4 border-b border-grey-20 pb-5">
           <p class="text-small-regular text-grey-60">
-            <span class="font-semibold text-grey-90">{{ itemCount }}</span> items
+            <span class="font-semibold text-grey-90">{{ itemCount }}</span> товаров
           </p>
-          <RouterLink
-            :to="storeLink"
-            class="text-small-semi text-grey-90"
-          >
-            Continue shopping
+          <RouterLink :to="storeLink" class="text-small-semi text-grey-90">
+            Продолжить покупки
           </RouterLink>
         </div>
 
@@ -275,16 +271,10 @@ onMounted(() => {
 
             <div class="grid gap-4 md:grid-cols-[minmax(0,1fr)_180px]">
               <div>
-                <RouterLink
-                  :to="productLink(item)"
-                  class="text-large-semi text-grey-90"
-                >
+                <RouterLink :to="productLink(item)" class="text-large-semi text-grey-90">
                   {{ itemTitle(item) }}
                 </RouterLink>
-                <p
-                  v-if="itemVariantLabel(item)"
-                  class="mt-1 text-small-regular text-grey-50"
-                >
+                <p v-if="itemVariantLabel(item)" class="mt-1 text-small-regular text-grey-50">
                   {{ itemVariantLabel(item) }}
                 </p>
                 <p
@@ -294,7 +284,7 @@ onMounted(() => {
                   SKU: {{ item.variant_sku || item.variant?.sku }}
                 </p>
                 <p class="mt-3 text-base-regular text-grey-60">
-                  {{ formatAmount(item.unit_price) }} each
+                  {{ formatAmount(item.unit_price) }} за штуку
                 </p>
               </div>
 
@@ -314,7 +304,9 @@ onMounted(() => {
                     min="1"
                     class="h-full w-14 border-x border-grey-20 text-center text-base-regular outline-none"
                     :disabled="isLineUpdating(item.id)"
-                    @change="updateQuantity(item, Number(($event.target as HTMLInputElement).value))"
+                    @change="
+                      updateQuantity(item, Number(($event.target as HTMLInputElement).value))
+                    "
                   />
                   <button
                     type="button"
@@ -328,13 +320,12 @@ onMounted(() => {
 
                 <div class="text-left md:text-right">
                   <p class="text-large-semi text-grey-90">
-                    {{ formatAmount(item.total ?? item.subtotal ?? item.unit_price * item.quantity) }}
+                    {{
+                      formatAmount(item.total ?? item.subtotal ?? item.unit_price * item.quantity)
+                    }}
                   </p>
-                  <p
-                    v-if="item.discount_total"
-                    class="text-small-regular text-grey-50"
-                  >
-                    Discount {{ formatAmount(item.discount_total) }}
+                  <p v-if="item.discount_total" class="text-small-regular text-grey-50">
+                    Скидка {{ formatAmount(item.discount_total) }}
                   </p>
                 </div>
 
@@ -344,7 +335,7 @@ onMounted(() => {
                   :disabled="isLineUpdating(item.id)"
                   @click="removeItem(item)"
                 >
-                  Remove
+                  Удалить
                 </button>
               </div>
             </div>
@@ -353,41 +344,35 @@ onMounted(() => {
       </div>
 
       <aside class="rounded-rounded border border-grey-20 bg-white p-5 lg:sticky lg:top-24">
-        <h2 class="text-large-semi text-grey-90">Summary</h2>
+        <h2 class="text-large-semi text-grey-90">Итого</h2>
 
         <dl class="mt-5 space-y-3 border-b border-grey-20 pb-5">
           <div class="flex items-center justify-between gap-4">
-            <dt class="text-base-regular text-grey-60">Subtotal</dt>
+            <dt class="text-base-regular text-grey-60">Подытог</dt>
             <dd class="text-base-semi text-grey-90">{{ formatAmount(cart?.subtotal) }}</dd>
           </div>
-          <div
-            v-if="cart?.discount_total"
-            class="flex items-center justify-between gap-4"
-          >
-            <dt class="text-base-regular text-grey-60">Discount</dt>
+          <div v-if="cart?.discount_total" class="flex items-center justify-between gap-4">
+            <dt class="text-base-regular text-grey-60">Скидка</dt>
             <dd class="text-base-semi text-grey-90">-{{ formatAmount(cart.discount_total) }}</dd>
           </div>
           <div class="flex items-center justify-between gap-4">
-            <dt class="text-base-regular text-grey-60">Shipping</dt>
+            <dt class="text-base-regular text-grey-60">Доставка</dt>
             <dd class="text-base-semi text-grey-90">{{ formatAmount(cart?.shipping_total) }}</dd>
           </div>
           <div class="flex items-center justify-between gap-4">
-            <dt class="text-base-regular text-grey-60">Taxes</dt>
+            <dt class="text-base-regular text-grey-60">Налоги</dt>
             <dd class="text-base-semi text-grey-90">{{ formatAmount(cart?.tax_total) }}</dd>
           </div>
         </dl>
 
         <div class="mt-5 flex items-center justify-between gap-4">
-          <span class="text-large-semi text-grey-90">Total</span>
+          <span class="text-large-semi text-grey-90">Итого</span>
           <span class="text-xl-semi text-grey-90">{{ formatAmount(cart?.total) }}</span>
         </div>
 
-        <form
-          class="mt-6"
-          @submit.prevent="applyPromotion"
-        >
+        <form class="mt-6" @submit.prevent="applyPromotion">
           <label class="block">
-            <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Promo code</span>
+            <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Промокод</span>
             <div class="mt-2 grid grid-cols-[minmax(0,1fr)_92px] gap-2">
               <input
                 v-model.trim="promoCode"
@@ -399,16 +384,13 @@ onMounted(() => {
                 class="h-11 rounded-base border border-grey-20 px-3 text-small-semi text-grey-90 transition hover:border-grey-40 disabled:cursor-not-allowed disabled:opacity-40"
                 :disabled="isApplyingPromotion || !promoCode.trim()"
               >
-                Apply
+                Применить
               </button>
             </div>
           </label>
         </form>
 
-        <div
-          v-if="cart?.promotions?.length"
-          class="mt-4 flex flex-wrap gap-2"
-        >
+        <div v-if="cart?.promotions?.length" class="mt-4 flex flex-wrap gap-2">
           <button
             v-for="promotion in cart.promotions"
             :key="promotion.id"
@@ -417,7 +399,7 @@ onMounted(() => {
             :disabled="isApplyingPromotion"
             @click="removePromotion(promotion.code)"
           >
-            {{ promotion.code || 'Promotion' }} x
+            {{ promotion.code || 'Промокод' }} x
           </button>
         </div>
 
@@ -438,7 +420,7 @@ onMounted(() => {
           :to="checkoutLink"
           class="mt-6 flex h-12 w-full items-center justify-center rounded-base bg-black px-5 text-small-semi text-white transition hover:bg-grey-80 hover:text-white"
         >
-          Checkout
+          Оформить заказ
         </RouterLink>
       </aside>
     </div>

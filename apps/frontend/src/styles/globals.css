@@ -1,14 +1,40 @@
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
 
 @layer base {
+  :root {
+    --brand-dark: #2d4a1e;
+    --brand-olive: #3d6b2e;
+    --brand-lime: #8cb63c;
+    --brand-lime-light: #a5d44b;
+    --cream: #f5f0e8;
+    --gold: #c8a84e;
+    --white: #ffffff;
+    --brand-dark-rgb: 45 74 30;
+    --brand-olive-rgb: 61 107 46;
+    --brand-lime-rgb: 140 182 60;
+    --brand-lime-light-rgb: 165 212 75;
+    --cream-rgb: 245 240 232;
+    --white-rgb: 255 255 255;
+    --text-dark: #2f332b;
+    --text-muted: #6f7568;
+    --border-soft: rgb(var(--brand-dark-rgb) / 0.14);
+    --shadow-soft: 0 24px 60px rgb(var(--brand-dark-rgb) / 0.14);
+    --font-serif: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --font-sans: 'Nunito Sans', Calibri, Arial, sans-serif;
+  }
+
   html {
     color-scheme: light;
   }
 
   body {
     @apply bg-white font-sans text-grey-90 antialiased;
+    overflow-x: hidden;
+    color: var(--text-dark);
+    font-family: var(--font-sans);
+    line-height: 1.65;
   }
 
   a {
@@ -48,16 +74,16 @@
   select:-webkit-autofill,
   select:-webkit-autofill:hover,
   select:-webkit-autofill:focus {
-    border: 1px solid #212121;
-    -webkit-text-fill-color: #212121;
-    -webkit-box-shadow: 0 0 0 1000px #fff inset;
+    border: 1px solid var(--text-dark);
+    -webkit-text-fill-color: var(--text-dark);
+    -webkit-box-shadow: 0 0 0 1000px var(--white) inset;
     transition: background-color 5000s ease-in-out 0s;
   }
 
-  input[type="search"]::-webkit-search-decoration,
-  input[type="search"]::-webkit-search-cancel-button,
-  input[type="search"]::-webkit-search-results-button,
-  input[type="search"]::-webkit-search-results-decoration {
+  input[type='search']::-webkit-search-decoration,
+  input[type='search']::-webkit-search-cancel-button,
+  input[type='search']::-webkit-search-results-button,
+  input[type='search']::-webkit-search-results-decoration {
     -webkit-appearance: none;
   }
 }

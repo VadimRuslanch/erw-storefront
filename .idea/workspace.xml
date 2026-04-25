@@ -4,7 +4,28 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5af0ba0c-d1cb-47ad-aeb9-b711a2d526ff" name="Changes" comment="added front, fix medusa backend" />
+    <list default="true" id="5af0ba0c-d1cb-47ad-aeb9-b711a2d526ff" name="Changes" comment="added HomePage">
+      <change afterPath="$PROJECT_DIR$/apps/frontend/AGENTS.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/frontend/src/components/CatalogCover.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/frontend/src/content/erawadeeCatalogCover.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/frontend/.vscode/extensions.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/frontend/src/api/products.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/api/products.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/frontend/src/layouts/CheckoutLayout.vue" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/layouts/CheckoutLayout.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/frontend/src/layouts/MainLayout.vue" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/layouts/MainLayout.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/frontend/src/styles/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/styles/globals.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/frontend/src/views/AccountView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/views/AccountView.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/frontend/src/views/CartView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/views/CartView.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/frontend/src/views/CatalogView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/views/CatalogView.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/frontend/src/views/CheckoutView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/views/CheckoutView.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/frontend/src/views/HomeView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/views/HomeView.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/frontend/src/views/LoginView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/views/LoginView.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/frontend/src/views/RegisterView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/views/RegisterView.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/frontend/src/views/StoreView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/views/StoreView.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pnpm-lock.yaml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -19,12 +40,12 @@
     &quot;assignee&quot;: &quot;VadimRuslanch&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/VadimRuslanch/erw-storefront.git&quot;,
-    &quot;accountId&quot;: &quot;9ece01fa-89dc-4f60-8b99-43917d47ab6a&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/VadimRuslanch/erw-storefront.git",
+    "accountId": "5a356611-367f-4d70-92d1-c0237897e553"
   }
-}</component>
+}]]></component>
   <component name="PackageJsonUpdateNotifier">
     <dismissed value="$PROJECT_DIR$/apps/backend/package.json" />
     <dismissed value="$PROJECT_DIR$/package.json" />
@@ -44,33 +65,34 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;javascript.preferred.runtime.type.id&quot;: &quot;node&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/projects/dev/erw-storefront/apps/frontend&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;pnpm&quot;,
-    &quot;npm.build.executor&quot;: &quot;Run&quot;,
-    &quot;npm.dev.executor&quot;: &quot;Run&quot;,
-    &quot;npm.frontend &gt; dev.executor&quot;: &quot;Run&quot;,
-    &quot;npm.storefront &gt; dev.executor&quot;: &quot;Run&quot;,
-    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;D:\\projects\\dev\\erw-storefront\\node_modules\\prettier&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;vcs.Git&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/Users/lugengster/Desktop/project/erw-storefront/apps/storefront/node_modules/typescript/lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "git-widget-placeholder": "main",
+    "javascript.preferred.runtime.type.id": "node",
+    "last_opened_file_path": "D:/projects/dev/erw-storefront/apps/frontend",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "pnpm",
+    "npm.build.executor": "Run",
+    "npm.dev.executor": "Run",
+    "npm.frontend > dev.executor": "Run",
+    "npm.storefront > dev.executor": "Run",
+    "prettierjs.PrettierConfiguration.Package": "/Users/lugengster/Desktop/project/erw-storefront/node_modules/prettier",
+    "settings.editor.selected.configurable": "vcs.Git",
+    "ts.external.directory.path": "/Users/lugengster/Desktop/project/erw-storefront/apps/storefront/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="ReactDesignerToolWindowState">
     <option name="myId2Visible">
       <map>
@@ -160,6 +182,7 @@
       <workItem from="1777009588484" duration="8698000" />
       <workItem from="1777093891269" duration="78000" />
       <workItem from="1777093975411" duration="3988000" />
+      <workItem from="1777099781814" duration="12734000" />
     </task>
     <task id="LOCAL-00001" summary="prod build">
       <option name="closed" value="true" />
@@ -177,7 +200,15 @@
       <option name="project" value="LOCAL" />
       <updated>1777021431383</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="added front, fix medusa backend">
+      <option name="closed" value="true" />
+      <created>1777099889573</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1777099889573</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -186,6 +217,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="prod build" />
     <MESSAGE value="added front, fix medusa backend" />
-    <option name="LAST_COMMIT_MESSAGE" value="added front, fix medusa backend" />
+    <MESSAGE value="added HomePage" />
+    <option name="LAST_COMMIT_MESSAGE" value="added HomePage" />
   </component>
 </project>

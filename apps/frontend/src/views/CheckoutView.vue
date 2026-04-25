@@ -81,10 +81,6 @@ const currencyCode = computed(() => {
 const cartLink = computed(() => `/${countryCode.value}/cart`)
 const storeLink = computed(() => `/${countryCode.value}/store`)
 
-const selectedShippingOption = computed(() => {
-  return shippingOptions.value.find((option) => option.id === selectedShippingOptionId.value) ?? null
-})
-
 const selectedPaymentSession = computed(() => {
   return cart.value?.payment_collection?.payment_sessions?.find((session) => {
     return session.provider_id === selectedPaymentProviderId.value
@@ -219,7 +215,7 @@ async function saveAddresses() {
     hydrateFromCart()
     await loadShippingOptions()
     await loadPaymentProviders()
-    stepMessage.value = 'Checkout details saved.'
+    stepMessage.value = 'Данные оформления сохранены.'
   } catch (err) {
     errorMessage.value = err instanceof Error ? err.message : String(err)
   } finally {
@@ -238,7 +234,7 @@ async function chooseShippingMethod() {
   try {
     await cartStore.setShippingMethod(selectedShippingOptionId.value)
     hydrateFromCart()
-    stepMessage.value = 'Shipping method selected.'
+    stepMessage.value = 'Способ доставки выбран.'
   } catch (err) {
     errorMessage.value = err instanceof Error ? err.message : String(err)
   }
@@ -257,7 +253,7 @@ async function initializePayment() {
       provider_id: selectedPaymentProviderId.value,
     })
     await cartStore.loadCart(cart.value.id)
-    stepMessage.value = 'Payment initialized.'
+    stepMessage.value = 'Оплата инициализирована.'
   } catch (err) {
     errorMessage.value = err instanceof Error ? err.message : String(err)
   }
@@ -287,7 +283,7 @@ async function placeOrder() {
       return
     }
 
-    errorMessage.value = result?.error?.message ?? 'Could not place this order.'
+    errorMessage.value = result?.error?.message ?? 'Не удалось оформить заказ.'
   } catch (err) {
     errorMessage.value = err instanceof Error ? err.message : String(err)
   }
@@ -304,14 +300,11 @@ onMounted(async () => {
 <template>
   <section>
     <div class="mb-8">
-      <p class="text-small-semi uppercase tracking-[0.18em] text-grey-50">Checkout</p>
-      <h1 class="mt-4 text-3xl-semi text-grey-90">Checkout</h1>
+      <p class="text-small-semi uppercase tracking-[0.18em] text-grey-50">Оформление</p>
+      <h1 class="mt-4 text-3xl-semi text-grey-90">Оформление заказа</h1>
     </div>
 
-    <div
-      v-if="isLoading && !cart"
-      class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_360px]"
-    >
+    <div v-if="isLoading && !cart" class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_360px]">
       <div class="space-y-5">
         <div class="h-52 animate-pulse rounded-rounded bg-grey-10" />
         <div class="h-64 animate-pulse rounded-rounded bg-grey-10" />
@@ -323,29 +316,23 @@ onMounted(async () => {
       v-else-if="!hasItems"
       class="rounded-rounded border border-dashed border-grey-30 bg-grey-5 px-6 py-14 text-center"
     >
-      <h2 class="text-xl-semi text-grey-90">Your cart is empty</h2>
-      <p class="mt-3 text-base-regular text-grey-60">Add products before checkout.</p>
+      <h2 class="text-xl-semi text-grey-90">Ваша корзина пуста</h2>
+      <p class="mt-3 text-base-regular text-grey-60">Добавьте товары перед оформлением заказа.</p>
       <RouterLink
         :to="storeLink"
         class="mt-6 inline-flex h-11 items-center rounded-base bg-black px-5 text-small-semi text-white hover:bg-grey-80 hover:text-white"
       >
-        Continue shopping
+        Перейти к покупкам
       </RouterLink>
     </div>
 
-    <div
-      v-else
-      class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start"
-    >
-      <form
-        class="space-y-6"
-        @submit.prevent="placeOrder"
-      >
+    <div v-else class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start">
+      <form class="space-y-6" @submit.prevent="placeOrder">
         <section class="rounded-rounded border border-grey-20 bg-white p-5">
           <div class="flex items-start justify-between gap-4 border-b border-grey-20 pb-4">
             <div>
-              <h2 class="text-large-semi text-grey-90">Contact</h2>
-              <p class="text-small-regular text-grey-50">Email for order updates</p>
+              <h2 class="text-large-semi text-grey-90">Контакты</h2>
+              <p class="text-small-regular text-grey-50">Email для обновлений по заказу</p>
             </div>
           </div>
 
@@ -363,13 +350,13 @@ onMounted(async () => {
 
         <section class="rounded-rounded border border-grey-20 bg-white p-5">
           <div class="border-b border-grey-20 pb-4">
-            <h2 class="text-large-semi text-grey-90">Shipping address</h2>
-            <p class="text-small-regular text-grey-50">Delivery destination</p>
+            <h2 class="text-large-semi text-grey-90">Адрес доставки</h2>
+            <p class="text-small-regular text-grey-50">Куда доставить заказ</p>
           </div>
 
           <div class="mt-5 grid gap-4 sm:grid-cols-2">
             <label class="block">
-              <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">First name</span>
+              <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Имя</span>
               <input
                 v-model.trim="shippingAddress.first_name"
                 type="text"
@@ -380,7 +367,7 @@ onMounted(async () => {
             </label>
 
             <label class="block">
-              <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Last name</span>
+              <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Фамилия</span>
               <input
                 v-model.trim="shippingAddress.last_name"
                 type="text"
@@ -391,7 +378,7 @@ onMounted(async () => {
             </label>
 
             <label class="block sm:col-span-2">
-              <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Address</span>
+              <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Адрес</span>
               <input
                 v-model.trim="shippingAddress.address_1"
                 type="text"
@@ -402,7 +389,9 @@ onMounted(async () => {
             </label>
 
             <label class="block sm:col-span-2">
-              <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Apartment</span>
+              <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50"
+                >Квартира / офис</span
+              >
               <input
                 v-model.trim="shippingAddress.address_2"
                 type="text"
@@ -412,7 +401,7 @@ onMounted(async () => {
             </label>
 
             <label class="block">
-              <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">City</span>
+              <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Город</span>
               <input
                 v-model.trim="shippingAddress.city"
                 type="text"
@@ -423,7 +412,7 @@ onMounted(async () => {
             </label>
 
             <label class="block">
-              <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Province</span>
+              <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Регион</span>
               <input
                 v-model.trim="shippingAddress.province"
                 type="text"
@@ -433,7 +422,7 @@ onMounted(async () => {
             </label>
 
             <label class="block">
-              <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Postal code</span>
+              <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Индекс</span>
               <input
                 v-model.trim="shippingAddress.postal_code"
                 type="text"
@@ -444,7 +433,7 @@ onMounted(async () => {
             </label>
 
             <label class="block">
-              <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Country</span>
+              <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Страна</span>
               <input
                 v-model.trim="shippingAddress.country_code"
                 type="text"
@@ -455,7 +444,7 @@ onMounted(async () => {
             </label>
 
             <label class="block sm:col-span-2">
-              <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Phone</span>
+              <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Телефон</span>
               <input
                 v-model.trim="shippingAddress.phone"
                 type="tel"
@@ -471,7 +460,7 @@ onMounted(async () => {
               type="checkbox"
               class="h-4 w-4 rounded-base border-grey-30 text-grey-90 focus:ring-grey-40"
             />
-            Billing address is the same
+            Платёжный адрес совпадает с адресом доставки
           </label>
         </section>
 
@@ -480,13 +469,13 @@ onMounted(async () => {
           class="rounded-rounded border border-grey-20 bg-white p-5"
         >
           <div class="border-b border-grey-20 pb-4">
-            <h2 class="text-large-semi text-grey-90">Billing address</h2>
-            <p class="text-small-regular text-grey-50">Billing details</p>
+            <h2 class="text-large-semi text-grey-90">Платёжный адрес</h2>
+            <p class="text-small-regular text-grey-50">Данные для оплаты</p>
           </div>
 
           <div class="mt-5 grid gap-4 sm:grid-cols-2">
             <label class="block">
-              <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">First name</span>
+              <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Имя</span>
               <input
                 v-model.trim="billingAddress.first_name"
                 type="text"
@@ -495,7 +484,7 @@ onMounted(async () => {
               />
             </label>
             <label class="block">
-              <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Last name</span>
+              <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Фамилия</span>
               <input
                 v-model.trim="billingAddress.last_name"
                 type="text"
@@ -504,7 +493,7 @@ onMounted(async () => {
               />
             </label>
             <label class="block sm:col-span-2">
-              <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Address</span>
+              <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Адрес</span>
               <input
                 v-model.trim="billingAddress.address_1"
                 type="text"
@@ -513,7 +502,7 @@ onMounted(async () => {
               />
             </label>
             <label class="block">
-              <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">City</span>
+              <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Город</span>
               <input
                 v-model.trim="billingAddress.city"
                 type="text"
@@ -522,7 +511,7 @@ onMounted(async () => {
               />
             </label>
             <label class="block">
-              <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Postal code</span>
+              <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Индекс</span>
               <input
                 v-model.trim="billingAddress.postal_code"
                 type="text"
@@ -531,7 +520,7 @@ onMounted(async () => {
               />
             </label>
             <label class="block">
-              <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Country</span>
+              <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Страна</span>
               <input
                 v-model.trim="billingAddress.country_code"
                 type="text"
@@ -540,7 +529,7 @@ onMounted(async () => {
               />
             </label>
             <label class="block">
-              <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Phone</span>
+              <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Телефон</span>
               <input
                 v-model.trim="billingAddress.phone"
                 type="tel"
@@ -551,10 +540,12 @@ onMounted(async () => {
         </section>
 
         <section class="rounded-rounded border border-grey-20 bg-white p-5">
-          <div class="flex flex-wrap items-center justify-between gap-4 border-b border-grey-20 pb-4">
+          <div
+            class="flex flex-wrap items-center justify-between gap-4 border-b border-grey-20 pb-4"
+          >
             <div>
-              <h2 class="text-large-semi text-grey-90">Delivery</h2>
-              <p class="text-small-regular text-grey-50">Available shipping methods</p>
+              <h2 class="text-large-semi text-grey-90">Доставка</h2>
+              <p class="text-small-regular text-grey-50">Доступные способы доставки</p>
             </div>
             <button
               type="button"
@@ -562,14 +553,11 @@ onMounted(async () => {
               :disabled="isSavingAddress"
               @click="saveAddresses"
             >
-              {{ isSavingAddress ? 'Saving...' : 'Save details' }}
+              {{ isSavingAddress ? 'Сохраняем...' : 'Сохранить данные' }}
             </button>
           </div>
 
-          <div
-            v-if="isLoadingShipping"
-            class="mt-5 space-y-3"
-          >
+          <div v-if="isLoadingShipping" class="mt-5 space-y-3">
             <div
               v-for="index in 2"
               :key="index"
@@ -577,10 +565,7 @@ onMounted(async () => {
             />
           </div>
 
-          <div
-            v-else-if="shippingOptions.length"
-            class="mt-5 grid gap-3"
-          >
+          <div v-else-if="shippingOptions.length" class="mt-5 grid gap-3">
             <label
               v-for="option in shippingOptions"
               :key="option.id"
@@ -605,7 +590,7 @@ onMounted(async () => {
                     v-if="option.insufficient_inventory"
                     class="block text-small-regular text-grey-50"
                   >
-                    Insufficient inventory
+                    Недостаточно товара
                   </span>
                 </span>
               </span>
@@ -620,29 +605,26 @@ onMounted(async () => {
               :disabled="!selectedShippingOptionId"
               @click="chooseShippingMethod"
             >
-              Select delivery
+              Выбрать доставку
             </button>
           </div>
 
-          <p
-            v-else
-            class="mt-5 text-base-regular text-grey-60"
-          >
-            Save checkout details to load shipping methods.
+          <p v-else class="mt-5 text-base-regular text-grey-60">
+            Сохраните данные оформления, чтобы загрузить способы доставки.
           </p>
         </section>
 
         <section class="rounded-rounded border border-grey-20 bg-white p-5">
           <div class="border-b border-grey-20 pb-4">
-            <h2 class="text-large-semi text-grey-90">Payment</h2>
-            <p class="text-small-regular text-grey-50">Payment provider</p>
+            <h2 class="text-large-semi text-grey-90">Оплата</h2>
+            <p class="text-small-regular text-grey-50">Платёжный провайдер</p>
           </div>
 
           <div
             v-if="cart?.total === 0"
             class="mt-5 rounded-base bg-grey-5 px-4 py-3 text-base-regular text-grey-70"
           >
-            No payment is required.
+            Оплата не требуется.
           </div>
 
           <div
@@ -650,10 +632,7 @@ onMounted(async () => {
             class="mt-5 h-16 animate-pulse rounded-rounded bg-grey-10"
           />
 
-          <div
-            v-else-if="paymentProviders.length"
-            class="mt-5 grid gap-3"
-          >
+          <div v-else-if="paymentProviders.length" class="mt-5 grid gap-3">
             <label
               v-for="provider in paymentProviders"
               :key="provider.id"
@@ -679,15 +658,12 @@ onMounted(async () => {
               :disabled="!selectedPaymentProviderId"
               @click="initializePayment"
             >
-              Initialize payment
+              Инициализировать оплату
             </button>
           </div>
 
-          <p
-            v-else
-            class="mt-5 text-base-regular text-grey-60"
-          >
-            No payment providers are available for this region.
+          <p v-else class="mt-5 text-base-regular text-grey-60">
+            Для этого региона нет доступных платёжных провайдеров.
           </p>
         </section>
 
@@ -709,20 +685,18 @@ onMounted(async () => {
           class="h-12 w-full rounded-base bg-black px-5 text-small-semi text-white transition hover:bg-grey-80 disabled:cursor-not-allowed disabled:opacity-40"
           :disabled="!canPlaceOrder"
         >
-          {{ isSubmitting ? 'Placing order...' : 'Place order' }}
+          {{ isSubmitting ? 'Оформляем заказ...' : 'Оформить заказ' }}
         </button>
       </form>
 
       <aside class="rounded-rounded border border-grey-20 bg-white p-5 lg:sticky lg:top-8">
-        <h2 class="text-large-semi text-grey-90">Order summary</h2>
+        <h2 class="text-large-semi text-grey-90">Состав заказа</h2>
 
         <div class="mt-5 divide-y divide-grey-20 border-y border-grey-20">
-          <article
-            v-for="item in cartItems"
-            :key="item.id"
-            class="flex gap-3 py-4"
-          >
-            <div class="h-16 w-16 shrink-0 overflow-hidden rounded-base border border-grey-20 bg-grey-5">
+          <article v-for="item in cartItems" :key="item.id" class="flex gap-3 py-4">
+            <div
+              class="h-16 w-16 shrink-0 overflow-hidden rounded-base border border-grey-20 bg-grey-5"
+            >
               <img
                 :src="item.thumbnail || item.product?.thumbnail || ''"
                 :alt="item.product_title || item.title"
@@ -730,8 +704,10 @@ onMounted(async () => {
               />
             </div>
             <div class="min-w-0 flex-1">
-              <p class="truncate text-base-semi text-grey-90">{{ item.product_title || item.title }}</p>
-              <p class="text-small-regular text-grey-50">Qty {{ item.quantity }}</p>
+              <p class="truncate text-base-semi text-grey-90">
+                {{ item.product_title || item.title }}
+              </p>
+              <p class="text-small-regular text-grey-50">Кол-во: {{ item.quantity }}</p>
             </div>
             <p class="text-base-semi text-grey-90">
               {{ formatAmount(item.total ?? item.unit_price * item.quantity) }}
@@ -741,28 +717,25 @@ onMounted(async () => {
 
         <dl class="mt-5 space-y-3 border-b border-grey-20 pb-5">
           <div class="flex items-center justify-between gap-4">
-            <dt class="text-base-regular text-grey-60">Subtotal</dt>
+            <dt class="text-base-regular text-grey-60">Подытог</dt>
             <dd class="text-base-semi text-grey-90">{{ formatAmount(cart?.subtotal) }}</dd>
           </div>
-          <div
-            v-if="cart?.discount_total"
-            class="flex items-center justify-between gap-4"
-          >
-            <dt class="text-base-regular text-grey-60">Discount</dt>
+          <div v-if="cart?.discount_total" class="flex items-center justify-between gap-4">
+            <dt class="text-base-regular text-grey-60">Скидка</dt>
             <dd class="text-base-semi text-grey-90">-{{ formatAmount(cart.discount_total) }}</dd>
           </div>
           <div class="flex items-center justify-between gap-4">
-            <dt class="text-base-regular text-grey-60">Shipping</dt>
+            <dt class="text-base-regular text-grey-60">Доставка</dt>
             <dd class="text-base-semi text-grey-90">{{ formatAmount(cart?.shipping_total) }}</dd>
           </div>
           <div class="flex items-center justify-between gap-4">
-            <dt class="text-base-regular text-grey-60">Taxes</dt>
+            <dt class="text-base-regular text-grey-60">Налоги</dt>
             <dd class="text-base-semi text-grey-90">{{ formatAmount(cart?.tax_total) }}</dd>
           </div>
         </dl>
 
         <div class="mt-5 flex items-center justify-between gap-4">
-          <span class="text-large-semi text-grey-90">Total</span>
+          <span class="text-large-semi text-grey-90">Итого</span>
           <span class="text-xl-semi text-grey-90">{{ formatAmount(cart?.total) }}</span>
         </div>
 
@@ -770,7 +743,7 @@ onMounted(async () => {
           :to="cartLink"
           class="mt-6 flex h-11 w-full items-center justify-center rounded-base border border-grey-20 px-4 text-small-semi text-grey-90 transition hover:border-grey-40"
         >
-          Back to cart
+          Вернуться в корзину
         </RouterLink>
       </aside>
     </div>

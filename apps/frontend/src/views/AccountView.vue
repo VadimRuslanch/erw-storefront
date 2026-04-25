@@ -17,7 +17,7 @@ const displayName = computed(() => {
   const lastName = customer.value?.last_name
   const fullName = [firstName, lastName].filter(Boolean).join(' ')
 
-  return fullName || customer.value?.email || 'Customer'
+  return fullName || customer.value?.email || 'Клиент'
 })
 
 async function signout() {
@@ -32,30 +32,24 @@ onMounted(() => {
 
 <template>
   <section class="content-container py-12">
-    <div
-      v-if="isLoading && !customer"
-      class="max-w-2xl space-y-4"
-    >
+    <div v-if="isLoading && !customer" class="max-w-2xl space-y-4">
       <div class="h-5 w-24 animate-pulse rounded bg-grey-10" />
       <div class="h-12 w-3/4 animate-pulse rounded bg-grey-10" />
       <div class="h-20 animate-pulse rounded bg-grey-10" />
     </div>
 
-    <div
-      v-else-if="customer"
-      class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_280px]"
-    >
+    <div v-else-if="customer" class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_280px]">
       <div>
-        <p class="text-small-semi uppercase tracking-[0.18em] text-grey-50">Account</p>
+        <p class="text-small-semi uppercase tracking-[0.18em] text-grey-50">Аккаунт</p>
         <h1 class="mt-4 text-3xl-semi text-grey-90">{{ displayName }}</h1>
         <p class="mt-3 text-base-regular text-grey-60">{{ customer.email }}</p>
       </div>
 
       <div class="rounded-rounded border border-grey-20 bg-white p-5">
         <nav class="grid gap-2 text-base-regular">
-          <RouterLink :to="`/${countryCode}/account/profile`">Profile</RouterLink>
-          <RouterLink :to="`/${countryCode}/account/addresses`">Addresses</RouterLink>
-          <RouterLink :to="`/${countryCode}/account/orders`">Orders</RouterLink>
+          <RouterLink :to="`/${countryCode}/account/profile`">Профиль</RouterLink>
+          <RouterLink :to="`/${countryCode}/account/addresses`">Адреса</RouterLink>
+          <RouterLink :to="`/${countryCode}/account/orders`">Заказы</RouterLink>
         </nav>
 
         <button
@@ -64,19 +58,16 @@ onMounted(() => {
           :disabled="isLoading"
           @click="signout"
         >
-          Sign out
+          Выйти
         </button>
       </div>
     </div>
 
-    <div
-      v-else
-      class="max-w-2xl"
-    >
-      <p class="text-small-semi uppercase tracking-[0.18em] text-grey-50">Account</p>
-      <h1 class="mt-4 text-3xl-semi text-grey-90">Sign in to your account</h1>
+    <div v-else class="max-w-2xl">
+      <p class="text-small-semi uppercase tracking-[0.18em] text-grey-50">Аккаунт</p>
+      <h1 class="mt-4 text-3xl-semi text-grey-90">Войдите в аккаунт</h1>
       <p class="mt-3 text-base-regular text-grey-60">
-        Log in or create an account to keep your cart and customer details connected.
+        Войдите или создайте аккаунт, чтобы сохранить корзину и данные покупателя.
       </p>
 
       <div class="mt-6 flex flex-wrap gap-3">
@@ -84,13 +75,13 @@ onMounted(() => {
           :to="`/${countryCode}/login?redirect=/${countryCode}/account`"
           class="inline-flex h-11 items-center rounded-base bg-black px-5 text-small-semi text-white hover:bg-grey-80 hover:text-white"
         >
-          Sign in
+          Войти
         </RouterLink>
         <RouterLink
           :to="`/${countryCode}/register?redirect=/${countryCode}/account`"
           class="inline-flex h-11 items-center rounded-base border border-grey-20 px-5 text-small-semi text-grey-90 hover:border-grey-40"
         >
-          Create account
+          Создать аккаунт
         </RouterLink>
       </div>
     </div>

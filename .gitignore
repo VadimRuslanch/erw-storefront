@@ -2,7 +2,8 @@
 node_modules
 .pnp
 .pnp.js
-
+.idea
+.idea/*
 # Yarn 2+
 .yarn/*
 .yarn

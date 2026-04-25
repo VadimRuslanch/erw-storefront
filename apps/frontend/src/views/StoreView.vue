@@ -11,9 +11,9 @@ import { useRegionStore } from '@stores/region'
 const PAGE_SIZE = 12
 
 const sortOptions: Array<{ value: SortOptions; label: string }> = [
-  { value: 'created_at', label: 'Newest first' },
-  { value: 'price_asc', label: 'Price: low to high' },
-  { value: 'price_desc', label: 'Price: high to low' },
+  { value: 'created_at', label: 'Сначала новые' },
+  { value: 'price_asc', label: 'Сначала дешевле' },
+  { value: 'price_desc', label: 'Сначала дороже' },
 ]
 
 const placeholderImage =
@@ -76,9 +76,12 @@ const productCards = computed(() => {
       id: product.id,
       title: product.title,
       handle: product.handle,
-      description: product.subtitle || product.description || 'Product details are available on the product page.',
+      description:
+        product.subtitle ||
+        product.description ||
+        'Подробная информация доступна на странице товара.',
       thumbnail: product.thumbnail || product.images?.[0]?.url || placeholderImage,
-      price: activePrice?.calculated_price || 'Price unavailable',
+      price: activePrice?.calculated_price || 'Цена недоступна',
       originalPrice: activePrice?.original_price || null,
       percentageDiff: activePrice?.percentage_diff || null,
     }
@@ -114,20 +117,14 @@ function updateQuery(nextQuery: { page?: number; sort?: SortOptions }) {
   })
 }
 
-function onSortChange(event: Event) {
-  const target = event.target as HTMLSelectElement
-  updateQuery({
-    page: 1,
-    sort: target.value as SortOptions,
-  })
-}
-
 function productLink(product: Pick<HttpTypes.StoreProduct, 'handle'> | { handle?: string | null }) {
   return `/${countryCode.value}/products/${product.handle}`
 }
 
 function clearCategoryFilter() {
-  const { category_id: _categoryId, page: _page, ...nextQuery } = route.query
+  const nextQuery = { ...route.query }
+  delete nextQuery.category_id
+  delete nextQuery.page
 
   void router.replace({
     query: nextQuery,
@@ -135,45 +132,61 @@ function clearCategoryFilter() {
 }
 
 watch(
-  () => [countryCode.value, currentPage.value, currentSort.value, activeCategoryIds.value.join('|')],
+  () => [
+    countryCode.value,
+    currentPage.value,
+    currentSort.value,
+    activeCategoryIds.value.join('|'),
+  ],
   () => {
     void loadProducts()
   },
   { immediate: true },
 )
+
+watch(
+  () => [currentPage.value, totalPages.value, isLoading.value],
+  () => {
+    if (!isLoading.value && currentPage.value > totalPages.value) {
+      updateQuery({ page: totalPages.value })
+    }
+  },
+)
 </script>
 
 <template>
-  <section class="border-b border-grey-20 bg-[linear-gradient(180deg,#f7f4ec_0%,#fffdf7_48%,#ffffff_100%)]">
+  <section
+    class="border-b border-grey-20 bg-[linear-gradient(180deg,#f7f4ec_0%,#fffdf7_48%,#ffffff_100%)]"
+  >
     <div class="content-container py-12">
       <div class="grid gap-6 lg:grid-cols-[minmax(0,1fr)_240px] lg:items-end">
         <div class="max-w-3xl">
-          <p class="text-small-semi uppercase tracking-[0.18em] text-grey-50">Catalog</p>
+          <p class="text-small-semi uppercase tracking-[0.18em] text-grey-50">Товары</p>
           <h1 class="mt-4 text-[clamp(2.5rem,5vw,4.5rem)] font-semibold leading-none text-grey-90">
-            All products
+            Все товары
           </h1>
           <p class="mt-5 max-w-2xl text-base-regular text-grey-60">
-            Full client-rendered assortment for the active region. Use the catalog page to select
-            one or more categories.
+            Полный ассортимент для активного региона. Используйте страницу категорий, чтобы выбрать
+            один или несколько разделов.
           </p>
         </div>
 
-        <label class="flex flex-col gap-2">
-          <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Sort</span>
-          <select
-            :value="currentSort"
-            class="h-12 rounded-base border border-grey-20 bg-white px-4 text-base-regular text-grey-90 outline-none transition focus:border-grey-50"
-            @change="onSortChange"
-          >
-            <option
-              v-for="option in sortOptions"
-              :key="option.value"
-              :value="option.value"
-            >
-              {{ option.label }}
-            </option>
-          </select>
-        </label>
+        <!--        <label class="flex flex-col gap-2">-->
+        <!--          <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Sort</span>-->
+        <!--          <select-->
+        <!--            :value="currentSort"-->
+        <!--            class="h-12 rounded-base border border-grey-20 bg-white px-4 text-base-regular text-grey-90 outline-none transition focus:border-grey-50"-->
+        <!--            @change="onSortChange"-->
+        <!--          >-->
+        <!--            <option-->
+        <!--              v-for="option in sortOptions"-->
+        <!--              :key="option.value"-->
+        <!--              :value="option.value"-->
+        <!--            >-->
+        <!--              {{ option.label }}-->
+        <!--            </option>-->
+        <!--          </select>-->
+        <!--        </label>-->
       </div>
     </div>
   </section>
@@ -181,7 +194,7 @@ watch(
   <section class="content-container py-10">
     <div class="flex items-center justify-between gap-4 border-b border-grey-20 pb-5">
       <p class="text-small-regular text-grey-60">
-        <span class="font-semibold text-grey-90">{{ productCount }}</span> products
+        <span class="font-semibold text-grey-90">{{ productCount }}</span> товаров
       </p>
       <div class="flex flex-wrap items-center justify-end gap-3">
         <button
@@ -190,16 +203,15 @@ watch(
           class="rounded-circle border border-grey-20 px-4 py-2 text-small-semi text-grey-90 transition hover:border-grey-40"
           @click="clearCategoryFilter"
         >
-          Clear categories
+          Сбросить категории
         </button>
-        <p class="text-small-regular text-grey-50">Page {{ currentPage }} of {{ totalPages }}</p>
+        <p class="text-small-regular text-grey-50">
+          Страница {{ currentPage }} из {{ totalPages }}
+        </p>
       </div>
     </div>
 
-    <div
-      v-if="isLoading"
-      class="grid gap-5 pt-8 sm:grid-cols-2 xl:grid-cols-3"
-    >
+    <div v-if="isLoading" class="grid gap-5 pt-8 sm:grid-cols-2 xl:grid-cols-3">
       <article
         v-for="index in 6"
         :key="index"
@@ -215,20 +227,16 @@ watch(
       </article>
     </div>
 
-    <div
-      v-else-if="hasProducts"
-      class="grid gap-5 pt-8 sm:grid-cols-2 xl:grid-cols-3"
-    >
+    <div v-else-if="hasProducts" class="grid gap-5 pt-8 sm:grid-cols-2 xl:grid-cols-3">
       <article
         v-for="product in productCards"
         :key="product.id"
         class="group overflow-hidden rounded-large border border-grey-20 bg-white transition duration-300 hover:-translate-y-1 hover:border-grey-40 hover:shadow-[0_24px_70px_-32px_rgba(17,24,39,0.28)]"
       >
-        <RouterLink
-          :to="productLink(product)"
-          class="block"
-        >
-          <div class="relative aspect-[4/5] overflow-hidden bg-[radial-gradient(circle_at_top,#f9fafb_0%,#f3f4f6_60%,#e5e7eb_100%)]">
+        <RouterLink :to="productLink(product)" class="block">
+          <div
+            class="relative aspect-[4/5] overflow-hidden bg-[radial-gradient(circle_at_top,#f9fafb_0%,#f3f4f6_60%,#e5e7eb_100%)]"
+          >
             <img
               :src="product.thumbnail"
               :alt="product.title"
@@ -245,7 +253,7 @@ watch(
 
           <div class="space-y-4 p-5">
             <div class="space-y-2">
-              <p class="text-small-semi uppercase tracking-[0.14em] text-grey-50">Product</p>
+              <p class="text-small-semi uppercase tracking-[0.14em] text-grey-50">Товар</p>
               <h2 class="text-xl-semi text-grey-90">{{ product.title }}</h2>
               <p class="line-clamp-2 text-base-regular text-grey-60">
                 {{ product.description }}
@@ -256,17 +264,14 @@ watch(
               <div class="flex items-baseline gap-2">
                 <span class="text-large-semi text-grey-90">{{ product.price }}</span>
                 <span
-                  v-if="
-                    product.originalPrice &&
-                    product.originalPrice !== product.price
-                  "
+                  v-if="product.originalPrice && product.originalPrice !== product.price"
                   class="text-small-regular text-grey-40 line-through"
                 >
                   {{ product.originalPrice }}
                 </span>
               </div>
               <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">
-                View
+                Открыть
               </span>
             </div>
           </div>
@@ -278,9 +283,9 @@ watch(
       v-else
       class="rounded-large border border-dashed border-grey-30 bg-grey-5 px-6 py-14 text-center"
     >
-      <h2 class="text-xl-semi text-grey-90">No products found</h2>
+      <h2 class="text-xl-semi text-grey-90">Товары не найдены</h2>
       <p class="mt-3 text-base-regular text-grey-60">
-        The current region returned an empty catalog.
+        Для текущего региона каталог оказался пустым.
       </p>
     </div>
 
@@ -295,7 +300,7 @@ watch(
         :disabled="currentPage <= 1"
         @click="updateQuery({ page: currentPage - 1 })"
       >
-        Previous
+        Назад
       </button>
 
       <button
@@ -319,7 +324,7 @@ watch(
         :disabled="currentPage >= totalPages"
         @click="updateQuery({ page: currentPage + 1 })"
       >
-        Next
+        Вперёд
       </button>
     </nav>
   </section>

@@ -45,7 +45,7 @@ async function submitRegister() {
   errorMessage.value = null
 
   if (form.password !== form.confirmPassword) {
-    errorMessage.value = 'Passwords do not match.'
+    errorMessage.value = 'Пароли не совпадают.'
     return
   }
 
@@ -65,14 +65,17 @@ async function submitRegister() {
 </script>
 
 <template>
-  <section class="content-container grid min-h-[calc(100vh-8rem)] gap-10 py-12 lg:grid-cols-[minmax(0,1fr)_480px] lg:items-center">
+  <section
+    class="content-container grid min-h-[calc(100vh-8rem)] gap-10 py-12 lg:grid-cols-[minmax(0,1fr)_480px] lg:items-center"
+  >
     <div class="max-w-2xl">
-      <p class="text-small-semi uppercase tracking-[0.18em] text-grey-50">Account</p>
+      <p class="text-small-semi uppercase tracking-[0.18em] text-grey-50">Аккаунт</p>
       <h1 class="mt-4 text-[clamp(2.5rem,5vw,4.5rem)] font-semibold leading-none text-grey-90">
-        Create account
+        Создать аккаунт
       </h1>
       <p class="mt-5 text-base-regular text-grey-60">
-        Register a customer profile to save your details and keep your cart connected to your account.
+        Зарегистрируйте профиль покупателя, чтобы сохранить свои данные и привязать корзину к
+        аккаунту.
       </p>
     </div>
 
@@ -82,7 +85,7 @@ async function submitRegister() {
     >
       <div class="grid gap-5 sm:grid-cols-2">
         <label class="block">
-          <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">First name</span>
+          <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Имя</span>
           <input
             v-model.trim="form.firstName"
             type="text"
@@ -93,7 +96,7 @@ async function submitRegister() {
         </label>
 
         <label class="block">
-          <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Last name</span>
+          <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Фамилия</span>
           <input
             v-model.trim="form.lastName"
             type="text"
@@ -115,7 +118,7 @@ async function submitRegister() {
         </label>
 
         <label class="block sm:col-span-2">
-          <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Phone</span>
+          <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Телефон</span>
           <input
             v-model.trim="form.phone"
             type="tel"
@@ -125,7 +128,7 @@ async function submitRegister() {
         </label>
 
         <label class="block">
-          <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Password</span>
+          <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Пароль</span>
           <input
             v-model="form.password"
             type="password"
@@ -137,7 +140,9 @@ async function submitRegister() {
         </label>
 
         <label class="block">
-          <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Confirm</span>
+          <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50"
+            >Подтверждение</span
+          >
           <input
             v-model="form.confirmPassword"
             type="password"
@@ -161,17 +166,12 @@ async function submitRegister() {
         class="mt-6 h-12 w-full rounded-base bg-black px-5 text-small-semi text-white transition hover:bg-grey-80 disabled:cursor-not-allowed disabled:opacity-40"
         :disabled="isLoading"
       >
-        {{ isLoading ? 'Creating...' : 'Create account' }}
+        {{ isLoading ? 'Создаём...' : 'Создать аккаунт' }}
       </button>
 
       <p class="mt-5 text-center text-small-regular text-grey-60">
-        Already registered?
-        <RouterLink
-          :to="loginLink"
-          class="font-semibold text-grey-90"
-        >
-          Sign in
-        </RouterLink>
+        Уже зарегистрированы?
+        <RouterLink :to="loginLink" class="font-semibold text-grey-90"> Войти </RouterLink>
       </p>
     </form>
   </section>

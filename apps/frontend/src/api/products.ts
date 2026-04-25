@@ -6,6 +6,30 @@ import { getRegion, retrieveRegion } from './regions'
 
 type ProductListQuery = HttpTypes.FindParams & HttpTypes.StoreProductListParams
 
+const serverSortMap: Partial<Record<SortOptions, string>> = {
+  created_at: '-created_at',
+}
+
+function cleanProductListQuery(query?: ProductListQuery): ProductListQuery | undefined {
+  if (!query) {
+    return undefined
+  }
+
+  return Object.fromEntries(
+    Object.entries(query).filter(([, value]) => {
+      if (value === undefined || value === null) {
+        return false
+      }
+
+      if (Array.isArray(value) && value.length === 0) {
+        return false
+      }
+
+      return true
+    }),
+  ) as ProductListQuery
+}
+
 export const listProducts = async ({
   pageParam = 1,
   queryParams,
@@ -29,6 +53,7 @@ export const listProducts = async ({
   const page = Math.max(pageParam, 1)
   const offset = page === 1 ? 0 : (page - 1) * limit
   const region = countryCode ? await getRegion(countryCode) : await retrieveRegion(regionId!)
+  const cleanQueryParams = cleanProductListQuery(queryParams)
 
   if (!region) {
     return {
@@ -46,7 +71,7 @@ export const listProducts = async ({
         region_id: region.id,
         fields:
           '*variants.calculated_price,+variants.inventory_quantity,*variants.images,+metadata,+tags,',
-        ...queryParams,
+        ...cleanQueryParams,
       },
       headers: getAuthHeaders(),
     })
@@ -80,28 +105,34 @@ export const listProductsWithSort = async ({
   queryParams?: ProductListQuery
 }> => {
   const limit = queryParams?.limit || 12
-  const {
-    response: { products, count },
-  } = await listProducts({
-    pageParam: 1,
-    queryParams: {
-      ...queryParams,
-      limit: 100,
-    },
+  const { order: _order, ...baseQueryParams } = queryParams ?? {}
+  const requestQueryParams: ProductListQuery = {
+    ...baseQueryParams,
+    limit,
+  }
+  const serverOrder = serverSortMap[sortBy]
+
+  if (serverOrder) {
+    requestQueryParams.order = serverOrder
+  }
+
+  const productPage = await listProducts({
+    pageParam: page,
+    queryParams: requestQueryParams,
     countryCode,
   })
-  const sortedProducts = sortProducts(products, sortBy)
-  const pageOffset = (page - 1) * limit
-  const nextPage = count > pageOffset + limit ? page + 1 : null
 
-  return {
-    response: {
-      products: sortedProducts.slice(pageOffset, pageOffset + limit),
-      count,
-    },
-    nextPage,
-    queryParams,
+  if (sortBy === 'price_asc' || sortBy === 'price_desc') {
+    return {
+      ...productPage,
+      response: {
+        ...productPage.response,
+        products: sortProducts(productPage.response.products, sortBy),
+      },
+    }
   }
+
+  return productPage
 }
 
 export const getProductByHandle = async ({
