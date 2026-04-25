@@ -5,11 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5af0ba0c-d1cb-47ad-aeb9-b711a2d526ff" name="Changes" comment="finish storefront">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/frontend/.env.example" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/.env.example" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/frontend/env.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/env.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/frontend/src/lib/util/money.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/lib/util/money.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/frontend/src/views/ProductView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/views/ProductView.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/frontend/src/views/StoreView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/views/StoreView.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,6 +67,7 @@
     "npm.build.executor": "Run",
     "npm.dev.executor": "Run",
     "npm.frontend > dev.executor": "Run",
+    "npm.frontend > lint.executor": "Run",
     "npm.storefront > dev.executor": "Run",
     "prettierjs.PrettierConfiguration.Package": "/Users/lugengster/Desktop/project/erw-storefront/node_modules/prettier",
     "settings.editor.selected.configurable": "vcs.Git",
@@ -96,7 +93,7 @@
       <recent name="$PROJECT_DIR$/apps/frontend" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.frontend &gt; dev">
+  <component name="RunManager" selected="npm.frontend &gt; lint">
     <configuration name="build" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -127,6 +124,16 @@
       <envs />
       <method v="2" />
     </configuration>
+    <configuration name="frontend &gt; lint" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/apps/frontend/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="lint" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
     <configuration name="storefront &gt; dev" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/apps/storefront/package.json" />
       <command value="run" />
@@ -138,6 +145,7 @@
       <method v="2" />
     </configuration>
     <list>
+      <item itemvalue="npm.frontend &gt; lint" />
       <item itemvalue="npm.build" />
       <item itemvalue="npm.dev" />
       <item itemvalue="npm.frontend &gt; dev" />
@@ -145,6 +153,7 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="npm.frontend &gt; lint" />
         <item itemvalue="npm.frontend &gt; dev" />
         <item itemvalue="npm.storefront &gt; dev" />
         <item itemvalue="npm.dev" />
@@ -169,7 +178,7 @@
       <workItem from="1777009588484" duration="8698000" />
       <workItem from="1777093891269" duration="78000" />
       <workItem from="1777093975411" duration="3988000" />
-      <workItem from="1777099781814" duration="30826000" />
+      <workItem from="1777099781814" duration="31195000" />
     </task>
     <task id="LOCAL-00001" summary="prod build">
       <option name="closed" value="true" />
@@ -219,7 +228,15 @@
       <option name="project" value="LOCAL" />
       <updated>1777149386594</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="finish storefront">
+      <option name="closed" value="true" />
+      <created>1777150194290</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1777150194290</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

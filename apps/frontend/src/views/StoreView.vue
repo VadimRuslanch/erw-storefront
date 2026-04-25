@@ -10,6 +10,7 @@ import { useCatalogStore } from '@stores/catalog'
 import { useRegionStore } from '@stores/region'
 
 const PAGE_SIZE = 12
+const SEARCH_DEBOUNCE_MS = 350
 
 const sortOptions: Array<{ value: SortOptions; label: string }> = [
   { value: 'created_at', label: 'Сначала новые' },
@@ -29,6 +30,8 @@ const { products, productCount, isLoading } = storeToRefs(catalogStore)
 const { countryCode } = storeToRefs(regionStore)
 const isSortMenuOpen = ref(false)
 const sortMenuRef = ref<HTMLElement | null>(null)
+const searchInput = ref('')
+let searchDebounceTimer: ReturnType<typeof setTimeout> | null = null
 
 function isSortOption(value: unknown): value is SortOptions {
   return sortOptions.some((option) => option.value === value)
@@ -79,6 +82,11 @@ const activeCategoryIds = computed(() => {
   return values.filter((value): value is string => typeof value === 'string' && value.length > 0)
 })
 
+const currentSearchQuery = computed(() => {
+  const rawValue = Array.isArray(route.query.q) ? route.query.q[0] : route.query.q
+  return typeof rawValue === 'string' ? rawValue.trim() : ''
+})
+
 const productCards = computed(() => {
   return products.value.map((product) => {
     const prices = getProductPrice({ product })
@@ -111,20 +119,23 @@ async function loadProducts() {
     sortBy: currentSort.value,
     queryParams: {
       category_id: activeCategoryIds.value.length ? activeCategoryIds.value : undefined,
+      q: currentSearchQuery.value || undefined,
       limit: PAGE_SIZE,
     },
   })
 }
 
-function updateQuery(nextQuery: { page?: number; sort?: SortOptions }) {
+function updateQuery(nextQuery: { page?: number; sort?: SortOptions; q?: string }) {
   const page = nextQuery.page ?? currentPage.value
   const sort = nextQuery.sort ?? currentSort.value
+  const q = nextQuery.q ?? currentSearchQuery.value
 
   void router.replace({
     query: {
       ...route.query,
       page: page > 1 ? String(page) : undefined,
       sort: sort === 'created_at' ? undefined : sort,
+      q: q || undefined,
     },
   })
 }
@@ -189,6 +200,10 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   document.removeEventListener('pointerdown', handleSortMenuPointerdown)
+
+  if (searchDebounceTimer) {
+    clearTimeout(searchDebounceTimer)
+  }
 })
 
 watch(
@@ -196,6 +211,7 @@ watch(
     countryCode.value,
     currentPage.value,
     currentSort.value,
+    currentSearchQuery.value,
     activeCategoryIds.value.join('|'),
   ],
   () => {
@@ -219,6 +235,35 @@ watch(
     closeSortMenu()
   },
 )
+
+watch(
+  currentSearchQuery,
+  (value) => {
+    if (searchInput.value !== value) {
+      searchInput.value = value
+    }
+  },
+  { immediate: true },
+)
+
+watch(searchInput, (value) => {
+  const normalizedValue = value.trim()
+
+  if (normalizedValue === currentSearchQuery.value) {
+    return
+  }
+
+  if (searchDebounceTimer) {
+    clearTimeout(searchDebounceTimer)
+  }
+
+  searchDebounceTimer = setTimeout(() => {
+    updateQuery({
+      q: normalizedValue,
+      page: 1,
+    })
+  }, SEARCH_DEBOUNCE_MS)
+})
 </script>
 
 <template>
@@ -240,12 +285,24 @@ watch(
   </section>
 
   <section class="store-layout content-container">
-    <div class="flex items-center justify-between gap-4 border-b border-grey-20 pb-5">
+    <div class="store-toolbar">
       <p class="text-small-regular text-grey-60">
         <span class="font-semibold text-grey-90">{{ productCount }}</span> товаров
       </p>
 
-      <div class="flex flex-wrap items-end justify-end gap-3">
+      <label class="store-search">
+        <span class="sr-only">Поиск товара по названию</span>
+        <span class="store-search__icon" aria-hidden="true" />
+        <input
+          v-model.trim="searchInput"
+          type="search"
+          class="store-search__input"
+          placeholder="Найти товар по названию"
+          autocomplete="off"
+        />
+      </label>
+
+      <div class="store-toolbar__actions">
         <button
           v-if="activeCategoryIds.length"
           type="button"
@@ -448,6 +505,76 @@ watch(
   padding-bottom: 48px;
 }
 
+.store-toolbar {
+  display: grid;
+  gap: 16px;
+  align-items: center;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgb(var(--brand-dark-rgb) / 0.12);
+}
+
+.store-toolbar__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.store-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 42px;
+  padding: 0 14px 0 42px;
+  border: 1px solid var(--border-soft);
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgb(var(--cream-rgb) / 0.55), rgb(var(--white-rgb) / 0.98));
+  box-shadow: 0 12px 24px rgb(var(--brand-dark-rgb) / 0.06);
+}
+
+.store-search__icon {
+  position: absolute;
+  left: 16px;
+  width: 12px;
+  height: 12px;
+  border: 1.6px solid rgb(var(--brand-dark-rgb) / 0.64);
+  border-radius: 999px;
+}
+
+.store-search__icon::after {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 7px;
+  height: 1.6px;
+  border-radius: 999px;
+  background: rgb(var(--brand-dark-rgb) / 0.64);
+  content: '';
+  transform: rotate(45deg);
+  transform-origin: left center;
+}
+
+.store-search__input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  color: var(--brand-dark);
+  background: transparent;
+  font-size: 14px;
+  line-height: 1.4;
+  outline: none;
+}
+
+.store-search__input::placeholder {
+  color: rgb(var(--brand-dark-rgb) / 0.48);
+}
+
+.store-search:focus-within {
+  border-color: rgb(var(--brand-lime-rgb) / 0.5);
+  box-shadow: 0 0 0 3px rgb(var(--brand-lime-light-rgb) / 0.18);
+}
+
 .store-sort {
   position: relative;
   display: inline-flex;
@@ -596,15 +723,26 @@ watch(
     font-size: 36px;
   }
 
+  .store-toolbar__actions {
+    justify-content: stretch;
+  }
+
   .store-sort {
     width: 100%;
     min-width: 0;
   }
 
+  .store-search,
   .store-sort__trigger,
   .store-sort__menu {
     min-width: 0;
     width: 100%;
+  }
+}
+
+@media (min-width: 900px) {
+  .store-toolbar {
+    grid-template-columns: auto minmax(260px, 360px) auto;
   }
 }
 </style>
