@@ -46,7 +46,11 @@ const handle = computed(() => {
 const variants = computed(() => product.value?.variants ?? [])
 
 const selectedVariant = computed(() => {
-  return variants.value.find((variant) => variant.id === selectedVariantId.value) ?? variants.value[0] ?? null
+  return (
+    variants.value.find((variant) => variant.id === selectedVariantId.value) ??
+    variants.value[0] ??
+    null
+  )
 })
 
 const productImages = computed<ProductImage[]>(() => {
@@ -116,9 +120,11 @@ const detailRows = computed(() => {
   return [
     { label: 'Коллекция', value: product.value.collection?.title },
     { label: 'Тип', value: product.value.type?.value },
-    { label: 'SKU', value: selectedVariant.value?.sku },
     { label: 'Материал', value: selectedVariant.value?.material },
-    { label: 'Вес', value: selectedVariant.value?.weight ? `${selectedVariant.value.weight} g` : null },
+    {
+      label: 'Вес',
+      value: selectedVariant.value?.weight ? `${selectedVariant.value.weight} g` : null,
+    },
   ].filter((row): row is { label: string; value: string } => Boolean(row.value))
 })
 
@@ -230,7 +236,8 @@ async function loadProduct() {
 
 async function addToCart() {
   if (shouldRequireLoginForCart.value) {
-    const resolvedCustomer = customer.value ?? (await customerStore.loadCustomer().catch(() => null))
+    const resolvedCustomer =
+      customer.value ?? (await customerStore.loadCustomer().catch(() => null))
 
     if (!resolvedCustomer && countryCode.value) {
       const loginRoute = router.resolve({
@@ -514,8 +521,12 @@ watch(
   padding: 36px clamp(24px, 4vw, 44px);
   border: 1px solid var(--border-soft);
   border-radius: 8px;
-  background:
-    linear-gradient(145deg, var(--brand-dark) 0%, var(--brand-olive) 58%, var(--brand-dark) 100%);
+  background: linear-gradient(
+    145deg,
+    var(--brand-dark) 0%,
+    var(--brand-olive) 58%,
+    var(--brand-dark) 100%
+  );
   box-shadow: var(--shadow-soft);
 }
 
@@ -1019,7 +1030,9 @@ watch(
 }
 
 .product-chip--link {
-  transition: border-color 180ms ease, transform 180ms ease;
+  transition:
+    border-color 180ms ease,
+    transform 180ms ease;
 }
 
 .product-chip--link:hover,

@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue'
+import { computed, ref } from 'vue'
+import { toTypedSchema } from '@vee-validate/zod'
 import { storeToRefs } from 'pinia'
+import { useForm } from 'vee-validate'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
+import { z } from 'zod'
 import { useCustomerStore } from '@stores/customer'
 import { useRegionStore } from '@stores/region'
 
@@ -13,15 +16,46 @@ const regionStore = useRegionStore()
 const { isLoading } = storeToRefs(customerStore)
 const { countryCode } = storeToRefs(regionStore)
 
-const form = reactive({
-  firstName: '',
-  lastName: '',
-  email: '',
-  phone: '',
-  password: '',
-  confirmPassword: '',
-})
+const registerSchema = toTypedSchema(
+  z
+    .object({
+      firstName: z.string().trim().min(1, 'Введите имя.'),
+      lastName: z.string().trim().min(1, 'Введите фамилию.'),
+      email: z
+        .string()
+        .trim()
+        .min(1, 'Введите email.')
+        .email('Введите корректный email.'),
+      phone: z.string().trim(),
+      password: z.string().min(8, 'Пароль должен содержать минимум 8 символов.'),
+      confirmPassword: z.string().min(1, 'Подтвердите пароль.'),
+    })
+    .refine((values) => values.password === values.confirmPassword, {
+      message: 'Пароли не совпадают.',
+      path: ['confirmPassword'],
+    }),
+)
+
 const errorMessage = ref<string | null>(null)
+
+const { errors, handleSubmit, defineField } = useForm({
+  validationSchema: registerSchema,
+  initialValues: {
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    password: '',
+    confirmPassword: '',
+  },
+})
+
+const [firstName, firstNameAttrs] = defineField('firstName')
+const [lastName, lastNameAttrs] = defineField('lastName')
+const [email, emailAttrs] = defineField('email')
+const [phone, phoneAttrs] = defineField('phone')
+const [password, passwordAttrs] = defineField('password')
+const [confirmPassword, confirmPasswordAttrs] = defineField('confirmPassword')
 
 const loginLink = computed(() => {
   return {
@@ -41,27 +75,22 @@ function getRedirectPath() {
   return `/${countryCode.value}/categories`
 }
 
-async function submitRegister() {
+const submitRegister = handleSubmit(async (values) => {
   errorMessage.value = null
-
-  if (form.password !== form.confirmPassword) {
-    errorMessage.value = 'Пароли не совпадают.'
-    return
-  }
 
   try {
     await customerStore.signup({
-      first_name: form.firstName,
-      last_name: form.lastName,
-      email: form.email,
-      password: form.password,
-      phone: form.phone || undefined,
+      first_name: values.firstName,
+      last_name: values.lastName,
+      email: values.email,
+      password: values.password,
+      phone: values.phone || undefined,
     })
     await router.push(getRedirectPath())
   } catch (error) {
     errorMessage.value = error instanceof Error ? error.message : String(error)
   }
-}
+})
 </script>
 
 <template>
@@ -75,7 +104,7 @@ async function submitRegister() {
         </p>
       </div>
 
-      <form class="auth-card" @submit.prevent="submitRegister">
+      <form class="auth-card" novalidate @submit.prevent="submitRegister">
         <div class="auth-card__header">
           <p class="auth-card__eyebrow">ERAWADEE</p>
           <h2 class="auth-card__title">Регистрация</h2>
@@ -85,68 +114,81 @@ async function submitRegister() {
           <label class="auth-field">
             <span class="auth-field__label">Имя</span>
             <input
-              v-model.trim="form.firstName"
+              v-model="firstName"
+              v-bind="firstNameAttrs"
               type="text"
               autocomplete="given-name"
-              required
               class="auth-field__input"
+              :class="{ 'auth-field__input--invalid': errors.firstName }"
             />
+            <span v-if="errors.firstName" class="auth-field__error">{{ errors.firstName }}</span>
           </label>
 
           <label class="auth-field">
             <span class="auth-field__label">Фамилия</span>
             <input
-              v-model.trim="form.lastName"
+              v-model="lastName"
+              v-bind="lastNameAttrs"
               type="text"
               autocomplete="family-name"
-              required
               class="auth-field__input"
+              :class="{ 'auth-field__input--invalid': errors.lastName }"
             />
+            <span v-if="errors.lastName" class="auth-field__error">{{ errors.lastName }}</span>
           </label>
 
           <label class="auth-field auth-field--wide">
             <span class="auth-field__label">Email</span>
             <input
-              v-model.trim="form.email"
+              v-model="email"
+              v-bind="emailAttrs"
               type="email"
               autocomplete="email"
-              required
               class="auth-field__input"
+              :class="{ 'auth-field__input--invalid': errors.email }"
             />
+            <span v-if="errors.email" class="auth-field__error">{{ errors.email }}</span>
           </label>
 
           <label class="auth-field auth-field--wide">
             <span class="auth-field__label">Телефон</span>
             <input
-              v-model.trim="form.phone"
+              v-model="phone"
+              v-bind="phoneAttrs"
               type="tel"
               autocomplete="tel"
               class="auth-field__input"
+              :class="{ 'auth-field__input--invalid': errors.phone }"
             />
+            <span v-if="errors.phone" class="auth-field__error">{{ errors.phone }}</span>
           </label>
 
           <label class="auth-field">
             <span class="auth-field__label">Пароль</span>
             <input
-              v-model="form.password"
+              v-model="password"
+              v-bind="passwordAttrs"
               type="password"
               autocomplete="new-password"
-              required
-              minlength="8"
               class="auth-field__input"
+              :class="{ 'auth-field__input--invalid': errors.password }"
             />
+            <span v-if="errors.password" class="auth-field__error">{{ errors.password }}</span>
           </label>
 
           <label class="auth-field">
             <span class="auth-field__label">Подтверждение</span>
             <input
-              v-model="form.confirmPassword"
+              v-model="confirmPassword"
+              v-bind="confirmPasswordAttrs"
               type="password"
               autocomplete="new-password"
-              required
-              minlength="8"
               class="auth-field__input"
+              :class="{ 'auth-field__input--invalid': errors.confirmPassword }"
             />
+            <span v-if="errors.confirmPassword" class="auth-field__error">
+              {{ errors.confirmPassword }}
+            </span>
           </label>
         </div>
 
@@ -287,6 +329,17 @@ async function submitRegister() {
   border-color: rgb(var(--brand-lime-rgb) / 0.48);
   background: var(--white);
   box-shadow: 0 0 0 3px rgb(var(--brand-lime-light-rgb) / 0.18);
+}
+
+.auth-field__input--invalid {
+  border-color: rgb(244 114 114 / 0.42);
+  background: rgb(254 242 242 / 0.6);
+}
+
+.auth-field__error {
+  color: #b42318;
+  font-size: 12px;
+  line-height: 1.5;
 }
 
 .auth-notice {

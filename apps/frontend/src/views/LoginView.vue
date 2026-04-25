@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue'
+import { computed, ref } from 'vue'
+import { toTypedSchema } from '@vee-validate/zod'
 import { storeToRefs } from 'pinia'
+import { useForm } from 'vee-validate'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
+import { z } from 'zod'
 import { useCustomerStore } from '@stores/customer'
 import { useRegionStore } from '@stores/region'
 
@@ -13,11 +16,29 @@ const regionStore = useRegionStore()
 const { isLoading } = storeToRefs(customerStore)
 const { countryCode } = storeToRefs(regionStore)
 
-const form = reactive({
-  email: '',
-  password: '',
-})
+const loginSchema = toTypedSchema(
+  z.object({
+    email: z
+      .string()
+      .trim()
+      .min(1, 'Введите email.')
+      .email('Введите корректный email.'),
+    password: z.string().min(1, 'Введите пароль.'),
+  }),
+)
+
 const errorMessage = ref<string | null>(null)
+
+const { errors, handleSubmit, defineField } = useForm({
+  validationSchema: loginSchema,
+  initialValues: {
+    email: '',
+    password: '',
+  },
+})
+
+const [email, emailAttrs] = defineField('email')
+const [password, passwordAttrs] = defineField('password')
 
 const registerLink = computed(() => {
   return {
@@ -37,19 +58,19 @@ function getRedirectPath() {
   return `/${countryCode.value}/categories`
 }
 
-async function submitLogin() {
+const submitLogin = handleSubmit(async (values) => {
   errorMessage.value = null
 
   try {
     await customerStore.login({
-      email: form.email,
-      password: form.password,
+      email: values.email,
+      password: values.password,
     })
     await router.push(getRedirectPath())
   } catch (error) {
     errorMessage.value = error instanceof Error ? error.message : String(error)
   }
-}
+})
 </script>
 
 <template>
@@ -63,7 +84,7 @@ async function submitLogin() {
         </p>
       </div>
 
-      <form class="auth-card" @submit.prevent="submitLogin">
+      <form class="auth-card" novalidate @submit.prevent="submitLogin">
         <div class="auth-card__header">
           <p class="auth-card__eyebrow">ERAWADEE</p>
           <h2 class="auth-card__title">Добро пожаловать</h2>
@@ -73,23 +94,27 @@ async function submitLogin() {
           <label class="auth-field">
             <span class="auth-field__label">Email</span>
             <input
-              v-model.trim="form.email"
+              v-model="email"
+              v-bind="emailAttrs"
               type="email"
               autocomplete="email"
-              required
               class="auth-field__input"
+              :class="{ 'auth-field__input--invalid': errors.email }"
             />
+            <span v-if="errors.email" class="auth-field__error">{{ errors.email }}</span>
           </label>
 
           <label class="auth-field">
             <span class="auth-field__label">Пароль</span>
             <input
-              v-model="form.password"
+              v-model="password"
+              v-bind="passwordAttrs"
               type="password"
               autocomplete="current-password"
-              required
               class="auth-field__input"
+              :class="{ 'auth-field__input--invalid': errors.password }"
             />
+            <span v-if="errors.password" class="auth-field__error">{{ errors.password }}</span>
           </label>
         </div>
 
@@ -230,6 +255,17 @@ async function submitLogin() {
   border-color: rgb(var(--brand-lime-rgb) / 0.48);
   background: var(--white);
   box-shadow: 0 0 0 3px rgb(var(--brand-lime-light-rgb) / 0.18);
+}
+
+.auth-field__input--invalid {
+  border-color: rgb(244 114 114 / 0.42);
+  background: rgb(254 242 242 / 0.6);
+}
+
+.auth-field__error {
+  color: #b42318;
+  font-size: 12px;
+  line-height: 1.5;
 }
 
 .auth-notice {
