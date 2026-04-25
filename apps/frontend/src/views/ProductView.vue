@@ -2,10 +2,11 @@
 import type { HttpTypes } from '@medusajs/types'
 import { computed, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
-import { RouterLink, useRoute } from 'vue-router'
+import { RouterLink, useRoute, useRouter } from 'vue-router'
 import { getProductByHandle } from '@api/products'
 import { getProductPrice } from '@lib/util/get-product-price'
 import { useCartStore } from '@stores/cart'
+import { useCustomerStore } from '@stores/customer'
 import { useRegionStore } from '@stores/region'
 
 type ProductImage = {
@@ -17,11 +18,16 @@ type ProductImage = {
 const placeholderImage =
   'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 800"><rect width="640" height="800" fill="%23f3f4f6"/><path d="M188 520l96-120 76 96 44-52 112 140H188z" fill="%23d1d5db"/><circle cx="254" cy="262" r="44" fill="%23d1d5db"/></svg>'
 
+const requireAuthForCart = import.meta.env.VITE_REQUIRE_AUTH_FOR_CART === 'true'
+
 const route = useRoute()
+const router = useRouter()
 const regionStore = useRegionStore()
+const customerStore = useCustomerStore()
 const cartStore = useCartStore()
 
 const { countryCode } = storeToRefs(regionStore)
+const { customer } = storeToRefs(customerStore)
 
 const product = ref<HttpTypes.StoreProduct | null>(null)
 const selectedImageUrl = ref<string | null>(null)
@@ -162,6 +168,10 @@ const canAddToCart = computed(() => {
   return Boolean(selectedVariant.value && !unavailableReason.value && countryCode.value)
 })
 
+const shouldRequireLoginForCart = computed(() => {
+  return requireAuthForCart && !customer.value
+})
+
 function getVariantLabel(variant: HttpTypes.StoreProductVariant) {
   const optionValues = variant.options?.map((option) => option.value).filter(Boolean) ?? []
 
@@ -219,6 +229,22 @@ async function loadProduct() {
 }
 
 async function addToCart() {
+  if (shouldRequireLoginForCart.value) {
+    const resolvedCustomer = customer.value ?? (await customerStore.loadCustomer().catch(() => null))
+
+    if (!resolvedCustomer && countryCode.value) {
+      const loginRoute = router.resolve({
+        path: `/${countryCode.value}/login`,
+        query: {
+          redirect: route.fullPath,
+        },
+      })
+
+      window.open(loginRoute.href, '_blank', 'noopener,noreferrer')
+      return
+    }
+  }
+
   if (!selectedVariant.value || !countryCode.value) {
     return
   }

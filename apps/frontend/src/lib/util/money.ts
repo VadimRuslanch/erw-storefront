@@ -17,13 +17,30 @@ export const convertToLocale = ({
 }: ConvertToLocaleParams) => {
   const normalizedCurrencyCode = currency_code?.toUpperCase()
 
-  return currency_code && !isEmpty(currency_code)
-    ? new Intl.NumberFormat(locale, {
-        style: 'currency',
-        currency: normalizedCurrencyCode,
-        ...(normalizedCurrencyCode === 'RUB' ? { currencyDisplay: 'narrowSymbol' } : {}),
-        minimumFractionDigits,
-        maximumFractionDigits,
-      }).format(amount)
-    : amount.toString()
+  if (!currency_code || isEmpty(currency_code)) {
+    return amount.toString()
+  }
+
+  const formatter = new Intl.NumberFormat(locale, {
+    style: 'currency',
+    currency: normalizedCurrencyCode,
+    ...(normalizedCurrencyCode === 'RUB' ? { currencyDisplay: 'narrowSymbol' } : {}),
+    minimumFractionDigits,
+    maximumFractionDigits,
+  })
+
+  const parts = formatter.formatToParts(amount)
+  const currencyPart = parts.find((part) => part.type === 'currency')?.value
+
+  if (!currencyPart) {
+    return formatter.format(amount)
+  }
+
+  const formattedAmount = parts
+    .filter((part) => part.type !== 'currency')
+    .map((part) => part.value)
+    .join('')
+    .trim()
+
+  return `${formattedAmount} ${currencyPart}`
 }

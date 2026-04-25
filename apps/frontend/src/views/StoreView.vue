@@ -244,6 +244,7 @@ watch(
       <p class="text-small-regular text-grey-60">
         <span class="font-semibold text-grey-90">{{ productCount }}</span> товаров
       </p>
+
       <div class="flex flex-wrap items-end justify-end gap-3">
         <button
           v-if="activeCategoryIds.length"
