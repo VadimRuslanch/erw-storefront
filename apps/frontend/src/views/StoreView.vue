@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import type { HttpTypes } from '@medusajs/types'
 import type { SortOptions } from '@/types/sort'
-import { computed, watch } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
-import { RouterLink, useRoute, useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+import ProductCard from '@/components/ProductCard.vue'
 import { getProductPrice } from '@lib/util/get-product-price'
 import { useCatalogStore } from '@stores/catalog'
 import { useRegionStore } from '@stores/region'
@@ -26,6 +27,12 @@ const regionStore = useRegionStore()
 
 const { products, productCount, isLoading } = storeToRefs(catalogStore)
 const { countryCode } = storeToRefs(regionStore)
+const isSortMenuOpen = ref(false)
+const sortMenuRef = ref<HTMLElement | null>(null)
+
+function isSortOption(value: unknown): value is SortOptions {
+  return sortOptions.some((option) => option.value === value)
+}
 
 const currentPage = computed(() => {
   const rawValue = Array.isArray(route.query.page) ? route.query.page[0] : route.query.page
@@ -37,9 +44,7 @@ const currentPage = computed(() => {
 const currentSort = computed<SortOptions>(() => {
   const rawValue = Array.isArray(route.query.sort) ? route.query.sort[0] : route.query.sort
 
-  return sortOptions.some((option) => option.value === rawValue)
-    ? (rawValue as SortOptions)
-    : 'created_at'
+  return isSortOption(rawValue) ? rawValue : 'created_at'
 })
 
 const totalPages = computed(() => {
@@ -59,6 +64,13 @@ const pageWindow = computed(() => {
 })
 
 const hasProducts = computed(() => products.value.length > 0)
+const currentSortLabel = computed(() => {
+  return (
+    sortOptions.find((option) => option.value === currentSort.value)?.label ??
+    sortOptions[0]?.label ??
+    'Сортировка'
+  )
+})
 
 const activeCategoryIds = computed(() => {
   const rawValue = route.query.category_id
@@ -131,6 +143,54 @@ function clearCategoryFilter() {
   })
 }
 
+function closeSortMenu() {
+  isSortMenuOpen.value = false
+}
+
+function toggleSortMenu() {
+  isSortMenuOpen.value = !isSortMenuOpen.value
+}
+
+function selectSort(nextSort: SortOptions) {
+  closeSortMenu()
+
+  if (nextSort === currentSort.value) {
+    return
+  }
+
+  updateQuery({
+    sort: nextSort,
+    page: 1,
+  })
+}
+
+function handleSortMenuPointerdown(event: PointerEvent) {
+  const target = event.target
+
+  if (!(target instanceof Node) || !sortMenuRef.value?.contains(target)) {
+    closeSortMenu()
+  }
+}
+
+function onSortTriggerKeydown(event: KeyboardEvent) {
+  if (event.key === 'ArrowDown' || event.key === 'Enter' || event.key === ' ') {
+    event.preventDefault()
+    isSortMenuOpen.value = true
+  }
+
+  if (event.key === 'Escape') {
+    closeSortMenu()
+  }
+}
+
+onMounted(() => {
+  document.addEventListener('pointerdown', handleSortMenuPointerdown)
+})
+
+onBeforeUnmount(() => {
+  document.removeEventListener('pointerdown', handleSortMenuPointerdown)
+})
+
 watch(
   () => [
     countryCode.value,
@@ -152,51 +212,39 @@ watch(
     }
   },
 )
+
+watch(
+  () => route.fullPath,
+  () => {
+    closeSortMenu()
+  },
+)
 </script>
 
 <template>
-  <section
-    class="border-b border-grey-20 bg-[linear-gradient(180deg,#f7f4ec_0%,#fffdf7_48%,#ffffff_100%)]"
-  >
-    <div class="content-container py-12">
-      <div class="grid gap-6 lg:grid-cols-[minmax(0,1fr)_240px] lg:items-end">
-        <div class="max-w-3xl">
-          <p class="text-small-semi uppercase tracking-[0.18em] text-grey-50">Товары</p>
-          <h1 class="mt-4 text-[clamp(2.5rem,5vw,4.5rem)] font-semibold leading-none text-grey-90">
-            Все товары
-          </h1>
-          <p class="mt-5 max-w-2xl text-base-regular text-grey-60">
-            Полный ассортимент для активного региона. Используйте страницу категорий, чтобы выбрать
-            один или несколько разделов.
-          </p>
+  <section class="store-hero">
+    <div class="content-container">
+      <div class="store-hero__panel">
+        <div class="store-hero__content">
+          <div>
+            <p class="store-hero__label">Товары</p>
+            <h1 class="store-hero__title">Все товары</h1>
+            <!--            <p class="store-hero__description">-->
+            <!--              Полный ассортимент для активного региона. Используйте страницу категорий, чтобы выбрать-->
+            <!--              один или несколько разделов.-->
+            <!--            </p>-->
+          </div>
         </div>
-
-        <!--        <label class="flex flex-col gap-2">-->
-        <!--          <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Sort</span>-->
-        <!--          <select-->
-        <!--            :value="currentSort"-->
-        <!--            class="h-12 rounded-base border border-grey-20 bg-white px-4 text-base-regular text-grey-90 outline-none transition focus:border-grey-50"-->
-        <!--            @change="onSortChange"-->
-        <!--          >-->
-        <!--            <option-->
-        <!--              v-for="option in sortOptions"-->
-        <!--              :key="option.value"-->
-        <!--              :value="option.value"-->
-        <!--            >-->
-        <!--              {{ option.label }}-->
-        <!--            </option>-->
-        <!--          </select>-->
-        <!--        </label>-->
       </div>
     </div>
   </section>
 
-  <section class="content-container py-10">
+  <section class="store-layout content-container">
     <div class="flex items-center justify-between gap-4 border-b border-grey-20 pb-5">
       <p class="text-small-regular text-grey-60">
         <span class="font-semibold text-grey-90">{{ productCount }}</span> товаров
       </p>
-      <div class="flex flex-wrap items-center justify-end gap-3">
+      <div class="flex flex-wrap items-end justify-end gap-3">
         <button
           v-if="activeCategoryIds.length"
           type="button"
@@ -205,9 +253,41 @@ watch(
         >
           Сбросить категории
         </button>
-        <p class="text-small-regular text-grey-50">
-          Страница {{ currentPage }} из {{ totalPages }}
-        </p>
+        <!--        <p class="text-small-regular text-grey-50">-->
+        <!--          Страница {{ currentPage }} из {{ totalPages }}-->
+        <!--        </p>-->
+        <div ref="sortMenuRef" class="store-sort">
+          <button
+            type="button"
+            class="store-sort__trigger"
+            aria-haspopup="listbox"
+            :aria-expanded="isSortMenuOpen ? 'true' : 'false'"
+            aria-label="Сортировка товаров"
+            @click="toggleSortMenu"
+            @keydown="onSortTriggerKeydown"
+          >
+            <span class="store-sort__value">{{ currentSortLabel }}</span>
+            <span class="store-sort__icon" :class="{ 'store-sort__icon--open': isSortMenuOpen }" aria-hidden="true">
+              <span />
+            </span>
+          </button>
+
+          <div v-if="isSortMenuOpen" class="store-sort__menu" role="listbox" aria-label="Сортировка товаров">
+            <button
+              v-for="option in sortOptions"
+              :key="option.value"
+              type="button"
+              class="store-sort__option"
+              :class="{ 'store-sort__option--active': option.value === currentSort }"
+              :aria-selected="option.value === currentSort ? 'true' : 'false'"
+              role="option"
+              @click="selectSort(option.value)"
+            >
+              <span>{{ option.label }}</span>
+              <span v-if="option.value === currentSort" class="store-sort__option-mark" aria-hidden="true" />
+            </button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -228,55 +308,17 @@ watch(
     </div>
 
     <div v-else-if="hasProducts" class="grid gap-5 pt-8 sm:grid-cols-2 xl:grid-cols-3">
-      <article
+      <ProductCard
         v-for="product in productCards"
         :key="product.id"
-        class="group overflow-hidden rounded-large border border-grey-20 bg-white transition duration-300 hover:-translate-y-1 hover:border-grey-40 hover:shadow-[0_24px_70px_-32px_rgba(17,24,39,0.28)]"
-      >
-        <RouterLink :to="productLink(product)" class="block">
-          <div
-            class="relative aspect-[4/5] overflow-hidden bg-[radial-gradient(circle_at_top,#f9fafb_0%,#f3f4f6_60%,#e5e7eb_100%)]"
-          >
-            <img
-              :src="product.thumbnail"
-              :alt="product.title"
-              class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
-              loading="lazy"
-            />
-            <div
-              v-if="product.percentageDiff && Number(product.percentageDiff) > 0"
-              class="absolute left-4 top-4 rounded-circle bg-black px-3 py-1 text-xsmall-regular uppercase tracking-[0.12em] text-white"
-            >
-              -{{ product.percentageDiff }}%
-            </div>
-          </div>
-
-          <div class="space-y-4 p-5">
-            <div class="space-y-2">
-              <p class="text-small-semi uppercase tracking-[0.14em] text-grey-50">Товар</p>
-              <h2 class="text-xl-semi text-grey-90">{{ product.title }}</h2>
-              <p class="line-clamp-2 text-base-regular text-grey-60">
-                {{ product.description }}
-              </p>
-            </div>
-
-            <div class="flex items-end justify-between gap-3">
-              <div class="flex items-baseline gap-2">
-                <span class="text-large-semi text-grey-90">{{ product.price }}</span>
-                <span
-                  v-if="product.originalPrice && product.originalPrice !== product.price"
-                  class="text-small-regular text-grey-40 line-through"
-                >
-                  {{ product.originalPrice }}
-                </span>
-              </div>
-              <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">
-                Открыть
-              </span>
-            </div>
-          </div>
-        </RouterLink>
-      </article>
+        :to="productLink(product)"
+        :title="product.title"
+        :description="product.description"
+        :thumbnail="product.thumbnail"
+        :price="product.price"
+        :original-price="product.originalPrice"
+        :percentage-diff="product.percentageDiff"
+      />
     </div>
 
     <div
@@ -329,3 +371,239 @@ watch(
     </nav>
   </section>
 </template>
+
+<style scoped>
+.store-hero {
+  padding: 28px 0 18px;
+  background:
+    radial-gradient(circle at top right, rgb(var(--brand-lime-light-rgb) / 0.16), transparent 30%),
+    linear-gradient(180deg, rgb(var(--cream-rgb) / 0.74) 0%, rgb(var(--white-rgb) / 0.98) 62%);
+}
+
+.store-hero__panel {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  gap: 28px;
+  padding: 36px clamp(24px, 4vw, 44px);
+  border: 1px solid var(--border-soft);
+  border-radius: 8px;
+  background: linear-gradient(
+    145deg,
+    var(--brand-dark) 0%,
+    var(--brand-olive) 58%,
+    var(--brand-dark) 100%
+  );
+  box-shadow: var(--shadow-soft);
+}
+
+.store-hero__panel::after {
+  position: absolute;
+  inset: auto 0 0;
+  height: 4px;
+  content: '';
+  background: linear-gradient(
+    90deg,
+    rgb(var(--brand-lime-rgb) / 0.95),
+    rgb(var(--brand-lime-light-rgb) / 0.95),
+    rgb(var(--brand-lime-rgb) / 0.95)
+  );
+}
+
+.store-hero__content {
+  display: grid;
+  gap: 18px;
+}
+
+.store-hero__label {
+  margin: 0;
+  color: var(--brand-lime-light);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.store-hero__title {
+  margin: 10px 0 0;
+  color: var(--white);
+  font-family: var(--font-serif);
+  font-size: clamp(2.6rem, 5vw, 4.45rem);
+  font-weight: 500;
+  line-height: 0.96;
+  letter-spacing: 0.03em;
+}
+
+.store-hero__description {
+  margin: 18px 0 0;
+  color: rgb(var(--cream-rgb) / 0.9);
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+.store-layout {
+  padding-top: 32px;
+  padding-bottom: 48px;
+}
+
+.store-sort {
+  position: relative;
+  display: inline-flex;
+  min-width: 220px;
+}
+
+.store-sort__trigger {
+  cursor: pointer;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-width: 220px;
+  min-height: 38px;
+  padding: 0 14px 0 16px;
+  border: 1px solid var(--border-soft);
+  border-radius: 999px;
+  color: var(--brand-dark);
+  background: linear-gradient(180deg, rgb(var(--cream-rgb) / 0.55), rgb(var(--white-rgb) / 0.98));
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+  text-align: left;
+  box-shadow: 0 12px 24px rgb(var(--brand-dark-rgb) / 0.06);
+  cursor: pointer;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.store-sort__trigger:hover {
+  border-color: rgb(var(--brand-dark-rgb) / 0.18);
+  box-shadow: 0 16px 28px rgb(var(--brand-dark-rgb) / 0.08);
+}
+
+.store-sort__trigger:focus-visible {
+  border-color: rgb(var(--brand-lime-rgb) / 0.5);
+  box-shadow: 0 0 0 3px rgb(var(--brand-lime-light-rgb) / 0.18);
+  outline: none;
+}
+
+.store-sort__value {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.store-sort__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  margin-left: 12px;
+  flex: 0 0 auto;
+}
+
+.store-sort__icon span,
+.store-sort__option-mark {
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-right: 1.5px solid rgb(var(--brand-dark-rgb) / 0.72);
+  border-bottom: 1.5px solid rgb(var(--brand-dark-rgb) / 0.72);
+}
+
+.store-sort__icon span {
+  transform: rotate(45deg);
+  transition: transform 180ms ease;
+}
+
+.store-sort__icon--open span {
+  transform: rotate(225deg);
+}
+
+.store-sort__menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 10;
+  display: grid;
+  min-width: 240px;
+  padding: 8px;
+  border: 1px solid var(--border-soft);
+  border-radius: 16px;
+  background:
+    linear-gradient(180deg, rgb(var(--cream-rgb) / 0.94), rgb(var(--white-rgb) / 0.98)),
+    linear-gradient(180deg, rgb(var(--brand-lime-light-rgb) / 0.06), transparent);
+  box-shadow: 0 24px 44px rgb(var(--brand-dark-rgb) / 0.14);
+}
+
+.store-sort__option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  min-height: 40px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 10px;
+  color: var(--text-dark);
+  background: transparent;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.45;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background-color 180ms ease,
+    color 180ms ease;
+}
+
+.store-sort__option:hover,
+.store-sort__option:focus-visible {
+  color: var(--brand-dark);
+  background: rgb(var(--brand-lime-light-rgb) / 0.12);
+  outline: none;
+}
+
+.store-sort__option--active {
+  color: var(--brand-dark);
+  background: rgb(var(--brand-lime-light-rgb) / 0.14);
+}
+
+.store-sort__option-mark {
+  width: 7px;
+  height: 11px;
+  border-color: var(--brand-olive);
+  transform: rotate(45deg);
+}
+
+@media (max-width: 639px) {
+  .store-hero {
+    padding-top: 18px;
+  }
+
+  .store-hero__panel {
+    padding: 28px 20px;
+  }
+
+  .store-hero__title {
+    font-size: 36px;
+  }
+
+  .store-sort {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .store-sort__trigger,
+  .store-sort__menu {
+    min-width: 0;
+    width: 100%;
+  }
+}
+</style>

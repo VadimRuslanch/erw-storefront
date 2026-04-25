@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { computed, ref } from 'vue'
+import logoImage from '@/assets/icons/logo.png'
 import {
   aboutCompany,
   catalogContacts,
@@ -7,6 +9,47 @@ import {
   catalogValues,
   filmCta,
 } from '@/content/erawadeeCatalogCover'
+
+const isFilmPlayerOpen = ref(false)
+
+function extractYoutubeVideoId(url: string) {
+  if (!url || url.includes('PLACEHOLDER')) {
+    return null
+  }
+
+  const patterns = [
+    /[?&]v=([a-zA-Z0-9_-]{6,})/,
+    /youtu\.be\/([a-zA-Z0-9_-]{6,})/,
+    /youtube\.com\/embed\/([a-zA-Z0-9_-]{6,})/,
+  ]
+
+  for (const pattern of patterns) {
+    const match = url.match(pattern)
+
+    if (match?.[1]) {
+      return match[1]
+    }
+  }
+
+  return null
+}
+
+const filmVideoId = computed(() => extractYoutubeVideoId(filmCta.url))
+const filmEmbedUrl = computed(() => {
+  if (!filmVideoId.value) {
+    return null
+  }
+
+  return `https://www.youtube.com/embed/${filmVideoId.value}?autoplay=1&rel=0`
+})
+
+function openFilmPlayer() {
+  if (!filmEmbedUrl.value) {
+    return
+  }
+
+  isFilmPlayerOpen.value = true
+}
 </script>
 
 <template>
@@ -15,10 +58,9 @@ import {
       <div class="thai-border" aria-hidden="true" />
       <p class="catalog-badge">{{ catalogHero.badge }}</p>
 
-      <!-- TODO: заменить временный знак на SVG-логотип ERAWADEE с прозрачным фоном. -->
-      <div class="brand-mark" aria-label="Временный контейнер логотипа ERAWADEE" role="img">
-        <span>E</span>
-      </div>
+      <!--      <div class="brand-mark" aria-label="Логотип ERAWADEE" role="img">-->
+      <!--        <img :src="logoImage" alt="" class="brand-mark__image" />-->
+      <!--      </div>-->
 
       <p class="brand-title">{{ catalogHero.brand }}</p>
       <p class="brand-subtitle">{{ catalogHero.subtitle }}</p>
@@ -87,22 +129,56 @@ import {
     </section>
 
     <section class="film-cta" aria-labelledby="film-title">
-      <a
-        class="play-button"
-        :href="filmCta.url"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Открыть документальный фильм на YouTube"
-      >
-        <span aria-hidden="true" />
-      </a>
-      <div class="film-copy">
-        <h2 id="film-title" class="section-kicker">{{ filmCta.eyebrow }}</h2>
-        <p class="film-title">{{ filmCta.title }}</p>
-        <p class="film-description">{{ filmCta.description }}</p>
-        <a class="film-link" :href="filmCta.url" target="_blank" rel="noopener noreferrer">
-          {{ filmCta.displayUrl }}
-        </a>
+      <div class="film-cta__header">
+        <button
+          type="button"
+          class="play-button"
+          :disabled="!filmEmbedUrl"
+          :aria-label="
+            filmEmbedUrl
+              ? 'Открыть документальный фильм во встроенном плеере'
+              : 'Видеоплеер будет доступен после обновления ссылки'
+          "
+          @click="openFilmPlayer"
+        >
+          <span aria-hidden="true" />
+        </button>
+        <div class="film-copy">
+          <h2 id="film-title" class="section-kicker">{{ filmCta.eyebrow }}</h2>
+          <p class="film-title">{{ filmCta.title }}</p>
+          <p class="film-description">{{ filmCta.description }}</p>
+          <a class="film-link" :href="filmCta.url" target="_blank" rel="noopener noreferrer">
+            {{ filmCta.displayUrl }}
+          </a>
+        </div>
+      </div>
+
+      <div class="film-player">
+        <button
+          v-if="filmEmbedUrl && !isFilmPlayerOpen"
+          type="button"
+          class="film-player__preview"
+          @click="openFilmPlayer"
+        >
+          <span class="film-player__preview-badge">Смотреть</span>
+          <span class="film-player__preview-title">{{ filmCta.title }}</span>
+          <span class="film-player__preview-meta">YouTube</span>
+        </button>
+
+        <iframe
+          v-else-if="filmEmbedUrl"
+          class="film-player__frame"
+          :src="filmEmbedUrl"
+          :title="filmCta.title"
+          loading="lazy"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen
+          referrerpolicy="strict-origin-when-cross-origin"
+        />
+
+        <div v-else class="film-player__placeholder">
+          <p>Плеер появится здесь после добавления реальной ссылки на фильм.</p>
+        </div>
       </div>
     </section>
 
@@ -182,8 +258,8 @@ import {
   position: relative;
   z-index: 1;
   display: grid;
-  width: 80px;
-  height: 80px;
+  width: 112px;
+  height: 112px;
   margin-top: 34px;
   place-items: center;
   border: 1px solid rgb(var(--cream-rgb) / 0.5);
@@ -193,19 +269,19 @@ import {
   box-shadow: 0 16px 40px rgb(var(--brand-dark-rgb) / 0.22);
 }
 
-.brand-mark span {
-  font-family: var(--font-serif);
-  font-size: 38px;
-  font-weight: 500;
-  line-height: 1;
-  letter-spacing: 0.08em;
+.brand-mark__image {
+  display: block;
+  width: 78px;
+  height: 78px;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 18px rgb(var(--brand-dark-rgb) / 0.08));
 }
 
 .brand-title {
   position: relative;
   z-index: 1;
   margin: 24px 0 0;
-  font-family: var(--font-serif);
+  font-family: var(--font-brand);
   font-size: 52px;
   font-weight: 500;
   line-height: 1;
@@ -362,11 +438,16 @@ import {
 }
 
 .film-cta {
-  display: flex;
-  align-items: center;
+  display: grid;
   gap: 28px;
   padding: 52px 70px 58px;
   background: var(--cream);
+}
+
+.film-cta__header {
+  display: flex;
+  align-items: center;
+  gap: 28px;
 }
 
 .play-button {
@@ -383,14 +464,21 @@ import {
   transition:
     background-color 180ms ease,
     box-shadow 180ms ease,
-    transform 180ms ease;
+    transform 180ms ease,
+    opacity 180ms ease;
 }
 
-.play-button:hover {
+.play-button:hover:not(:disabled) {
   color: var(--white);
   background: var(--brand-olive);
   transform: translateY(-1px);
   box-shadow: 0 18px 36px rgb(var(--brand-olive-rgb) / 0.24);
+}
+
+.play-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.56;
+  box-shadow: none;
 }
 
 .play-button:focus-visible,
@@ -437,6 +525,102 @@ import {
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.05em;
+}
+
+.film-player {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  border: 1px solid rgb(var(--brand-dark-rgb) / 0.12);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgb(var(--white-rgb) / 0.92), rgb(var(--cream-rgb) / 0.88)),
+    radial-gradient(circle at top right, rgb(var(--brand-lime-light-rgb) / 0.14), transparent 34%);
+  box-shadow: 0 20px 48px rgb(var(--brand-dark-rgb) / 0.1);
+}
+
+.film-player__preview,
+.film-player__placeholder,
+.film-player__frame {
+  width: 100%;
+  height: 100%;
+}
+
+.film-player__preview {
+  display: grid;
+  align-content: end;
+  justify-items: start;
+  gap: 10px;
+  padding: 28px;
+  border: 0;
+  color: var(--white);
+  background:
+    linear-gradient(180deg, rgb(var(--brand-dark-rgb) / 0.04), rgb(var(--brand-dark-rgb) / 0.74)),
+    linear-gradient(135deg, var(--brand-dark), var(--brand-olive));
+  text-align: left;
+  cursor: pointer;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.film-player__preview:hover,
+.film-player__preview:focus-visible {
+  transform: translateY(-1px);
+  box-shadow: inset 0 0 0 1px rgb(var(--cream-rgb) / 0.18);
+  outline: none;
+}
+
+.film-player__preview-badge {
+  display: inline-flex;
+  padding: 8px 12px;
+  border-radius: 999px;
+  color: var(--brand-dark);
+  background: linear-gradient(
+    135deg,
+    var(--brand-lime) 0%,
+    rgb(var(--brand-lime-light-rgb) / 0.95) 100%
+  );
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.film-player__preview-title {
+  max-width: 360px;
+  font-family: var(--font-serif);
+  font-size: 28px;
+  line-height: 1.2;
+  letter-spacing: 0.03em;
+}
+
+.film-player__preview-meta {
+  color: rgb(var(--cream-rgb) / 0.82);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.film-player__frame {
+  display: block;
+  border: 0;
+}
+
+.film-player__placeholder {
+  display: grid;
+  place-items: center;
+  padding: 28px;
+  color: var(--text-muted);
+  font-size: 15px;
+  line-height: 1.7;
+  text-align: center;
+}
+
+.film-player__placeholder p {
+  max-width: 380px;
+  margin: 0;
 }
 
 .catalog-footer {
@@ -499,13 +683,14 @@ import {
   }
 
   .brand-mark {
-    width: 64px;
-    height: 64px;
+    width: 84px;
+    height: 84px;
     margin-top: 28px;
   }
 
-  .brand-mark span {
-    font-size: 31px;
+  .brand-mark__image {
+    width: 58px;
+    height: 58px;
   }
 
   .brand-title {
@@ -573,9 +758,12 @@ import {
   }
 
   .film-cta {
-    align-items: flex-start;
     padding-top: 42px;
     padding-bottom: 46px;
+  }
+
+  .film-cta__header {
+    align-items: flex-start;
   }
 
   .film-title {
@@ -594,9 +782,18 @@ import {
 }
 
 @media (max-width: 420px) {
-  .film-cta {
+  .film-cta,
+  .film-cta__header {
     flex-direction: column;
     gap: 22px;
+  }
+
+  .film-player__preview {
+    padding: 22px;
+  }
+
+  .film-player__preview-title {
+    font-size: 22px;
   }
 
   .catalog-badge,

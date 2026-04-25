@@ -22,7 +22,7 @@ const displayName = computed(() => {
 
 async function signout() {
   await customerStore.signout()
-  await router.push(`/${countryCode.value}/login`)
+  await router.push(`/${countryCode.value}`)
 }
 
 onMounted(() => {
@@ -46,12 +46,10 @@ onMounted(() => {
       </div>
 
       <div class="rounded-rounded border border-grey-20 bg-white p-5">
-        <nav class="grid gap-2 text-base-regular">
-          <RouterLink :to="`/${countryCode}/account/profile`">Профиль</RouterLink>
-          <RouterLink :to="`/${countryCode}/account/addresses`">Адреса</RouterLink>
-          <RouterLink :to="`/${countryCode}/account/orders`">Заказы</RouterLink>
-        </nav>
-
+        <p class="text-base-regular text-grey-60">
+          Раздел личного кабинета сейчас недоступен, но вы по-прежнему можете оформлять заказы и
+          управлять корзиной.
+        </p>
         <button
           type="button"
           class="mt-6 h-11 w-full rounded-base border border-grey-20 px-4 text-small-semi text-grey-90 transition hover:border-grey-40 disabled:cursor-not-allowed disabled:opacity-40"
@@ -72,13 +70,13 @@ onMounted(() => {
 
       <div class="mt-6 flex flex-wrap gap-3">
         <RouterLink
-          :to="`/${countryCode}/login?redirect=/${countryCode}/account`"
+          :to="`/${countryCode}/login`"
           class="inline-flex h-11 items-center rounded-base bg-black px-5 text-small-semi text-white hover:bg-grey-80 hover:text-white"
         >
           Войти
         </RouterLink>
         <RouterLink
-          :to="`/${countryCode}/register?redirect=/${countryCode}/account`"
+          :to="`/${countryCode}/register`"
           class="inline-flex h-11 items-center rounded-base border border-grey-20 px-5 text-small-semi text-grey-90 hover:border-grey-40"
         >
           Создать аккаунт

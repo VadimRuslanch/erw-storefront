@@ -15,10 +15,13 @@ export const convertToLocale = ({
   maximumFractionDigits,
   locale = 'en-US',
 }: ConvertToLocaleParams) => {
+  const normalizedCurrencyCode = currency_code?.toUpperCase()
+
   return currency_code && !isEmpty(currency_code)
     ? new Intl.NumberFormat(locale, {
         style: 'currency',
-        currency: currency_code,
+        currency: normalizedCurrencyCode,
+        ...(normalizedCurrencyCode === 'RUB' ? { currencyDisplay: 'narrowSymbol' } : {}),
         minimumFractionDigits,
         maximumFractionDigits,
       }).format(amount)

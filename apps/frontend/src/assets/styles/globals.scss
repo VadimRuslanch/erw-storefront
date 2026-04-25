@@ -1,6 +1,8 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+@use './fonts';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @layer base {
   :root {
@@ -21,6 +23,7 @@
     --text-muted: #6f7568;
     --border-soft: rgb(var(--brand-dark-rgb) / 0.14);
     --shadow-soft: 0 24px 60px rgb(var(--brand-dark-rgb) / 0.14);
+    --font-brand: 'Trajan Pro', 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
     --font-serif: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
     --font-sans: 'Nunito Sans', Calibri, Arial, sans-serif;
   }
@@ -39,6 +42,12 @@
 
   a {
     @apply transition-colors hover:text-grey-60;
+  }
+
+  a[href],
+  button:not(:disabled),
+  select:not(:disabled) {
+    cursor: pointer;
   }
 }
 

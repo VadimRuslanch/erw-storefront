@@ -3,6 +3,7 @@ export const storageKeys = {
   cartId: '_medusa_cart_id',
   locale: '_medusa_locale',
   cacheId: '_medusa_cache_id',
+  serviceCookiesAccepted: '_erawadee_service_cookies_accepted',
 } as const
 
 const isBrowser = () => typeof window !== 'undefined'
@@ -68,7 +69,8 @@ export function getOrCreateCacheId() {
   }
 
   const cacheId =
-    globalThis.crypto?.randomUUID?.() ?? `cache-${Date.now()}-${Math.random().toString(36).slice(2)}`
+    globalThis.crypto?.randomUUID?.() ??
+    `cache-${Date.now()}-${Math.random().toString(36).slice(2)}`
 
   setStorageItem(storageKeys.cacheId, cacheId)
 

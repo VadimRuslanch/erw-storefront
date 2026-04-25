@@ -1,6 +1,6 @@
 export const catalogHero = {
   badge: 'КАТАЛОГ ПРОДУКЦИИ 2026',
-  brand: 'ERAWADEE',
+  brand: 'ErawadeE',
   subtitle: 'ТРАДИЦИОННАЯ МЕДИЦИНА И КОСМЕТИКА ТАИЛАНДА',
   description: 'Полный каталог натуральной продукции для здоровья, красоты и силы',
 }
@@ -30,7 +30,7 @@ export const catalogValues = ['ЗДОРОВЬЕ', 'КРАСОТА', 'СИЛА', 
 
 // TODO: заменить плейсхолдер на реальную ссылку документального фильма ERAWADEE.
 export const filmCta = {
-  url: 'https://youtube.com/watch?v=PLACEHOLDER',
+  url: 'https://www.youtube.com/watch?v=qzl2t2p7AYc',
   displayUrl: 'youtube.com/watch?v=PLACEHOLDER',
   eyebrow: 'ДОКУМЕНТАЛЬНЫЙ ФИЛЬМ',
   title: 'Лет тайской традиционной медицины',
@@ -39,5 +39,9 @@ export const filmCta = {
 
 export const catalogContacts = {
   brand: 'ERAWADEE',
-  details: 'erawadee.com · hello@erawadee.com · +66 84 945 0447',
+  details: 'hello@erawadee.com · +66 84 945 0447',
+  email: 'hello@erawadee.com',
+  phone: '+66 84 945 0447',
+  inn: 'ИНН будет добавлен',
+  address: 'Адрес будет добавлен',
 }

@@ -38,7 +38,7 @@ function getRedirectPath() {
     return redirect
   }
 
-  return `/${countryCode.value}/account`
+  return `/${countryCode.value}/categories`
 }
 
 async function submitRegister() {
@@ -65,114 +65,316 @@ async function submitRegister() {
 </script>
 
 <template>
-  <section
-    class="content-container grid min-h-[calc(100vh-8rem)] gap-10 py-12 lg:grid-cols-[minmax(0,1fr)_480px] lg:items-center"
-  >
-    <div class="max-w-2xl">
-      <p class="text-small-semi uppercase tracking-[0.18em] text-grey-50">Аккаунт</p>
-      <h1 class="mt-4 text-[clamp(2.5rem,5vw,4.5rem)] font-semibold leading-none text-grey-90">
-        Создать аккаунт
-      </h1>
-      <p class="mt-5 text-base-regular text-grey-60">
-        Зарегистрируйте профиль покупателя, чтобы сохранить свои данные и привязать корзину к
-        аккаунту.
-      </p>
-    </div>
-
-    <form
-      class="rounded-rounded border border-grey-20 bg-white p-6"
-      @submit.prevent="submitRegister"
-    >
-      <div class="grid gap-5 sm:grid-cols-2">
-        <label class="block">
-          <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Имя</span>
-          <input
-            v-model.trim="form.firstName"
-            type="text"
-            autocomplete="given-name"
-            required
-            class="mt-2 h-12 w-full rounded-base border border-grey-20 px-4 text-base-regular text-grey-90 outline-none transition focus:border-grey-50"
-          />
-        </label>
-
-        <label class="block">
-          <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Фамилия</span>
-          <input
-            v-model.trim="form.lastName"
-            type="text"
-            autocomplete="family-name"
-            required
-            class="mt-2 h-12 w-full rounded-base border border-grey-20 px-4 text-base-regular text-grey-90 outline-none transition focus:border-grey-50"
-          />
-        </label>
-
-        <label class="block sm:col-span-2">
-          <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Email</span>
-          <input
-            v-model.trim="form.email"
-            type="email"
-            autocomplete="email"
-            required
-            class="mt-2 h-12 w-full rounded-base border border-grey-20 px-4 text-base-regular text-grey-90 outline-none transition focus:border-grey-50"
-          />
-        </label>
-
-        <label class="block sm:col-span-2">
-          <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Телефон</span>
-          <input
-            v-model.trim="form.phone"
-            type="tel"
-            autocomplete="tel"
-            class="mt-2 h-12 w-full rounded-base border border-grey-20 px-4 text-base-regular text-grey-90 outline-none transition focus:border-grey-50"
-          />
-        </label>
-
-        <label class="block">
-          <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Пароль</span>
-          <input
-            v-model="form.password"
-            type="password"
-            autocomplete="new-password"
-            required
-            minlength="8"
-            class="mt-2 h-12 w-full rounded-base border border-grey-20 px-4 text-base-regular text-grey-90 outline-none transition focus:border-grey-50"
-          />
-        </label>
-
-        <label class="block">
-          <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50"
-            >Подтверждение</span
-          >
-          <input
-            v-model="form.confirmPassword"
-            type="password"
-            autocomplete="new-password"
-            required
-            minlength="8"
-            class="mt-2 h-12 w-full rounded-base border border-grey-20 px-4 text-base-regular text-grey-90 outline-none transition focus:border-grey-50"
-          />
-        </label>
+  <section class="auth-page">
+    <div class="content-container auth-page__inner">
+      <div class="auth-hero">
+        <p class="auth-hero__eyebrow">Аккаунт</p>
+        <h1 class="auth-hero__title">Создать аккаунт</h1>
+        <p class="auth-hero__description">
+          Создайте профиль, чтобы сохранять контактные данные и отслеживать заказы ERAWADEE.
+        </p>
       </div>
 
-      <p
-        v-if="errorMessage"
-        class="mt-4 rounded-base border border-red-200 bg-red-50 px-4 py-3 text-small-regular text-red-700"
-      >
-        {{ errorMessage }}
-      </p>
+      <form class="auth-card" @submit.prevent="submitRegister">
+        <div class="auth-card__header">
+          <p class="auth-card__eyebrow">ERAWADEE</p>
+          <h2 class="auth-card__title">Регистрация</h2>
+        </div>
 
-      <button
-        type="submit"
-        class="mt-6 h-12 w-full rounded-base bg-black px-5 text-small-semi text-white transition hover:bg-grey-80 disabled:cursor-not-allowed disabled:opacity-40"
-        :disabled="isLoading"
-      >
-        {{ isLoading ? 'Создаём...' : 'Создать аккаунт' }}
-      </button>
+        <div class="auth-fields">
+          <label class="auth-field">
+            <span class="auth-field__label">Имя</span>
+            <input
+              v-model.trim="form.firstName"
+              type="text"
+              autocomplete="given-name"
+              required
+              class="auth-field__input"
+            />
+          </label>
 
-      <p class="mt-5 text-center text-small-regular text-grey-60">
-        Уже зарегистрированы?
-        <RouterLink :to="loginLink" class="font-semibold text-grey-90"> Войти </RouterLink>
-      </p>
-    </form>
+          <label class="auth-field">
+            <span class="auth-field__label">Фамилия</span>
+            <input
+              v-model.trim="form.lastName"
+              type="text"
+              autocomplete="family-name"
+              required
+              class="auth-field__input"
+            />
+          </label>
+
+          <label class="auth-field auth-field--wide">
+            <span class="auth-field__label">Email</span>
+            <input
+              v-model.trim="form.email"
+              type="email"
+              autocomplete="email"
+              required
+              class="auth-field__input"
+            />
+          </label>
+
+          <label class="auth-field auth-field--wide">
+            <span class="auth-field__label">Телефон</span>
+            <input
+              v-model.trim="form.phone"
+              type="tel"
+              autocomplete="tel"
+              class="auth-field__input"
+            />
+          </label>
+
+          <label class="auth-field">
+            <span class="auth-field__label">Пароль</span>
+            <input
+              v-model="form.password"
+              type="password"
+              autocomplete="new-password"
+              required
+              minlength="8"
+              class="auth-field__input"
+            />
+          </label>
+
+          <label class="auth-field">
+            <span class="auth-field__label">Подтверждение</span>
+            <input
+              v-model="form.confirmPassword"
+              type="password"
+              autocomplete="new-password"
+              required
+              minlength="8"
+              class="auth-field__input"
+            />
+          </label>
+        </div>
+
+        <p v-if="errorMessage" class="auth-notice auth-notice--error">
+          {{ errorMessage }}
+        </p>
+
+        <button type="submit" class="auth-button" :disabled="isLoading">
+          {{ isLoading ? 'Создаём...' : 'Создать аккаунт' }}
+        </button>
+
+        <p class="auth-card__footer">
+          Уже зарегистрированы?
+          <RouterLink :to="loginLink">Войти</RouterLink>
+        </p>
+      </form>
+    </div>
   </section>
 </template>
+
+<style scoped>
+.auth-page {
+  padding: 42px 0 64px;
+  background:
+    radial-gradient(circle at top right, rgb(var(--brand-lime-light-rgb) / 0.14), transparent 32%),
+    linear-gradient(180deg, rgb(var(--cream-rgb) / 0.76), rgb(var(--white-rgb) / 0.98));
+}
+
+.auth-page__inner {
+  display: grid;
+  min-height: calc(100vh - 168px);
+  align-items: center;
+  gap: 36px;
+}
+
+.auth-hero {
+  max-width: 680px;
+}
+
+.auth-hero__eyebrow,
+.auth-card__eyebrow,
+.auth-field__label,
+.auth-button {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.auth-hero__eyebrow,
+.auth-card__eyebrow,
+.auth-field__label {
+  color: var(--brand-olive);
+}
+
+.auth-hero__title {
+  margin: 14px 0 0;
+  color: var(--brand-dark);
+  font-family: var(--font-serif);
+  font-size: clamp(3rem, 6vw, 5.25rem);
+  font-weight: 500;
+  line-height: 0.92;
+  letter-spacing: 0.03em;
+}
+
+.auth-hero__description {
+  max-width: 560px;
+  margin: 20px 0 0;
+  color: var(--text-muted);
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+.auth-card {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  gap: 22px;
+  padding: clamp(22px, 4vw, 32px);
+  border: 1px solid var(--border-soft);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgb(var(--white-rgb) / 0.96), rgb(var(--cream-rgb) / 0.42)),
+    var(--white);
+  box-shadow: 0 20px 48px rgb(var(--brand-dark-rgb) / 0.1);
+}
+
+.auth-card::before {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 4px;
+  content: '';
+  background: linear-gradient(
+    90deg,
+    rgb(var(--brand-lime-rgb) / 0.94),
+    rgb(var(--brand-lime-light-rgb) / 0.94)
+  );
+}
+
+.auth-card__title {
+  margin: 10px 0 0;
+  color: var(--brand-dark);
+  font-family: var(--font-serif);
+  font-size: 34px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.auth-fields {
+  display: grid;
+  gap: 18px;
+}
+
+.auth-field {
+  display: grid;
+  gap: 9px;
+}
+
+.auth-field__input {
+  width: 100%;
+  height: 50px;
+  padding: 0 16px;
+  border: 1px solid var(--border-soft);
+  border-radius: 999px;
+  color: var(--brand-dark);
+  background: rgb(var(--white-rgb) / 0.92);
+  font-size: 14px;
+  outline: none;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    background-color 180ms ease;
+}
+
+.auth-field__input:focus {
+  border-color: rgb(var(--brand-lime-rgb) / 0.48);
+  background: var(--white);
+  box-shadow: 0 0 0 3px rgb(var(--brand-lime-light-rgb) / 0.18);
+}
+
+.auth-notice {
+  margin: 0;
+  padding: 12px 14px;
+  border: 1px solid var(--border-soft);
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.auth-notice--error {
+  color: #b42318;
+  border-color: rgb(244 114 114 / 0.28);
+  background: rgb(254 242 242 / 0.9);
+}
+
+.auth-button {
+  min-height: 50px;
+  padding: 0 20px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  color: var(--white);
+  background: linear-gradient(
+    135deg,
+    var(--brand-dark) 0%,
+    var(--brand-olive) 72%,
+    var(--brand-lime) 100%
+  );
+  box-shadow: 0 16px 28px rgb(var(--brand-dark-rgb) / 0.14);
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    opacity 180ms ease;
+}
+
+.auth-button:hover:not(:disabled),
+.auth-button:focus-visible {
+  transform: translateY(-1px);
+  box-shadow: 0 20px 34px rgb(var(--brand-dark-rgb) / 0.18);
+}
+
+.auth-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.48;
+}
+
+.auth-card__footer {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.auth-card__footer a {
+  color: var(--brand-dark);
+  font-weight: 700;
+}
+
+.auth-card__footer a:hover,
+.auth-card__footer a:focus-visible {
+  color: var(--brand-olive);
+}
+
+@media (min-width: 640px) {
+  .auth-fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .auth-field--wide {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 1024px) {
+  .auth-page__inner {
+    grid-template-columns: minmax(0, 1fr) minmax(440px, 480px);
+  }
+}
+
+@media (max-width: 640px) {
+  .auth-page {
+    padding-top: 30px;
+  }
+
+  .auth-page__inner {
+    min-height: auto;
+  }
+}
+</style>

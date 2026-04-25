@@ -1,0 +1,30 @@
+@font-face {
+  font-family: 'Nunito Sans';
+  font-style: normal;
+  font-weight: 300 800;
+  font-display: swap;
+  src:
+    url('/fonts/nunito-sans/NunitoSans-Variable.woff2') format('woff2'),
+    url('/fonts/nunito-sans/NunitoSans-Variable.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Cormorant Garamond';
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src:
+    url('/fonts/cormorant-garamond/CormorantGaramond-Variable.woff2') format('woff2'),
+    url('/fonts/cormorant-garamond/CormorantGaramond-Variable.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Trajan Pro';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src:
+    url('/fonts/trajan-pro/TrajanPro-Bold (convert.io).woff2') format('woff2'),
+    url('/fonts/trajan-pro/TrajanPro-Bold (convert.io).woff') format('woff'),
+    url('/fonts/trajan-pro/TrajanPro-Bold.otf') format('opentype');
+}

@@ -3,6 +3,7 @@ import type { HttpTypes } from '@medusajs/types'
 import { computed, onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { RouterLink } from 'vue-router'
+import CartItem from '@/components/CartItem.vue'
 import { convertToLocale } from '@lib/util/money'
 import { useCartStore } from '@stores/cart'
 import { useRegionStore } from '@stores/region'
@@ -191,211 +192,151 @@ onMounted(() => {
 </script>
 
 <template>
-  <section
-    class="border-b border-grey-20 bg-[linear-gradient(180deg,#f7f4ec_0%,#fffdf7_52%,#ffffff_100%)]"
-  >
-    <div class="content-container py-12">
-      <p class="text-small-semi uppercase tracking-[0.18em] text-grey-50">Корзина</p>
-      <h1 class="mt-4 text-[clamp(2.5rem,5vw,4.5rem)] font-semibold leading-none text-grey-90">
-        Корзина покупок
-      </h1>
-      <p class="mt-5 max-w-2xl text-base-regular text-grey-60">
-        Проверьте товары, измените количество и переходите к оформлению, когда всё будет готово.
-      </p>
+  <section class="cart-hero">
+    <div class="content-container">
+      <div class="cart-hero__panel">
+        <div class="cart-hero__eyebrow">
+          <span class="cart-hero__eyebrow-line" aria-hidden="true" />
+          <p class="cart-hero__kicker">Ваш заказ</p>
+        </div>
+
+        <div class="cart-hero__content">
+          <div>
+            <p class="cart-hero__label">Корзина</p>
+            <h1 class="cart-hero__title">Корзина покупок</h1>
+            <p class="cart-hero__description">
+              Проверьте товары, отрегулируйте количество и переходите к оформлению, когда состав
+              заказа будет полностью готов.
+            </p>
+          </div>
+
+          <dl class="cart-hero__stats" aria-label="Сводка по корзине">
+            <div class="cart-hero__stat">
+              <dt>Позиции</dt>
+              <dd>{{ itemCount }}</dd>
+            </div>
+            <div class="cart-hero__stat">
+              <dt>Итого</dt>
+              <dd>{{ formatAmount(cart?.total) }}</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
     </div>
   </section>
 
-  <section class="content-container py-10">
-    <div v-if="isLoading && !cart" class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_360px]">
-      <div class="space-y-4">
-        <div
-          v-for="index in 3"
-          :key="index"
-          class="h-36 animate-pulse rounded-rounded bg-grey-10"
-        />
+  <section class="cart-layout content-container">
+    <div v-if="isLoading && !cart" class="cart-loading">
+      <div class="cart-loading__list">
+        <div v-for="index in 3" :key="index" class="cart-loading__card" />
       </div>
-      <div class="h-72 animate-pulse rounded-rounded bg-grey-10" />
+      <div class="cart-loading__summary" />
     </div>
 
-    <div
-      v-else-if="error"
-      class="rounded-rounded border border-dashed border-grey-30 bg-grey-5 px-6 py-14 text-center"
-    >
-      <h2 class="text-xl-semi text-grey-90">Корзина недоступна</h2>
-      <p class="mt-3 text-base-regular text-grey-60">{{ error }}</p>
+    <div v-else-if="error" class="cart-state">
+      <p class="cart-state__eyebrow">Корзина</p>
+      <h2 class="cart-state__title">Корзина недоступна</h2>
+      <p class="cart-state__description">{{ error }}</p>
     </div>
 
-    <div
-      v-else-if="!hasItems"
-      class="rounded-rounded border border-dashed border-grey-30 bg-grey-5 px-6 py-14 text-center"
-    >
-      <h2 class="text-xl-semi text-grey-90">Ваша корзина пуста</h2>
-      <p class="mt-3 text-base-regular text-grey-60">
-        Добавьте товар в корзину, и он появится здесь.
+    <div v-else-if="!hasItems" class="cart-state">
+      <p class="cart-state__eyebrow">Корзина</p>
+      <h2 class="cart-state__title">Ваша корзина пуста</h2>
+      <p class="cart-state__description">
+        Добавьте товар в корзину, и он сразу появится здесь вместе с итоговой стоимостью заказа.
       </p>
-      <RouterLink
-        :to="storeLink"
-        class="mt-6 inline-flex h-11 items-center rounded-base bg-black px-5 text-small-semi text-white hover:bg-grey-80 hover:text-white"
-      >
+      <RouterLink :to="storeLink" class="cart-button cart-button--primary">
         Перейти к покупкам
       </RouterLink>
     </div>
 
-    <div v-else class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start">
-      <div>
-        <div class="mb-5 flex items-center justify-between gap-4 border-b border-grey-20 pb-5">
-          <p class="text-small-regular text-grey-60">
-            <span class="font-semibold text-grey-90">{{ itemCount }}</span> товаров
-          </p>
-          <RouterLink :to="storeLink" class="text-small-semi text-grey-90">
+    <div v-else class="cart-shell">
+      <div class="cart-main">
+        <div class="cart-main__header">
+          <div>
+            <p class="cart-main__label">Состав заказа</p>
+            <p class="cart-main__count">
+              <span>{{ itemCount }}</span> товаров
+            </p>
+          </div>
+          <RouterLink :to="storeLink" class="cart-button cart-button--ghost">
             Продолжить покупки
           </RouterLink>
         </div>
 
-        <div class="divide-y divide-grey-20 border-y border-grey-20">
-          <article
+        <div class="cart-list">
+          <CartItem
             v-for="item in cartItems"
             :key="item.id"
-            class="grid gap-4 py-5 sm:grid-cols-[120px_minmax(0,1fr)]"
-          >
-            <RouterLink
-              :to="productLink(item)"
-              class="block overflow-hidden rounded-rounded border border-grey-20 bg-grey-5"
-            >
-              <img
-                :src="itemImage(item)"
-                :alt="itemTitle(item)"
-                class="aspect-square w-full object-cover"
-              />
-            </RouterLink>
-
-            <div class="grid gap-4 md:grid-cols-[minmax(0,1fr)_180px]">
-              <div>
-                <RouterLink :to="productLink(item)" class="text-large-semi text-grey-90">
-                  {{ itemTitle(item) }}
-                </RouterLink>
-                <p v-if="itemVariantLabel(item)" class="mt-1 text-small-regular text-grey-50">
-                  {{ itemVariantLabel(item) }}
-                </p>
-                <p
-                  v-if="item.variant_sku || item.variant?.sku"
-                  class="mt-1 text-small-regular text-grey-50"
-                >
-                  SKU: {{ item.variant_sku || item.variant?.sku }}
-                </p>
-                <p class="mt-3 text-base-regular text-grey-60">
-                  {{ formatAmount(item.unit_price) }} за штуку
-                </p>
-              </div>
-
-              <div class="flex flex-col items-start gap-4 md:items-end">
-                <div class="flex h-10 items-center rounded-base border border-grey-20">
-                  <button
-                    type="button"
-                    class="h-full w-10 text-large-semi text-grey-90 transition hover:bg-grey-5 disabled:cursor-not-allowed disabled:opacity-40"
-                    :disabled="isLineUpdating(item.id)"
-                    @click="decrementQuantity(item)"
-                  >
-                    -
-                  </button>
-                  <input
-                    :value="item.quantity"
-                    type="number"
-                    min="1"
-                    class="h-full w-14 border-x border-grey-20 text-center text-base-regular outline-none"
-                    :disabled="isLineUpdating(item.id)"
-                    @change="
-                      updateQuantity(item, Number(($event.target as HTMLInputElement).value))
-                    "
-                  />
-                  <button
-                    type="button"
-                    class="h-full w-10 text-large-semi text-grey-90 transition hover:bg-grey-5 disabled:cursor-not-allowed disabled:opacity-40"
-                    :disabled="isLineUpdating(item.id)"
-                    @click="incrementQuantity(item)"
-                  >
-                    +
-                  </button>
-                </div>
-
-                <div class="text-left md:text-right">
-                  <p class="text-large-semi text-grey-90">
-                    {{
-                      formatAmount(item.total ?? item.subtotal ?? item.unit_price * item.quantity)
-                    }}
-                  </p>
-                  <p v-if="item.discount_total" class="text-small-regular text-grey-50">
-                    Скидка {{ formatAmount(item.discount_total) }}
-                  </p>
-                </div>
-
-                <button
-                  type="button"
-                  class="text-small-semi text-grey-50 transition hover:text-grey-90 disabled:cursor-not-allowed disabled:opacity-40"
-                  :disabled="isLineUpdating(item.id)"
-                  @click="removeItem(item)"
-                >
-                  Удалить
-                </button>
-              </div>
-            </div>
-          </article>
+            :item="item"
+            :to="productLink(item)"
+            :image-src="itemImage(item)"
+            :title="itemTitle(item)"
+            :variant-label="itemVariantLabel(item)"
+            :unit-price="formatAmount(item.unit_price)"
+            :line-total="
+              formatAmount(item.total ?? item.subtotal ?? item.unit_price * item.quantity)
+            "
+            :discount="item.discount_total ? formatAmount(item.discount_total) : null"
+            :is-updating="isLineUpdating(item.id)"
+            @decrement="decrementQuantity"
+            @increment="incrementQuantity"
+            @update-quantity="updateQuantity"
+            @remove="removeItem"
+          />
         </div>
       </div>
 
-      <aside class="rounded-rounded border border-grey-20 bg-white p-5 lg:sticky lg:top-24">
-        <h2 class="text-large-semi text-grey-90">Итого</h2>
+      <aside class="cart-summary">
+        <p class="cart-summary__label">Сводка заказа</p>
+        <h2 class="cart-summary__title">Итого</h2>
 
-        <dl class="mt-5 space-y-3 border-b border-grey-20 pb-5">
-          <div class="flex items-center justify-between gap-4">
-            <dt class="text-base-regular text-grey-60">Подытог</dt>
-            <dd class="text-base-semi text-grey-90">{{ formatAmount(cart?.subtotal) }}</dd>
+        <dl class="cart-summary__totals">
+          <div class="cart-summary__row">
+            <dt>Подытог</dt>
+            <dd>{{ formatAmount(cart?.subtotal) }}</dd>
           </div>
-          <div v-if="cart?.discount_total" class="flex items-center justify-between gap-4">
-            <dt class="text-base-regular text-grey-60">Скидка</dt>
-            <dd class="text-base-semi text-grey-90">-{{ formatAmount(cart.discount_total) }}</dd>
+          <div v-if="cart?.discount_total" class="cart-summary__row">
+            <dt>Скидка</dt>
+            <dd>-{{ formatAmount(cart.discount_total) }}</dd>
           </div>
-          <div class="flex items-center justify-between gap-4">
-            <dt class="text-base-regular text-grey-60">Доставка</dt>
-            <dd class="text-base-semi text-grey-90">{{ formatAmount(cart?.shipping_total) }}</dd>
+          <div class="cart-summary__row">
+            <dt>Доставка</dt>
+            <dd>{{ formatAmount(cart?.shipping_total) }}</dd>
           </div>
-          <div class="flex items-center justify-between gap-4">
-            <dt class="text-base-regular text-grey-60">Налоги</dt>
-            <dd class="text-base-semi text-grey-90">{{ formatAmount(cart?.tax_total) }}</dd>
+          <div class="cart-summary__row">
+            <dt>Налоги</dt>
+            <dd>{{ formatAmount(cart?.tax_total) }}</dd>
           </div>
         </dl>
 
-        <div class="mt-5 flex items-center justify-between gap-4">
-          <span class="text-large-semi text-grey-90">Итого</span>
-          <span class="text-xl-semi text-grey-90">{{ formatAmount(cart?.total) }}</span>
+        <div class="cart-summary__footer">
+          <span>Итого</span>
+          <strong>{{ formatAmount(cart?.total) }}</strong>
         </div>
 
-        <form class="mt-6" @submit.prevent="applyPromotion">
-          <label class="block">
-            <span class="text-small-semi uppercase tracking-[0.12em] text-grey-50">Промокод</span>
-            <div class="mt-2 grid grid-cols-[minmax(0,1fr)_92px] gap-2">
-              <input
-                v-model.trim="promoCode"
-                type="text"
-                class="h-11 rounded-base border border-grey-20 px-3 text-base-regular text-grey-90 outline-none transition focus:border-grey-50"
-              />
-              <button
-                type="submit"
-                class="h-11 rounded-base border border-grey-20 px-3 text-small-semi text-grey-90 transition hover:border-grey-40 disabled:cursor-not-allowed disabled:opacity-40"
-                :disabled="isApplyingPromotion || !promoCode.trim()"
-              >
-                Применить
-              </button>
-            </div>
-          </label>
+        <form class="cart-summary__promo" @submit.prevent="applyPromotion">
+          <!--          <label class="cart-field">-->
+          <!--            <span class="cart-field__label">Промокод</span>-->
+          <!--            <div class="cart-field__row">-->
+          <!--              <input v-model.trim="promoCode" type="text" class="cart-field__input" />-->
+          <!--              <button-->
+          <!--                type="submit"-->
+          <!--                class="cart-button cart-button&#45;&#45;ghost"-->
+          <!--                :disabled="isApplyingPromotion || !promoCode.trim()"-->
+          <!--              >-->
+          <!--                Применить-->
+          <!--              </button>-->
+          <!--            </div>-->
+          <!--          </label>-->
         </form>
 
-        <div v-if="cart?.promotions?.length" class="mt-4 flex flex-wrap gap-2">
+        <div v-if="cart?.promotions?.length" class="cart-summary__chips">
           <button
             v-for="promotion in cart.promotions"
             :key="promotion.id"
             type="button"
-            class="rounded-circle border border-grey-20 px-3 py-1 text-small-regular text-grey-70 transition hover:border-grey-40"
+            class="cart-chip"
             :disabled="isApplyingPromotion"
             @click="removePromotion(promotion.code)"
           >
@@ -403,26 +344,506 @@ onMounted(() => {
           </button>
         </div>
 
-        <p
-          v-if="actionError"
-          class="mt-4 rounded-base border border-red-200 bg-red-50 px-4 py-3 text-small-regular text-red-700"
-        >
+        <p v-if="actionError" class="cart-notice cart-notice--error">
           {{ actionError }}
         </p>
-        <p
-          v-else-if="actionMessage"
-          class="mt-4 rounded-base border border-grey-20 bg-grey-5 px-4 py-3 text-small-regular text-grey-70"
-        >
+        <p v-else-if="actionMessage" class="cart-notice">
           {{ actionMessage }}
         </p>
 
-        <RouterLink
-          :to="checkoutLink"
-          class="mt-6 flex h-12 w-full items-center justify-center rounded-base bg-black px-5 text-small-semi text-white transition hover:bg-grey-80 hover:text-white"
-        >
+        <RouterLink :to="checkoutLink" class="cart-button cart-button--primary cart-button--full">
           Оформить заказ
         </RouterLink>
       </aside>
     </div>
   </section>
 </template>
+
+<style scoped>
+.cart-hero {
+  padding: 28px 0 18px;
+  background:
+    radial-gradient(circle at top right, rgb(var(--brand-lime-light-rgb) / 0.16), transparent 30%),
+    linear-gradient(180deg, rgb(var(--cream-rgb) / 0.74) 0%, rgb(var(--white-rgb) / 0.98) 62%);
+}
+
+.cart-hero__panel {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  gap: 28px;
+  padding: 36px clamp(24px, 4vw, 44px);
+  border: 1px solid var(--border-soft);
+  border-radius: 8px;
+  background: linear-gradient(
+    145deg,
+    var(--brand-dark) 0%,
+    var(--brand-olive) 58%,
+    var(--brand-dark) 100%
+  );
+  box-shadow: var(--shadow-soft);
+}
+
+.cart-hero__panel::after {
+  position: absolute;
+  inset: auto 0 0;
+  height: 4px;
+  content: '';
+  background: linear-gradient(
+    90deg,
+    rgb(var(--brand-lime-rgb) / 0.95),
+    rgb(var(--brand-lime-light-rgb) / 0.95),
+    rgb(var(--brand-lime-rgb) / 0.95)
+  );
+}
+
+.cart-hero__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.cart-hero__eyebrow-line {
+  width: 48px;
+  height: 1px;
+  background: rgb(var(--brand-lime-light-rgb) / 0.8);
+}
+
+.cart-hero__kicker,
+.cart-hero__label,
+.cart-main__label,
+.cart-summary__label,
+.cart-field__label,
+.cart-state__eyebrow,
+.cart-button,
+.cart-chip {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.cart-hero__kicker {
+  color: rgb(var(--cream-rgb) / 0.86);
+}
+
+.cart-hero__content {
+  display: grid;
+  gap: 18px;
+}
+
+.cart-hero__label {
+  color: var(--brand-lime-light);
+}
+
+.cart-hero__title {
+  margin: 10px 0 0;
+  color: var(--white);
+  font-family: var(--font-serif);
+  font-size: clamp(2.6rem, 5vw, 4.45rem);
+  font-weight: 500;
+  line-height: 0.96;
+  letter-spacing: 0.03em;
+}
+
+.cart-hero__description {
+  max-width: 640px;
+  margin: 18px 0 0;
+  color: rgb(var(--cream-rgb) / 0.9);
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+.cart-hero__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.cart-hero__stat {
+  min-width: 160px;
+  padding: 14px 16px;
+  border: 1px solid rgb(var(--cream-rgb) / 0.18);
+  border-radius: 8px;
+  background: rgb(var(--cream-rgb) / 0.08);
+}
+
+.cart-hero__stat dt {
+  color: rgb(var(--cream-rgb) / 0.74);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.cart-hero__stat dd {
+  margin: 10px 0 0;
+  color: var(--white);
+  font-family: var(--font-serif);
+  font-size: 32px;
+  line-height: 1;
+}
+
+.cart-layout {
+  padding-top: 32px;
+  padding-bottom: 48px;
+}
+
+.cart-loading,
+.cart-shell {
+  display: grid;
+  gap: 28px;
+}
+
+.cart-loading__list {
+  display: grid;
+  gap: 16px;
+}
+
+.cart-loading__card,
+.cart-loading__summary {
+  border-radius: 8px;
+  background: linear-gradient(180deg, rgb(var(--cream-rgb) / 0.7), rgb(var(--white-rgb) / 0.98));
+  border: 1px solid var(--border-soft);
+  box-shadow: 0 18px 36px rgb(var(--brand-dark-rgb) / 0.08);
+}
+
+.cart-loading__card {
+  height: 188px;
+}
+
+.cart-loading__summary {
+  height: 420px;
+}
+
+.cart-state {
+  padding: 52px 32px;
+  border: 1px dashed rgb(var(--brand-dark-rgb) / 0.22);
+  border-radius: 8px;
+  background: rgb(var(--cream-rgb) / 0.48);
+  text-align: center;
+}
+
+.cart-state__eyebrow,
+.cart-main__label,
+.cart-summary__label,
+.cart-field__label {
+  color: var(--brand-olive);
+}
+
+.cart-state__title {
+  margin: 14px 0 0;
+  color: var(--brand-dark);
+  font-family: var(--font-serif);
+  font-size: 36px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.cart-state__description {
+  max-width: 520px;
+  margin: 14px auto 0;
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1.75;
+}
+
+.cart-main {
+  min-width: 0;
+}
+
+.cart-main__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 24px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.cart-main__count {
+  margin: 8px 0 0;
+  color: var(--text-muted);
+  font-size: 15px;
+}
+
+.cart-main__count span {
+  color: var(--brand-dark);
+  font-weight: 700;
+}
+
+.cart-list {
+  display: grid;
+  gap: 18px;
+}
+
+.cart-summary__row dt,
+.cart-chip,
+.cart-notice {
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.cart-button:disabled,
+.cart-chip:disabled {
+  cursor: not-allowed;
+  opacity: 0.42;
+}
+
+.cart-summary {
+  position: relative;
+  overflow: hidden;
+  padding: 24px 22px 22px;
+  border: 1px solid var(--border-soft);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgb(var(--cream-rgb) / 0.74), rgb(var(--white-rgb) / 0.98)),
+    linear-gradient(180deg, rgb(var(--brand-lime-light-rgb) / 0.06), transparent);
+  box-shadow: 0 18px 38px rgb(var(--brand-dark-rgb) / 0.08);
+}
+
+.cart-summary::after {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 4px;
+  content: '';
+  background: linear-gradient(
+    90deg,
+    rgb(var(--brand-lime-rgb) / 0.92),
+    rgb(var(--brand-lime-light-rgb) / 0.92)
+  );
+}
+
+.cart-summary__title {
+  margin: 14px 0 0;
+  color: var(--brand-dark);
+  font-family: var(--font-serif);
+  font-size: 34px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.cart-summary__totals {
+  margin: 22px 0 0;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.cart-summary__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.cart-summary__row + .cart-summary__row {
+  margin-top: 12px;
+}
+
+.cart-summary__row dd {
+  margin: 0;
+  color: var(--brand-dark);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.cart-summary__footer {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.cart-summary__footer span {
+  color: var(--brand-dark);
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.cart-summary__footer strong {
+  color: var(--brand-dark);
+  font-family: var(--font-serif);
+  font-size: 34px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.cart-summary__promo {
+  margin-top: 22px;
+}
+
+.cart-field {
+  display: grid;
+  gap: 10px;
+}
+
+.cart-field__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+}
+
+.cart-field__input {
+  height: 48px;
+  padding: 0 16px;
+  border: 1px solid var(--border-soft);
+  border-radius: 999px;
+  color: var(--brand-dark);
+  background: rgb(var(--white-rgb) / 0.92);
+  font-size: 14px;
+  outline: none;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.cart-field__input:focus {
+  border-color: rgb(var(--brand-lime-rgb) / 0.5);
+  box-shadow: 0 0 0 3px rgb(var(--brand-lime-light-rgb) / 0.18);
+}
+
+.cart-summary__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.cart-chip {
+  padding: 8px 12px;
+  border: 1px solid var(--border-soft);
+  border-radius: 999px;
+  color: var(--brand-olive);
+  background: rgb(var(--white-rgb) / 0.84);
+  transition: border-color 180ms ease;
+}
+
+.cart-chip:hover:not(:disabled) {
+  border-color: rgb(var(--brand-lime-rgb) / 0.34);
+}
+
+.cart-notice {
+  margin-top: 16px;
+  padding: 12px 14px;
+  border: 1px solid var(--border-soft);
+  border-radius: 8px;
+  background: rgb(var(--white-rgb) / 0.8);
+}
+
+.cart-notice--error {
+  color: #b42318;
+  border-color: rgb(244 114 114 / 0.28);
+  background: rgb(254 242 242 / 0.9);
+}
+
+.cart-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 18px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease,
+    background-color 180ms ease,
+    opacity 180ms ease;
+}
+
+.cart-button:hover:not(:disabled),
+.cart-button:focus-visible {
+  transform: translateY(-1px);
+}
+
+.cart-button--primary {
+  color: var(--white);
+  background: linear-gradient(
+    135deg,
+    var(--brand-dark) 0%,
+    var(--brand-olive) 72%,
+    var(--brand-lime) 100%
+  );
+  box-shadow: 0 16px 28px rgb(var(--brand-dark-rgb) / 0.14);
+}
+
+.cart-button--ghost {
+  color: var(--brand-dark);
+  border-color: var(--border-soft);
+  background: rgb(var(--white-rgb) / 0.84);
+}
+
+.cart-button--ghost:hover:not(:disabled),
+.cart-button--ghost:focus-visible {
+  border-color: rgb(var(--brand-lime-rgb) / 0.34);
+  color: var(--brand-olive);
+}
+
+.cart-button--full {
+  width: 100%;
+  margin-top: 18px;
+}
+
+@media (min-width: 1024px) {
+  .cart-loading,
+  .cart-shell {
+    grid-template-columns: minmax(0, 1fr) 360px;
+    align-items: start;
+  }
+
+  .cart-summary {
+    position: sticky;
+    top: 24px;
+  }
+}
+
+@media (max-width: 767px) {
+  .cart-field__row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 639px) {
+  .cart-hero {
+    padding-top: 18px;
+  }
+
+  .cart-hero__panel {
+    padding: 28px 20px;
+  }
+
+  .cart-hero__eyebrow {
+    gap: 10px;
+  }
+
+  .cart-hero__eyebrow-line {
+    width: 32px;
+  }
+
+  .cart-hero__title,
+  .cart-state__title {
+    font-size: 36px;
+  }
+
+  .cart-hero__stat {
+    min-width: calc(50% - 7px);
+  }
+
+  .cart-summary {
+    padding-right: 18px;
+    padding-left: 18px;
+  }
+
+  .cart-summary__title {
+    font-size: 30px;
+  }
+}
+</style>

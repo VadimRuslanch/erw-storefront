@@ -4,10 +4,32 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5af0ba0c-d1cb-47ad-aeb9-b711a2d526ff" name="Changes" comment="added Front Design, delete zod">
+    <list default="true" id="5af0ba0c-d1cb-47ad-aeb9-b711a2d526ff" name="Changes" comment="added fix patch for Medusa">
+      <change afterPath="$PROJECT_DIR$/apps/frontend/public/fonts/trajan-pro/.gitkeep" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/backend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/apps/backend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/frontend/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/App.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/frontend/src/assets/icons/icon-cart.svg" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/assets/icons/icon-cart.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/frontend/src/components/CatalogCover.vue" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/components/CatalogCover.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/frontend/src/content/erawadeeCatalogCover.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/content/erawadeeCatalogCover.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/frontend/src/layouts/CheckoutLayout.vue" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/layouts/CheckoutLayout.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/frontend/src/layouts/MainLayout.vue" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/layouts/MainLayout.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/frontend/src/lib/storage.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/lib/storage.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/frontend/src/lib/util/money.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/lib/util/money.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/frontend/src/main.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/main.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/frontend/src/router/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/router/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/frontend/src/styles/globals.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/frontend/src/views/AccountView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/views/AccountView.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/frontend/src/views/CartView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/views/CartView.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/frontend/src/views/CatalogView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/views/CatalogView.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/frontend/src/views/CheckoutView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/views/CheckoutView.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/frontend/src/views/LoginView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/views/LoginView.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/frontend/src/views/NotFoundView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/views/NotFoundView.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/frontend/src/views/ProductView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/views/ProductView.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/frontend/src/views/RegisterView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/views/RegisterView.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/frontend/src/views/StoreView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/views/StoreView.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/frontend/tailwind.config.cjs" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/tailwind.config.cjs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pnpm-lock.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -61,7 +83,7 @@
     "codeWithMe.voiceChat.enabledByDefault": "false",
     "git-widget-placeholder": "main",
     "javascript.preferred.runtime.type.id": "node",
-    "last_opened_file_path": "D:/projects/dev/erw-storefront/apps/frontend",
+    "last_opened_file_path": "/Users/lugengster/Desktop/project/erw-storefront/apps/frontend/public/fonts/trajan-pro",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -87,9 +109,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/apps/frontend/public/fonts/trajan-pro" />
       <recent name="D:\projects\dev\erw-storefront\apps\frontend" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/apps/frontend/src/assets" />
       <recent name="$PROJECT_DIR$/apps/frontend" />
     </key>
   </component>
@@ -166,7 +190,7 @@
       <workItem from="1777009588484" duration="8698000" />
       <workItem from="1777093891269" duration="78000" />
       <workItem from="1777093975411" duration="3988000" />
-      <workItem from="1777099781814" duration="14492000" />
+      <workItem from="1777099781814" duration="30028000" />
     </task>
     <task id="LOCAL-00001" summary="prod build">
       <option name="closed" value="true" />
@@ -200,7 +224,15 @@
       <option name="project" value="LOCAL" />
       <updated>1777130191702</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="added fix patch for Medusa">
+      <option name="closed" value="true" />
+      <created>1777132340534</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1777132340534</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -211,6 +243,7 @@
     <MESSAGE value="added front, fix medusa backend" />
     <MESSAGE value="added HomePage" />
     <MESSAGE value="added Front Design, delete zod" />
-    <option name="LAST_COMMIT_MESSAGE" value="added Front Design, delete zod" />
+    <MESSAGE value="added fix patch for Medusa" />
+    <option name="LAST_COMMIT_MESSAGE" value="added fix patch for Medusa" />
   </component>
 </project>
