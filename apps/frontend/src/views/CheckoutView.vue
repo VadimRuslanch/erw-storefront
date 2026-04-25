@@ -95,11 +95,7 @@ const selectedPaymentSession = computed(() => {
 })
 
 const canPlaceOrder = computed(() => {
-  if (!cart.value || !hasItems.value || isPreparingCheckout.value || isSubmitting.value) {
-    return false
-  }
-
-  return true
+  return !(!cart.value || !hasItems.value || isPreparingCheckout.value || isSubmitting.value);
 })
 
 function formatAmount(amount?: number | null) {

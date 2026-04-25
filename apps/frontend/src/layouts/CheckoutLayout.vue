@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import { storeToRefs } from 'pinia'
-import logoImage from '@/assets/icons/logo.png'
 import { useRegionStore } from '@stores/region'
 
 const regionStore = useRegionStore()
@@ -95,13 +94,6 @@ const { countryCode } = storeToRefs(regionStore)
   align-items: center;
   gap: 12px;
   color: var(--brand-dark);
-}
-
-.checkout-nav__logo {
-  display: block;
-  width: 38px;
-  height: 38px;
-  object-fit: contain;
 }
 
 .checkout-nav__brand-text {

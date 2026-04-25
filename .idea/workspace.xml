@@ -6,227 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="5af0ba0c-d1cb-47ad-aeb9-b711a2d526ff" name="Changes" comment="finish storefront">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/frontend/src/views/LoginView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/views/LoginView.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/frontend/src/views/ProductView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/views/ProductView.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/frontend/src/views/RegisterView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/views/RegisterView.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/.eslintrc.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/.prettierrc.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/check-env-variables.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/next-env.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/next-sitemap.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/next.config.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/postcss.config.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/public/favicon.ico" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/app/[countryCode]/(checkout)/checkout/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/app/[countryCode]/(checkout)/layout.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/app/[countryCode]/(checkout)/not-found.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/app/[countryCode]/(main)/account/@dashboard/addresses/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/app/[countryCode]/(main)/account/@dashboard/loading.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/app/[countryCode]/(main)/account/@dashboard/orders/details/[id]/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/app/[countryCode]/(main)/account/@dashboard/orders/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/app/[countryCode]/(main)/account/@dashboard/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/app/[countryCode]/(main)/account/@dashboard/profile/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/app/[countryCode]/(main)/account/@login/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/app/[countryCode]/(main)/account/layout.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/app/[countryCode]/(main)/account/loading.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/app/[countryCode]/(main)/cart/loading.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/app/[countryCode]/(main)/cart/not-found.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/app/[countryCode]/(main)/cart/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/app/[countryCode]/(main)/categories/[...category]/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/app/[countryCode]/(main)/collections/[handle]/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/app/[countryCode]/(main)/layout.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/app/[countryCode]/(main)/not-found.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/app/[countryCode]/(main)/order/[id]/confirmed/loading.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/app/[countryCode]/(main)/order/[id]/confirmed/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/app/[countryCode]/(main)/order/[id]/transfer/[token]/accept/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/app/[countryCode]/(main)/order/[id]/transfer/[token]/decline/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/app/[countryCode]/(main)/order/[id]/transfer/[token]/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/app/[countryCode]/(main)/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/app/[countryCode]/(main)/products/[handle]/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/app/[countryCode]/(main)/store/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/app/layout.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/app/not-found.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/app/opengraph-image.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/app/twitter-image.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/lib/config.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/lib/constants.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/lib/context/modal-context.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/lib/data/cart.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/lib/data/categories.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/lib/data/collections.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/lib/data/cookies.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/lib/data/customer.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/lib/data/fulfillment.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/lib/data/locale-actions.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/lib/data/locales.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/lib/data/onboarding.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/lib/data/orders.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/lib/data/payment.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/lib/data/products.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/lib/data/regions.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/lib/data/variants.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/lib/hooks/use-in-view.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/lib/hooks/use-toggle-state.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/lib/util/compare-addresses.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/lib/util/env.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/lib/util/get-locale-header.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/lib/util/get-percentage-diff.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/lib/util/get-product-price.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/lib/util/isEmpty.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/lib/util/medusa-error.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/lib/util/money.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/lib/util/product.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/lib/util/repeat.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/lib/util/sort-products.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/middleware.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/account/components/account-info/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/account/components/account-nav/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/account/components/address-book/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/account/components/address-card/add-address.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/account/components/address-card/edit-address-modal.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/account/components/login/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/account/components/order-card/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/account/components/order-overview/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/account/components/overview/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/account/components/profile-billing-address/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/account/components/profile-email/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/account/components/profile-name/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/account/components/profile-password/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/account/components/profile-phone/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/account/components/register/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/account/components/transfer-request-form/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/account/templates/account-layout.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/account/templates/login-template.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/cart/components/cart-item-select/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/cart/components/empty-cart-message/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/cart/components/item/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/cart/components/sign-in-prompt/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/cart/templates/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/cart/templates/items.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/cart/templates/preview.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/cart/templates/summary.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/categories/templates/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/checkout/components/address-select/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/checkout/components/addresses/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/checkout/components/billing_address/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/checkout/components/country-select/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/checkout/components/discount-code/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/checkout/components/error-message/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/checkout/components/payment-button/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/checkout/components/payment-container/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/checkout/components/payment-test/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/checkout/components/payment-wrapper/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/checkout/components/payment-wrapper/stripe-wrapper.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/checkout/components/payment/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/checkout/components/review/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/checkout/components/shipping-address/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/checkout/components/shipping/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/checkout/components/submit-button/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/checkout/templates/checkout-form/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/checkout/templates/checkout-summary/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/collections/templates/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/common/components/cart-totals/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/common/components/checkbox/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/common/components/delete-button/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/common/components/divider/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/common/components/filter-radio-group/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/common/components/input/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/common/components/interactive-link/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/common/components/line-item-options/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/common/components/line-item-price/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/common/components/line-item-unit-price/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/common/components/localized-client-link/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/common/components/modal/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/common/components/native-select/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/common/components/radio/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/common/components/ui/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/common/icons/back.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/common/icons/bancontact.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/common/icons/chevron-down.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/common/icons/chevron-up-down.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/common/icons/eye-off.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/common/icons/eye.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/common/icons/fast-delivery.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/common/icons/ideal.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/common/icons/map-pin.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/common/icons/medusa.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/common/icons/nextjs.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/common/icons/package.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/common/icons/paypal.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/common/icons/placeholder-image.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/common/icons/refresh.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/common/icons/spinner.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/common/icons/trash.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/common/icons/user.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/common/icons/x.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/home/components/featured-products/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/home/components/featured-products/product-rail/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/home/components/hero/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/layout/components/cart-button/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/layout/components/cart-dropdown/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/layout/components/cart-mismatch-banner/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/layout/components/country-select/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/layout/components/language-select/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/layout/components/medusa-cta/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/layout/components/side-menu/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/layout/templates/footer/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/layout/templates/nav/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/order/components/help/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/order/components/item/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/order/components/items/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/order/components/onboarding-cta/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/order/components/order-details/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/order/components/order-summary/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/order/components/payment-details/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/order/components/shipping-details/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/order/components/transfer-actions/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/order/components/transfer-image/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/order/templates/order-completed-template.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/order/templates/order-details-template.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/products/components/image-gallery/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/products/components/product-actions/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/products/components/product-actions/mobile-actions.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/products/components/product-actions/option-select.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/products/components/product-onboarding-cta/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/products/components/product-preview/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/products/components/product-preview/price.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/products/components/product-price/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/products/components/product-tabs/accordion.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/products/components/product-tabs/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/products/components/related-products/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/products/components/thumbnail/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/products/templates/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/products/templates/product-actions-wrapper/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/products/templates/product-info/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/shipping/components/free-shipping-price-nudge/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/skeletons/components/skeleton-button/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/skeletons/components/skeleton-card-details/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/skeletons/components/skeleton-cart-item/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/skeletons/components/skeleton-cart-totals/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/skeletons/components/skeleton-code-form/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/skeletons/components/skeleton-line-item/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/skeletons/components/skeleton-order-confirmed-header/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/skeletons/components/skeleton-order-information/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/skeletons/components/skeleton-order-items/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/skeletons/components/skeleton-order-summary/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/skeletons/components/skeleton-product-preview/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/skeletons/templates/skeleton-cart-page/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/skeletons/templates/skeleton-order-confirmed/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/skeletons/templates/skeleton-product-grid/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/skeletons/templates/skeleton-related-products/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/store/components/pagination/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/store/components/refinement-list/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/store/components/refinement-list/sort-products/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/store/templates/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/modules/store/templates/paginated-products.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/styles/globals.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/types/global.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/src/types/icon.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/tailwind.config.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/tsconfig.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/storefront/tsconfig.tsbuildinfo" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pnpm-lock.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/frontend/src/components/CatalogCover.vue" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/components/CatalogCover.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/frontend/src/layouts/CheckoutLayout.vue" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/layouts/CheckoutLayout.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/frontend/src/views/CheckoutView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/views/CheckoutView.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -399,7 +181,7 @@
       <workItem from="1777009588484" duration="8698000" />
       <workItem from="1777093891269" duration="78000" />
       <workItem from="1777093975411" duration="3988000" />
-      <workItem from="1777099781814" duration="32205000" />
+      <workItem from="1777099781814" duration="32860000" />
     </task>
     <task id="LOCAL-00001" summary="prod build">
       <option name="closed" value="true" />
@@ -465,7 +247,15 @@
       <option name="project" value="LOCAL" />
       <updated>1777150727247</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="finish storefront">
+      <option name="closed" value="true" />
+      <created>1777151498900</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1777151498900</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

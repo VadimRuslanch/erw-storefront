@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import logoImage from '@/assets/icons/logo.png'
 import {
   aboutCompany,
   catalogContacts,
@@ -252,29 +251,6 @@ function openFilmPlayer() {
   position: relative;
   z-index: 1;
   color: var(--brand-lime-light);
-}
-
-.brand-mark {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  width: 112px;
-  height: 112px;
-  margin-top: 34px;
-  place-items: center;
-  border: 1px solid rgb(var(--cream-rgb) / 0.5);
-  border-radius: 50%;
-  color: var(--cream);
-  background: rgb(var(--cream-rgb) / 0.08);
-  box-shadow: 0 16px 40px rgb(var(--brand-dark-rgb) / 0.22);
-}
-
-.brand-mark__image {
-  display: block;
-  width: 78px;
-  height: 78px;
-  object-fit: contain;
-  filter: drop-shadow(0 10px 18px rgb(var(--brand-dark-rgb) / 0.08));
 }
 
 .brand-title {
@@ -680,17 +656,6 @@ function openFilmPlayer() {
     top: 34px;
     bottom: 34px;
     opacity: 0.26;
-  }
-
-  .brand-mark {
-    width: 84px;
-    height: 84px;
-    margin-top: 28px;
-  }
-
-  .brand-mark__image {
-    width: 58px;
-    height: 58px;
   }
 
   .brand-title {
