@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import logoImage from '@/assets/icons/logo-new.png'
 import { computed, ref } from 'vue'
 import {
   aboutCompany,
@@ -57,9 +58,9 @@ function openFilmPlayer() {
       <div class="thai-border" aria-hidden="true" />
       <p class="catalog-badge">{{ catalogHero.badge }}</p>
 
-      <!--      <div class="brand-mark" aria-label="Логотип ERAWADEE" role="img">-->
-      <!--        <img :src="logoImage" alt="" class="brand-mark__image" />-->
-      <!--      </div>-->
+      <div class="brand-mark" aria-label="Логотип ERAWADEE" role="img">
+        <img :src="logoImage" alt="" class="brand-mark__image" />
+      </div>
 
       <p class="brand-title">{{ catalogHero.brand }}</p>
       <p class="brand-subtitle">{{ catalogHero.subtitle }}</p>
@@ -170,7 +171,15 @@ function openFilmPlayer() {
           :src="filmEmbedUrl"
           :title="filmCta.title"
           loading="lazy"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allow="
+            accelerometer;
+            autoplay;
+            clipboard-write;
+            encrypted-media;
+            gyroscope;
+            picture-in-picture;
+            web-share;
+          "
           allowfullscreen
           referrerpolicy="strict-origin-when-cross-origin"
         />
@@ -189,6 +198,11 @@ function openFilmPlayer() {
 </template>
 
 <style scoped>
+.brand-mark {
+  max-width: 500px;
+  height: auto;
+}
+
 .catalog-cover {
   margin: 0 auto;
   overflow: hidden;

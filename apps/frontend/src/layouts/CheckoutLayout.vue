@@ -2,6 +2,7 @@
 import { RouterLink, RouterView } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { useRegionStore } from '@stores/region'
+import logoImage from '@/assets/icons/logo-new.png'
 
 const regionStore = useRegionStore()
 const { countryCode } = storeToRefs(regionStore)
@@ -54,6 +55,11 @@ const { countryCode } = storeToRefs(regionStore)
   align-items: center;
   gap: 20px;
   min-height: 72px;
+}
+
+.checkout-nav__logo {
+  width: 50px;
+  height: auto;
 }
 
 .checkout-nav__back,

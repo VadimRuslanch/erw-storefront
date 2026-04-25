@@ -11,6 +11,7 @@ import { useCustomerStore } from '@stores/customer'
 import { useCartStore } from '@stores/cart'
 import { useRegionStore } from '@stores/region'
 import { catalogContacts } from '@/content/erawadeeCatalogCover'
+import logoImage from '@/assets/icons/logo-new.png'
 
 const regionStore = useRegionStore()
 const customerStore = useCustomerStore()
@@ -75,7 +76,7 @@ watch(isMobileNavOpen, (isOpen) => {
     <header class="site-header">
       <nav class="content-container site-nav" aria-label="Основная навигация">
         <RouterLink :to="`/${countryCode || ''}`" class="site-brand" aria-label="ERAWADEE">
-          <!--          <img :src="logoImage" alt="" class="site-brand__logo" />-->
+<!--          <img :src="logoImage" alt="" class="site-brand__logo" />-->
           <span class="site-brand__text">ErawadeE</span>
         </RouterLink>
         <div class="site-links">
@@ -269,6 +270,11 @@ watch(isMobileNavOpen, (isOpen) => {
   align-items: center;
   gap: 12px;
   color: var(--brand-dark);
+}
+
+.site-brand__logo {
+  width: 50px;
+  height: auto;
 }
 
 .site-brand__text {

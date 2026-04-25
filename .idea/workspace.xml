@@ -4,12 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5af0ba0c-d1cb-47ad-aeb9-b711a2d526ff" name="Changes" comment="finish storefront">
+    <list default="true" id="5af0ba0c-d1cb-47ad-aeb9-b711a2d526ff" name="Changes" comment="added modal for Mobile">
+      <change afterPath="$PROJECT_DIR$/apps/frontend/public/favicon.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/frontend/src/assets/styles/globals.scss" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/assets/styles/globals.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/frontend/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/frontend/public/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/frontend/src/assets/icons/logo.png" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/assets/icons/logo.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/frontend/src/components/CatalogCover.vue" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/components/CatalogCover.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/frontend/src/layouts/CheckoutLayout.vue" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/layouts/CheckoutLayout.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apps/frontend/src/layouts/MainLayout.vue" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/layouts/MainLayout.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/frontend/src/views/CatalogView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/views/CatalogView.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/frontend/src/views/StoreView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/apps/frontend/src/views/StoreView.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,7 +65,7 @@
     "codeWithMe.voiceChat.enabledByDefault": "false",
     "git-widget-placeholder": "main",
     "javascript.preferred.runtime.type.id": "node",
-    "last_opened_file_path": "/Users/lugengster/Desktop/project/erw-storefront/apps/frontend/public/fonts/trajan-pro",
+    "last_opened_file_path": "/Users/lugengster/Desktop/project/erw-storefront/apps/frontend/public",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -89,6 +92,7 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/apps/frontend/public" />
       <recent name="$PROJECT_DIR$/apps/frontend/public/fonts/trajan-pro" />
       <recent name="D:\projects\dev\erw-storefront\apps\frontend" />
     </key>
@@ -182,7 +186,7 @@
       <workItem from="1777009588484" duration="8698000" />
       <workItem from="1777093891269" duration="78000" />
       <workItem from="1777093975411" duration="3988000" />
-      <workItem from="1777099781814" duration="36448000" />
+      <workItem from="1777099781814" duration="37852000" />
     </task>
     <task id="LOCAL-00001" summary="prod build">
       <option name="closed" value="true" />
@@ -264,7 +268,15 @@
       <option name="project" value="LOCAL" />
       <updated>1777152151072</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="added modal for Mobile">
+      <option name="closed" value="true" />
+      <created>1777156519772</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1777156519772</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -277,6 +289,7 @@
     <MESSAGE value="added Front Design, delete zod" />
     <MESSAGE value="added fix patch for Medusa" />
     <MESSAGE value="finish storefront" />
-    <option name="LAST_COMMIT_MESSAGE" value="finish storefront" />
+    <MESSAGE value="added modal for Mobile" />
+    <option name="LAST_COMMIT_MESSAGE" value="added modal for Mobile" />
   </component>
 </project>
